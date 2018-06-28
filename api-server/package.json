@@ -1,0 +1,26 @@
+{
+  "name": "api-sever",
+  "version": "1.0.0",
+  "description": "api server",
+  "main": "index.js",
+  "author": "waveblur",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "fastify": "^1.7.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "cors": "^2.8.4",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/dev",
+    "clean": "rm -rf dist",
+    "build": "babel src -s -d dist --presets es2015"
+  }
+}
