@@ -28,6 +28,7 @@
     "eslint-plugin-react": "^7.10.0"
   },
   "main": "index.js",
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": ""
