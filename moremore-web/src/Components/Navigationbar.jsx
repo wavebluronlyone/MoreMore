@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import { Link } from 'react-router-dom';
-import './bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import '../Styles/Navigationbar.css';
 
 const Item = (label, link, key) => (
