@@ -50,3 +50,9 @@ div.right{
   margin: 0px;
   width: 100px;
 }
+.menu-item{
+  /* border:2px solid black; */
+  overflow: auto;
+  display: inline-block
+
+}
