@@ -1,3 +1,52 @@
 .navbar,.navbar-default {
     background-color: #fbc811;
 }
+
+p.bar{
+  color:black;
+  /* border: 2px solid orange; */
+  font-size: 15pt;
+  font-weight: bold;
+  width: 120px;
+  padding: 0px;
+  margin: 0px;
+
+}
+
+div.right{
+  /* border: 2px solid black; */
+  width: 250px;
+  display: inline-block;
+  float:right;
+
+
+}
+.nav{
+  /* border:2px solid green; */
+  width: 1000px;
+  display: inline-block;
+  margin-top:20px;
+  margin-bottom: 20px;
+
+}
+
+.nav-item{
+    /* border:2px solid blue; */
+    width: 130px;
+    float:left;
+}
+.right-sub{
+  border-right:2px solid black;
+  overflow:hidden;
+  padding: 0px;
+  margin: 0px;
+  width: 120px;
+  float: left;
+}
+.left-sub{
+  /* border:2px solid red; */
+  overflow:hidden;
+  padding: 0px;
+  margin: 0px;
+  width: 100px;
+}
