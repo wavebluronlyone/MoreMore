@@ -9,7 +9,8 @@ import '../Styles/Navigationbar.css';
 const Item = (label, link, key) => (
 
   <NavItem className="nav-item" eventKey={key}>
-    <Link className="linker"
+    <Link
+      className="linker"
       to={link}
       activeStyle={{
         fontWeight: 'bold',
@@ -17,7 +18,9 @@ const Item = (label, link, key) => (
       }}
       activeClassName="selected"
     >
-      <p className="bar">{label}</p>
+      <p className="bar">
+        {label}
+      </p>
     </Link>
   </NavItem>
 
@@ -34,19 +37,19 @@ const Navigationbar = () => (
     <Navbar.Collapse>
       <Nav className="nav">
         <div className="menu-item">
-        {Item('Home', '/', 1)}
+          {Item('Home', '/', 1)}
         </div>
         <div className="menu-item">
-        {Item('Shop', '/Shop', 2)}
+          {Item('Shop', '/Shop', 2)}
         </div>
         <div className="menu-item">
-        {Item('About', '/About', 3)}
+          {Item('About', '/About', 3)}
         </div>
         <div className="menu-item">
-        {Item('นักทำชีทสรุป', '/Writer', 4)}
+          {Item('นักทำชีทสรุป', '/Writer', 4)}
         </div>
         <div className="menu-item">
-        {Item('รูปตระกร้า', '/Cart', 5)}
+          {Item('รูปตระกร้า', '/Cart', 5)}
         </div>
         <div className="right">
           <div className="right-sub">

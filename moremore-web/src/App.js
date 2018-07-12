@@ -3,12 +3,12 @@ import Routes from './routes';
 import { Header, Footer } from './Layout';
 import './Styles/App.css';
 
-const App = () => (
-  <div>
+export default () => (
+  <React.Fragment>
     <Header />
-      <Routes />
+    <Routes />
     <Footer />
-  </div>
+  </React.Fragment>
 );
 
-export default App;
+// export default Rotes;

@@ -10,5 +10,5 @@ const AppWithRouter = () => (
   </BrowserRouter>
 );
 
-ReactDOM.render(<AppWithRouter />, document.getElementById('root') );
+ReactDOM.render(<AppWithRouter/>, document.getElementById('root') );
 registerServiceWorker();
