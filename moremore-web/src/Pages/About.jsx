@@ -10,7 +10,7 @@ const About = () => (
     <br />
     <Grid>
       <Row>
-        <Col xs={6} md={12}>
+        <Col sm={12}>
           <Image
             src="https://library.tu.ac.th/sites/default/files/styles/punsarn_gallery_thumbnail_200_x200_upscaling_allowed/public/2017-01/TULIBS-tu-resources.png?itok=KhH0ZjRo"
             rounded
@@ -20,8 +20,8 @@ const About = () => (
     </Grid>
     <br/>
     <Grid>
-      <Row className="show-grid">
-        <Col xs={6} md={12}>
+      <Row>
+        <Col sm={12}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do <br/>
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad <br/>
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut <br/>
