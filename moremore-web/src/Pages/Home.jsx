@@ -1,10 +1,23 @@
-import React from 'react';
+import React from "react";
+import Search from "../Components/Search";
+import Slide from "../Components/Slide";
+import CardView from "../Components/CardView";
 
 const Home = () => (
   <div>
-    <h1>
-      Hello World
-    </h1>
+    <br />
+    <br />
+    <br />
+    <h1>หาตัวช่วยในการสอบของคุณได้ที่นี่</h1>
+    <br/>
+    <Search/>
+    <br/>
+    <hr/>
+    <Slide/>
+    <hr/>
+    <br/>
+    <h1>Best Seller</h1>
+    <CardView/>
   </div>
 );
 

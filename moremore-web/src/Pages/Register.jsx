@@ -69,12 +69,18 @@ const Register = () => (
         </Col>
         <Radio name="radioGroup" inline>
           1
-        </Radio>{" "}
+        </Radio>
         <Radio name="radioGroup" inline>
           2
-        </Radio>{" "}
+        </Radio>
         <Radio name="radioGroup" inline>
           3
+        </Radio>
+        <Radio name="radioGroup" inline>
+          4
+        </Radio>
+        <Radio name="radioGroup" inline>
+          อื่นๆ
         </Radio>
       </FormGroup>
 
@@ -92,7 +98,7 @@ const Register = () => (
           คุณรู้จัก TU more sheet จากที่ใด:
         </Col>
         <Checkbox>จากเพื่อนๆหรือคนรู้จัก</Checkbox>
-        <Checkbox>จากรุ่นพี่แนะนำมา</Checkbox> 
+        <Checkbox>จากรุ่นพี่แนะนำมา</Checkbox>
         <Checkbox>ป้ายโฆษณา</Checkbox>
         <Checkbox>facebook</Checkbox>
         <Checkbox>อื่นๆ</Checkbox>
