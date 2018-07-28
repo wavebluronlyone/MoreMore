@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 import { Grid, Row, Col } from "react-bootstrap";
 
-const CardView = prop => (
+const CardView = () => (
   <div className="container">
     <br />
     <Grid>

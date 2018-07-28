@@ -9,15 +9,15 @@ const Home = () => (
     <br />
     <br />
     <h1>หาตัวช่วยในการสอบของคุณได้ที่นี่</h1>
-    <br/>
-    <Search/>
-    <br/>
-    <hr/>
-    <Slide/>
-    <hr/>
-    <br/>
+    <br />
+    <Search />
+    <br />
+    <hr />
+    <Slide />
+    <hr />
+    <br />
     <h1>Best Seller</h1>
-    <CardView/>
+    <CardView />
   </div>
 );
 
