@@ -30,20 +30,35 @@ const Navigationbar = props => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav className="nav">
-        <div className="menu-item">{Item("Home", "/", 1)}</div>
-        <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
-        <div className="menu-item">{Item("About", "/About", 3)}</div>
-        <div className="menu-item">{Item("นักทำชีทสรุป", "/Writer", 4)}</div>
-        <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 5)}</div>
-        {!props.view ? (
-          <div className="right">
-            <div className="right-sub">{Item("Login", "/Login", 6)}</div>
-            <div className="left-sub">{Item("Register", "/Register", 7)}</div>
+        {!props.show ? (
+          <div>
+            <div className="menu-item">{Item("Home", "/", 1)}</div>
+            <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
+            <div className="menu-item">{Item("About", "/About", 3)}</div>
+            <div className="menu-item">
+              {Item("นักทำชีทสรุป", "/Writer", 4)}
+            </div>
+            <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 5)}</div>
+            <div className="right">
+              <div className="right-sub">{Item("Login", "/Login", 6)}</div>
+              <div className="left-sub">{Item("Register", "/Register", 7)}</div>
+            </div>
           </div>
         ) : (
-          <div className="right">
-            <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
-            <div className="left-sub">{Item("logout", "/logout", 7)}</div>
+          <div>
+            <div className="menu-item">{Item("Home", "/name", 1)}</div>
+            <div className="menu-item">{Item("Shop", "/MyShop/name", 2)}</div>
+            <div className="menu-item">{Item("About", "/MyAbout/name", 3)}</div>
+            <div className="menu-item">
+              {Item("นักทำชีทสรุป", "/Writer/name", 4)}
+            </div>
+            <div className="menu-item">
+              {Item("รูปตระกร้า", "/Cart/name", 5)}
+            </div>
+            <div className="right">
+              <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
+              <div className="left-sub">{Item("logout", "/Login", 7)}</div>
+            </div>
           </div>
         )}
       </Nav>

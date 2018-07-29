@@ -1,15 +1,93 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Home, Shop, About, Login, Register, Profile } from './Pages';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import { Home, Shop, About, Login, Register, Profile } from "./Pages";
+import Navigationbar from "./Components/Navigationbar";
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={Home} />
-    <Route path="/Shop" component={Shop} />
-    <Route path="/About" component={About} />
-    <Route path="/Login" component={Login} />
-    <Route path="/Register" component={Register} />
-    <Route path="/Profile" component={Profile} />
+    <Route
+      exact
+      path="/"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Home />
+        </div>
+      )}
+    />
+    <Route
+      path="/Shop"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Shop />
+        </div>
+      )}
+    />
+    <Route
+      path="/About"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <About />
+        </div>
+      )}
+    />
+    <Route
+      path="/Login"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Login />
+        </div>
+      )}
+    />
+    <Route
+      path="/Register"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Register />
+        </div>
+      )}
+    />
+
+    <Route
+      path="/name"
+      render={props => (
+        <div>
+          <Navigationbar show={true} {...props} />
+          <Home />
+        </div>
+      )}
+    />
+    <Route
+      path={"/MyShop/name"}
+      render={props => (
+        <div>
+          <Navigationbar show={true} {...props} />
+          <Shop />
+        </div>
+      )}
+    />
+    <Route
+      path="/MyAbout/name"
+      render={props => (
+        <div>
+          <Navigationbar show={true} {...props} />
+          <About />
+        </div>
+      )}
+    />
+    <Route
+      path="/Profile"
+      render={props => (
+        <div>
+          <Navigationbar show={true} {...props} />
+          <Profile />
+        </div>
+      )}
+    />
   </Switch>
 );
 

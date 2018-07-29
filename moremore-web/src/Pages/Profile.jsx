@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Row, Col, Image, Button, Table } from "react-bootstrap";
+import { Grid, Row, Col, Image, Button } from "react-bootstrap";
 import TableView from "../Components/TableView";
 
 const Profile = () => (
