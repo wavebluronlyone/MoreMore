@@ -6,6 +6,9 @@ import './Styles/App.css';
 export default () => (
   <React.Fragment>
     <Header />
+    <br />
+    <br />
+    <br />
     <Routes />
     <Footer />
   </React.Fragment>
