@@ -16,8 +16,6 @@ const Shop = () => (
     <br />
     <br />
     <br />
-    <br />
-    <br />
     <Grid>
       <Row>
         <Col sm={3}>

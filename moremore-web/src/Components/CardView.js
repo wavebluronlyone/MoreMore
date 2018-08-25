@@ -5,10 +5,9 @@ import {
   CardTitle,
   CardSubtitle,
   CardText,
-  Button,
   CardBody
 } from "reactstrap";
-import { Grid, Row, Col, Image } from "react-bootstrap";
+import { Grid, Row, Col, Image,Button } from "react-bootstrap";
 
 const CardView = () => (
   <div className="container">
@@ -24,7 +23,7 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle align="left">TU100</CardTitle>
+              <CardTitle align="left"><a href="DetailProduct">TU100</a></CardTitle>
               <CardSubtitle align="left">
               <Col sm={1}>
                 <Image
@@ -46,7 +45,7 @@ const CardView = () => (
                   the bulk of the card's content.
                 </p>
               </CardText>
-              <Button>Buy</Button>
+              <a href="Buy"><Button>Buy</Button></a>
             </CardBody>
           </Card>
         </Col>
@@ -59,7 +58,7 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle align="left">TU120</CardTitle>
+              <CardTitle align="left"><a href="DetailProduct">TU120</a></CardTitle>
               <CardSubtitle align="left">
               <Col sm={1}>
                 <Image
@@ -81,7 +80,7 @@ const CardView = () => (
                   the bulk of the card's content.
                 </p>
               </CardText>
-              <Button>Buy</Button>
+              <a href="Buy"><Button>Buy</Button></a>
             </CardBody>
           </Card>
         </Col>
@@ -94,7 +93,7 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle align="left">AT129</CardTitle>
+              <CardTitle align="left"><a href="DetailProduct">AT129</a></CardTitle>
               <CardSubtitle align="left">
               <Col sm={1}>
                 <Image
@@ -116,7 +115,7 @@ const CardView = () => (
                   the bulk of the card's content.
                 </p>
               </CardText>
-              <Button>Buy</Button>
+              <a href="Buy"><Button>Buy</Button></a>
             </CardBody>
           </Card>
         </Col>

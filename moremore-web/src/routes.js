@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { Home, Shop, About, Login, Register, Profile } from "./Pages";
+import { Home, Shop, About, Login, Register, Profile, DetailProduct,Buy } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
 
 const Routes = () => (
@@ -85,6 +85,24 @@ const Routes = () => (
         <div>
           <Navigationbar show={true} {...props} />
           <Profile />
+        </div>
+      )}
+    />
+    <Route
+      path="/DetailProduct"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <DetailProduct />
+        </div>
+      )}
+    />
+     <Route
+      path="/Buy"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Buy />
         </div>
       )}
     />
