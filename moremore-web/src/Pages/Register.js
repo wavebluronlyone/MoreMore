@@ -12,9 +12,7 @@ import {
 
 const Register = () => (
   <div>
-    <br />
-    <br />
-    <br />
+   
     <p align="left">สมัครสมาชิก | Register</p>
     <br />
     <Form horizontal>
