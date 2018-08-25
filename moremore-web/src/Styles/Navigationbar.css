@@ -35,6 +35,7 @@ div.right{
     width: 130px;
     float:left;
 }
+
 .right-sub{
   border-right:2px solid black;
   overflow:hidden;
@@ -43,16 +44,11 @@ div.right{
   width: 120px;
   float: left;
 }
+
 .left-sub{
   /* border:2px solid red; */
   overflow:hidden;
   padding: 0px;
   margin: 0px;
   width: 100px;
-}
-.menu-item{
-  /* border:2px solid black; */
-  overflow: auto;
-  display: inline-block
-
 }

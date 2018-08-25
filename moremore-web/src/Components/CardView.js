@@ -8,7 +8,7 @@ import {
   Button,
   CardBody
 } from "reactstrap";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Image } from "react-bootstrap";
 
 const CardView = () => (
   <div className="container">
@@ -24,13 +24,29 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle>Card title</CardTitle>
-              <CardSubtitle>Card subtitle</CardSubtitle>
-              <CardText>
-                <p align="left">Some quick example text to build on the card title and make up
-                the bulk of the card's content.</p>
+              <CardTitle align="left">TU100</CardTitle>
+              <CardSubtitle align="left">
+              <Col sm={1}>
+                <Image
+                  height="30px"
+                  width="30px"
+                  src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+                  circle
+                />
+                </Col>
+                <Col sm={5}>
+                <br/>
+                <p>&nbsp;&nbsp;Hello</p>
+                </Col>
+              </CardSubtitle>
+              <CardText align="left">
+              <br/><br/>
+                <p>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </CardText>
-              <Button>Button</Button>
+              <Button>Buy</Button>
             </CardBody>
           </Card>
         </Col>
@@ -43,13 +59,29 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle>Card title</CardTitle>
-              <CardSubtitle>Card subtitle</CardSubtitle>
-              <CardText>
-              <p align="left">Some quick example text to build on the card title and make up
-                the bulk of the card's content.</p>
+              <CardTitle align="left">TU120</CardTitle>
+              <CardSubtitle align="left">
+              <Col sm={1}>
+                <Image
+                  height="30px"
+                  width="30px"
+                  src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+                  circle
+                />
+                </Col>
+                <Col sm={5}>
+                <br/>
+                <p>&nbsp;&nbsp;Hello</p>
+                </Col>
+              </CardSubtitle>
+              <CardText align="left">
+              <br/><br/>
+                <p>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </CardText>
-              <Button>Button</Button>
+              <Button>Buy</Button>
             </CardBody>
           </Card>
         </Col>
@@ -62,13 +94,29 @@ const CardView = () => (
               alt="Card image cap"
             />
             <CardBody>
-              <CardTitle>Card title</CardTitle>
-              <CardSubtitle>Card subtitle</CardSubtitle>
-              <CardText>
-              <p align="left">Some quick example text to build on the card title and make up
-                the bulk of the card's content.</p>
+              <CardTitle align="left">AT129</CardTitle>
+              <CardSubtitle align="left">
+              <Col sm={1}>
+                <Image
+                  height="30px"
+                  width="30px"
+                  src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+                  circle
+                />
+                </Col>
+                <Col sm={5}>
+                <br/>
+                <p>&nbsp;&nbsp;Hello</p>
+                </Col>
+              </CardSubtitle>
+              <CardText align="left">
+              <br/><br/>
+                <p>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </CardText>
-              <Button>Button</Button>
+              <Button>Buy</Button>
             </CardBody>
           </Card>
         </Col>
