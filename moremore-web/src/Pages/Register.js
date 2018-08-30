@@ -84,7 +84,7 @@ const Register = () => (
 
       <FormGroup>
         <Col componentClass={ControlLabel} sm={2}>
-          เบอร์โทรศัพท์: *
+          คณะ: *
         </Col>
         <Col sm={10}>
           <FormControl placeholder="Email" />
