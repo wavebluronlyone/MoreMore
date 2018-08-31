@@ -11,7 +11,8 @@ import {
 } from "react-bootstrap";
 import FaSearch from "react-icons/lib/fa/search";
 
-const Search = () => (
+
+const Search = (props) => (
   <div className="container">
     <Grid>
       <Row>

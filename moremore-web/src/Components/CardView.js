@@ -8,38 +8,21 @@ import {
   CardBody
 } from "reactstrap";
 import { Grid, Row, Col, Image, Button } from "react-bootstrap";
+import { connect } from "react-redux";
 
-const data = [
-  {
-    name: "TU100",
-    shop: "ABC",
-    description: "This is a description I",
-    photo:
-      "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-  },
-  {
-    name: "TU101",
-    shop: "DEF",
-    description: "This is a description II",
-    photo:
-      "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-  },
-  {
-    name: "TU102",
-    shop: "OEC",
-    description: "This is a description III",
-    photo:
-      "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-  }
-];
+const mapStatetoProps = state => {
+  console.log(state)
+  return {
+    stock: state.stock
+  };
+};
 
-const CardView = () => (
+const CardView = (props) => (
   <div className="container">
     <Grid>
       <Row>
-        {data.map(res => {
-          return (
-            <Col sm={4}>
+        {props.stock.data.map(res => {
+           return (<Col sm={4}>
               <Card>
                 <CardImg
                   top
@@ -64,23 +47,22 @@ const CardView = () => (
                       <br />
                       <p>
                         &nbsp;&nbsp;
-                        {res.shop}      
+                        {res.shop}
                       </p>
                     </Col>
                   </CardSubtitle>
                   <CardText align="left">
                     <br />
                     <br />
-                    <p>{res.description}</p>        
+                    <p>{res.description}</p>
                   </CardText>
                 </CardBody>
               </Card>
-            </Col>
-          );
-        })}
+            </Col>);
+          })}
       </Row>
     </Grid>
   </div>
 );
 
-export default CardView;
+export default connect(mapStatetoProps)(CardView);
