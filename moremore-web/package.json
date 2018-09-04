@@ -7,6 +7,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
     "firebase": "^5.4.2",
+    "firebase-admin": "^6.0.0",
     "material-ui": "^0.20.1",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
@@ -14,11 +15,13 @@
     "react-fa-icon": "^0.1.4",
     "react-icons": "^2.2.7",
     "react-redux": "^5.0.7",
+    "react-redux-firebase": "^2.1.8",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "reactstrap": "^6.3.1",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

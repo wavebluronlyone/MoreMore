@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -7,22 +7,32 @@ import {
   CardText,
   CardBody
 } from "reactstrap";
-import { Grid, Row, Col, Image, Button } from "react-bootstrap";
+import { Grid, Row, Col, Image } from "react-bootstrap";
 import { connect } from "react-redux";
+import { getStock } from "../Actions/StockActions";
 
 const mapStatetoProps = state => {
-  console.log(state)
   return {
     stock: state.stock
   };
 };
 
-const CardView = (props) => (
-  <div className="container">
-    <Grid>
-      <Row>
-        {props.stock.data.map(res => {
-           return (<Col sm={4}>
+const mapDispatchtoProps = dispatch => ({
+  getStock: () => {
+    dispatch(getStock());
+  }
+});
+
+class CardView extends Component {
+  componentDidMount() {
+    this.props.getStock();
+  }
+  render() {
+    return (
+      <div className="container">
+        <Grid>
+          <Row>
+            <Col sm={4}>
               <Card>
                 <CardImg
                   top
@@ -32,7 +42,7 @@ const CardView = (props) => (
                 />
                 <CardBody>
                   <CardTitle align="left">
-                    <a href="DetailProduct">{res.name}</a>
+                    <a href="DetailProduct">{this.props.stock.name}</a>
                   </CardTitle>
                   <CardSubtitle align="left">
                     <Col sm={1}>
@@ -47,22 +57,27 @@ const CardView = (props) => (
                       <br />
                       <p>
                         &nbsp;&nbsp;
-                        {res.shop}
+                        {this.props.stock.is_Admin}
                       </p>
                     </Col>
                   </CardSubtitle>
                   <CardText align="left">
                     <br />
                     <br />
-                    <p>{res.description}</p>
+                    <p>{}</p>
+                    <p>{}</p>
                   </CardText>
                 </CardBody>
               </Card>
-            </Col>);
-          })}
-      </Row>
-    </Grid>
-  </div>
-);
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+    );
+  }
+}
 
-export default connect(mapStatetoProps)(CardView);
+export default connect(
+  mapStatetoProps,
+  mapDispatchtoProps
+)(CardView);
