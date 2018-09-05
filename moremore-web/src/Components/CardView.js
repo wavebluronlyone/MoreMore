@@ -32,7 +32,8 @@ class CardView extends Component {
       <div className="container">
         <Grid>
           <Row>
-            <Col sm={4}>
+          {this.props.stock.data.map(res => {
+            return (<Col sm={4}>
               <Card>
                 <CardImg
                   top
@@ -42,7 +43,7 @@ class CardView extends Component {
                 />
                 <CardBody>
                   <CardTitle align="left">
-                    <a href="DetailProduct">{this.props.stock.name}</a>
+                    <a href="DetailProduct">{res.name}</a>
                   </CardTitle>
                   <CardSubtitle align="left">
                     <Col sm={1}>
@@ -57,7 +58,7 @@ class CardView extends Component {
                       <br />
                       <p>
                         &nbsp;&nbsp;
-                        {this.props.stock.is_Admin}
+                        {res.is_Admin}
                       </p>
                     </Col>
                   </CardSubtitle>
@@ -65,11 +66,11 @@ class CardView extends Component {
                     <br />
                     <br />
                     <p>{}</p>
-                    <p>{}</p>
                   </CardText>
                 </CardBody>
               </Card>
-            </Col>
+            </Col>);
+          })}
           </Row>
         </Grid>
       </div>

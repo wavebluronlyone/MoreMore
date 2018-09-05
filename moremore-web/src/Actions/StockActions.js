@@ -1,7 +1,5 @@
 import { database } from "../firebase";
-
-export const GET_STOCK = "get_stock";
-// export const GET_CREATE_AT = "get_create_at";
+import { GET_STOCK } from "./type";
 
 export function getStock() {
   return dispatch => {

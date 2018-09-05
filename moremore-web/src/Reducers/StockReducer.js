@@ -1,12 +1,21 @@
-import { GET_STOCK } from "../Actions/StockActions";
+import { GET_STOCK } from "../Actions/type";
 
-export default function(state = {}, action) {
+const initialState = {
+  data: []
+}
+
+
+export default function(state = initialState, action) {
   switch (action.type) {
     case GET_STOCK:
       return {
         ...state,
-        name: [...state, action.shop],
-        is_Admin: [...state, action.is_admin]
+        data: [...state.data,
+          {
+            name: action.shop,
+            is_Admin: action.is_admin
+          }
+        ]
       };
     default:
       return state;
