@@ -22,7 +22,7 @@ const DetailProduct = () => (
       <br/>
       <br/>
         <h2>20 บาท</h2>
-        <a href="Buy"><Button>Buy</Button></a>
+        <Button>Buy</Button>
       </Col>
     </Row>
     <br/>

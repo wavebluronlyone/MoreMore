@@ -1,1 +1,1 @@
-export const GET_STOCK = "get_stock";
+export const GET_BEST_SELLER = "get_best_seller";

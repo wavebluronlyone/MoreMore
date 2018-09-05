@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid, Row, Col, Pagination } from "react-bootstrap";
-import CardView from "../Components/CardView";
 
 let active = 7;
 let items = [];
@@ -29,8 +28,6 @@ const Shop = () => (
         </Col>
       </Row>
     </Grid>
-    <CardView />
-    <CardView />
     <Pagination bsSize="small">{items}</Pagination>
   </div>
 );

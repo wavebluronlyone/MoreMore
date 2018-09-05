@@ -3,13 +3,12 @@ import {
   Card,
   CardImg,
   CardTitle,
-  CardSubtitle,
   CardText,
   CardBody
 } from "reactstrap";
-import { Grid, Row, Col, Image } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import { getStock } from "../Actions/StockActions";
+import { getBestSeller } from "../Actions/StockActions";
 
 const mapStatetoProps = state => {
   return {
@@ -18,59 +17,42 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  getStock: () => {
-    dispatch(getStock());
+  getBestSeller: () => {
+    dispatch(getBestSeller());
   }
 });
 
 class CardView extends Component {
   componentDidMount() {
-    this.props.getStock();
+    this.props.getBestSeller();
   }
   render() {
     return (
       <div className="container">
         <Grid>
           <Row>
-          {this.props.stock.data.map(res => {
-            return (<Col sm={4}>
-              <Card>
-                <CardImg
-                  top
-                  width="100%"
-                  src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-                  alt="Card image cap"
-                />
-                <CardBody>
-                  <CardTitle align="left">
-                    <a href="DetailProduct">{res.name}</a>
-                  </CardTitle>
-                  <CardSubtitle align="left">
-                    <Col sm={1}>
-                      <Image
-                        height="30px"
-                        width="30px"
-                        src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-                        circle
-                      />
-                    </Col>
-                    <Col sm={5}>
-                      <br />
-                      <p>
-                        &nbsp;&nbsp;
-                        {res.is_Admin}
-                      </p>
-                    </Col>
-                  </CardSubtitle>
-                  <CardText align="left">
-                    <br />
-                    <br />
-                    <p>{}</p>
-                  </CardText>
-                </CardBody>
-              </Card>
-            </Col>);
-          })}
+            {this.props.stock.data.map(res => {
+              return (
+                <Col sm={4}>
+                  <Card>
+                    <CardImg
+                      top
+                      width="100%"
+                      src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+                      alt="Card image cap"
+                    />
+                    <CardBody>
+                      <CardTitle align="left">
+                        {res.name}
+                      </CardTitle>
+                      <CardText align="left">
+                        <p>{res.short_description}</p>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              );
+            })}
           </Row>
         </Grid>
       </div>
