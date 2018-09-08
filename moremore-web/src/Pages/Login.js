@@ -1,60 +1,14 @@
-import React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  ControlLabel,
-  FormControl
-} from "react-bootstrap";
-import FaFacebook from "react-icons/lib/fa/facebook";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import LoginForm from "../Components/LoginForm";
+import { signInWithEmail } from "../Actions/UserActions";
 
-const Login = () => (
-  <div>
-    <br />
-    <br />
-    <br />
-    <p align="center">ลงชื่อเข้าสู่ระบบ</p>
-    <Button bsStyle="primary">
-      <FaFacebook /> &nbsp;login with facebook
-    </Button>
-    <br />
-    <br />
-    <Form horizontal>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Username/Email:
-        </Col>
-        <Col sm={10}>
-          <FormControl type="email" placeholder="Email" />
-        </Col>
-      </FormGroup>
-
-      <FormGroup controlId="formHorizontalPassword">
-        <Col componentClass={ControlLabel} sm={2}>
-          Password:
-        </Col>
-        <Col sm={10}>
-          <FormControl type="password" placeholder="Password" />
-        </Col>
-      </FormGroup>
-
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          ลืมรหัสผ่าน
-        </Col>
-      </FormGroup>
-
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          <Link to="/name">
-            <Button>Sign in</Button>
-          </Link>
-        </Col>
-      </FormGroup>
-    </Form>
-  </div>
-);
+class Login extends Component {
+  submit = values => {
+    signInWithEmail(values.email, values.password);
+  };
+  render() {
+    return <LoginForm onSubmit={this.submit} />;
+  }
+}
 
 export default Login;
