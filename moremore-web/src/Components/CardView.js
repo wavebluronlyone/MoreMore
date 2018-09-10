@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardTitle,
-  CardText,
-  CardBody
-} from "reactstrap";
+import { Card, CardImg, CardTitle, CardText, CardBody } from "reactstrap";
 import { Grid, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { getBestSeller } from "../Actions/StockActions";
@@ -42,9 +36,7 @@ class CardView extends Component {
                       alt="Card image cap"
                     />
                     <CardBody>
-                      <CardTitle align="left">
-                        {res.name}
-                      </CardTitle>
+                      <CardTitle align="left">{res.name}</CardTitle>
                       <CardText align="left">
                         <p>{res.short_description}</p>
                       </CardText>

@@ -1,7 +1,8 @@
 import { SIGN_IN_WITH_EMAIL } from "../Actions/type";
 
 const initialState = {
-  message: ""
+  message: "",
+  isLoggedIn: false
 };
 
 export default function(state = initialState, action) {
@@ -9,7 +10,8 @@ export default function(state = initialState, action) {
     case SIGN_IN_WITH_EMAIL:
       return {
         ...state,
-        message: action.text
+        message: action.text,
+        isLoggedIn: action.isloggedIn
       };
     default:
       return state;

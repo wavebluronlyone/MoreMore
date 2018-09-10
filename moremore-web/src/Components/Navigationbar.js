@@ -5,6 +5,23 @@ import NavItem from "react-bootstrap/lib/NavItem";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "../Styles/Navigationbar.css";
+import { connect } from "react-redux";
+import { signOut } from "../Actions/UserActions";
+import { Redirect } from "react-router-dom";
+
+const mapStatetoProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatchtoProps = dispatch => ({
+  signOut: () => {
+    dispatch(signOut());
+  }
+});
+
+const { from } = { from: { pathname: "/Login" } };
 
 const Item = (label, link, key) => (
   <NavItem className="nav-item" eventKey={key}>
@@ -47,7 +64,24 @@ const Navigationbar = props => (
             <div className="menu-item">{Item("About", "/MyAbout/name", 3)}</div>
             <div className="right">
               <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
-              <div className="left-sub">{Item("logout", "/Login", 7)}</div>
+              <div className="left-sub">
+                {!props.user.isLoggedIn ? <Redirect to={from} /> : null}
+                <NavItem className="nav-item" eventKey={7}>
+                  <a
+                    className="linker"
+                    onClick={() => {
+                      props.signOut();
+                    }}
+                    activeStyle={{
+                      fontWeight: "bold",
+                      color: "red"
+                    }}
+                    activeClassName="selected"
+                  >
+                    {"Logout"}
+                  </a>
+                </NavItem>
+              </div>
             </div>
           </div>
         )}
@@ -56,4 +90,7 @@ const Navigationbar = props => (
   </Navbar>
 );
 
-export default Navigationbar;
+export default connect(
+  mapStatetoProps,
+  mapDispatchtoProps
+)(Navigationbar);
