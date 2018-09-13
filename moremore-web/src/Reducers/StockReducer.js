@@ -1,7 +1,9 @@
-import { GET_BEST_SELLER } from "../Actions/type";
+import { GET_BEST_SELLER, FIND_DATA_WITH_NAME } from "../Actions/type";
 
 const initialState = {
-  data: []
+  data: [],
+  price: 0,
+  product_description: ""
 };
 
 export default function(state = initialState, action) {
@@ -22,6 +24,12 @@ export default function(state = initialState, action) {
           ]
         };
       }
+    case FIND_DATA_WITH_NAME:
+      return {
+        ...state,
+        price: action.prices,
+        product_description: action.longDetail
+      };
     default:
       return state;
   }

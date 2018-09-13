@@ -4,22 +4,29 @@ import ProductDescription from "../Components/ProductDescription";
 import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import { isLoggedIn } from "../Actions/UserActions";
+import { findDataWithNameOfProduct } from "../Actions/StockActions";
 
 const mapStatetoProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    stock: state.stock
   };
 };
 
 const mapDispatchtoProps = dispatch => ({
   isLoggedIn: () => {
     dispatch(isLoggedIn());
+  },
+  findDataWithNameOfProduct: (name) => {
+    dispatch(findDataWithNameOfProduct(name));
   }
+
 });
 
 class DetailProduct extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
+    this.props.findDataWithNameOfProduct(this.props.match.params.id);
   }
   render() {
     return (
@@ -35,7 +42,7 @@ class DetailProduct extends Component {
         <Row>
           <Col sm={2} />
           <Col sm={2}>
-            <p align="left">TU100</p>
+          <p align="left">{this.props.match.params.id}</p>
             <Image
               align="left"
               height="300px"
@@ -46,12 +53,12 @@ class DetailProduct extends Component {
           <Col sm={5}>
             <br />
             <br />
-            <h2>20 บาท</h2>
+            <h2>{this.props.stock.price+" บาท"}</h2>
             <Button>Buy</Button>
           </Col>
         </Row>
         <br />
-        <ProductDescription />
+        <ProductDescription detail={this.props.stock.product_description} />
       </div>
     );
   }

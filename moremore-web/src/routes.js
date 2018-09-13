@@ -102,7 +102,7 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <DetailProduct />
+          <DetailProduct {...props} />
         </div>
       )}
     /> 

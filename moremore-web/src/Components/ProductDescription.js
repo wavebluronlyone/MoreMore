@@ -1,14 +1,21 @@
 import React from "react";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
+import { connect } from "react-redux";
 
-const ProductDescription = () => (
+const mapStatetoProps = state => {
+  return {
+    stock: state.stock
+  };
+};
+
+const ProductDescription = (props) => (
   <div>
     <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example">
       <Tab eventKey={1} title="รายละเอียดสินค้า">
         <Row>
           <Col sm={2} />
           <Col>
-            <p align="left">Tab 1 content</p>
+            <p align="left">{props.detail}</p>
           </Col>
         </Row>
       </Tab>
@@ -16,4 +23,6 @@ const ProductDescription = () => (
   </div>
 );
 
-export default ProductDescription;
+export default connect(
+  mapStatetoProps
+)(ProductDescription);
