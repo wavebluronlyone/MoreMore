@@ -1,6 +1,15 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { Home, Shop, About, Login, Register, Profile, DetailProduct,Buy } from "./Pages";
+import {
+  Home,
+  Shop,
+  About,
+  Login,
+  Register,
+  Profile,
+  Buy,
+  DetailProduct
+} from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
 
 const Routes = () => (
@@ -88,16 +97,16 @@ const Routes = () => (
         </div>
       )}
     />
-    <Route
-      path="/DetailProduct"
+     <Route
+      path="/DetailProduct/:id"
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
           <DetailProduct />
         </div>
       )}
-    />
-     <Route
+    /> 
+    <Route
       path="/Buy"
       render={props => (
         <div>

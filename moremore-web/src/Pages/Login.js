@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import LoginForm from "../Components/LoginForm";
-import { signInWithEmail, isloggedIn } from "../Actions/UserActions";
+import { signInWithEmail, isLoggedIn } from "../Actions/UserActions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -14,8 +14,8 @@ const mapDispatchtoProps = dispatch => ({
   signInWithEmail: (user, pass) => {
     dispatch(signInWithEmail(user, pass));
   },
-  isloggedIn: () => {
-    dispatch(isloggedIn());
+  isLoggedIn: () => {
+    dispatch(isLoggedIn());
   }
 });
 
@@ -24,7 +24,7 @@ class Login extends Component {
     this.props.signInWithEmail(values.email, values.password);
   };
   componentDidMount() {
-    this.props.isloggedIn();
+    this.props.isLoggedIn();
   }
   render() {
     const { from } = { from: { pathname: "/name" } };

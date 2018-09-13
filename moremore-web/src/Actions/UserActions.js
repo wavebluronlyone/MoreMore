@@ -16,11 +16,10 @@ export function signInWithEmail(email, pass) {
   };
 }
 
-export function isloggedIn() {
+export function isLoggedIn() {
   return dispatch => {
     auth.onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
-        console.log(firebaseUser);
         dispatch({
           type: SIGN_IN_WITH_EMAIL,
           isloggedIn: true
