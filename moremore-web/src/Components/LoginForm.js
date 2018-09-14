@@ -23,7 +23,6 @@ const FieldInput = ({ type, placeholder, input }) => {
 
 let LoginForm = props => {
   const { handleSubmit } = props;
-  console.log(props.match);
   return (
     <div>
       <br />

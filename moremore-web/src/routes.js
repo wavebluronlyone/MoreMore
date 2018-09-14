@@ -60,34 +60,6 @@ const Routes = () => (
         </div>
       )}
     />
-
-    <Route
-      path="/name"
-      render={props => (
-        <div>
-          <Navigationbar show={true} {...props} />
-          <Home />
-        </div>
-      )}
-    />
-    <Route
-      path={"/MyShop/name"}
-      render={props => (
-        <div>
-          <Navigationbar show={true} {...props} />
-          <Shop />
-        </div>
-      )}
-    />
-    <Route
-      path="/MyAbout/name"
-      render={props => (
-        <div>
-          <Navigationbar show={true} {...props} />
-          <About />
-        </div>
-      )}
-    />
     <Route
       path="/Profile"
       render={props => (
@@ -102,19 +74,19 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <DetailProduct {...props} />
+          <DetailProduct show={false} {...props} />
         </div>
       )}
     /> 
     <Route
-      path="/Buy"
+      path="/Buy/:id"
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <Buy />
+          <Buy {...props} />
         </div>
       )}
-    />
+    /> 
   </Switch>
 );
 

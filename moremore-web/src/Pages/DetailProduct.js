@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Image, Button } from "react-bootstrap";
+import { Col, Row, Image } from "react-bootstrap";
 import ProductDescription from "../Components/ProductDescription";
 import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
@@ -17,10 +17,9 @@ const mapDispatchtoProps = dispatch => ({
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   },
-  findDataWithNameOfProduct: (name) => {
+  findDataWithNameOfProduct: name => {
     dispatch(findDataWithNameOfProduct(name));
   }
-
 });
 
 class DetailProduct extends Component {
@@ -42,7 +41,7 @@ class DetailProduct extends Component {
         <Row>
           <Col sm={2} />
           <Col sm={2}>
-          <p align="left">{this.props.match.params.id}</p>
+            <p align="left">{this.props.match.params.id}</p>
             <Image
               align="left"
               height="300px"
@@ -53,8 +52,8 @@ class DetailProduct extends Component {
           <Col sm={5}>
             <br />
             <br />
-            <h2>{this.props.stock.price+" บาท"}</h2>
-            <Button>Buy</Button>
+            <h2>{this.props.stock.price + " บาท"}</h2>
+            <a href={"/Buy/"+this.props.match.params.id}>Buy</a>
           </Col>
         </Row>
         <br />

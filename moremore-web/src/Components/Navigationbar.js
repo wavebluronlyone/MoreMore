@@ -59,9 +59,9 @@ const Navigationbar = props => (
           </div>
         ) : (
           <div>
-            <div className="menu-item">{Item("Home", "/name", 1)}</div>
-            <div className="menu-item">{Item("Shop", "/MyShop/name", 2)}</div>
-            <div className="menu-item">{Item("About", "/MyAbout/name", 3)}</div>
+            <div className="menu-item">{Item("Home", "/", 1)}</div>
+            <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
+            <div className="menu-item">{Item("About", "/About", 3)}</div>
             <div className="right">
               <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
               <div className="left-sub">

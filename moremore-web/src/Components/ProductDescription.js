@@ -1,12 +1,5 @@
 import React from "react";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
-import { connect } from "react-redux";
-
-const mapStatetoProps = state => {
-  return {
-    stock: state.stock
-  };
-};
 
 const ProductDescription = (props) => (
   <div>
@@ -23,6 +16,4 @@ const ProductDescription = (props) => (
   </div>
 );
 
-export default connect(
-  mapStatetoProps
-)(ProductDescription);
+export default ProductDescription;
