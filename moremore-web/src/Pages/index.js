@@ -6,3 +6,5 @@ export { default as Register } from "./Register";
 export { default as Profile } from "./Profile";
 export { default as DetailProduct } from "./DetailProduct";
 export { default as Buy } from "./Buy";
+export {default as BuyComplete} from "./BuyComplete";
+ 

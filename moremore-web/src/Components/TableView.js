@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
 
-const TableView = () => (
+const TableView = (props) => (
   <div className="container">
     <Table responsive>
       <thead />
@@ -9,25 +9,10 @@ const TableView = () => (
         <tr>
           <td width="5%">1.</td>
           <td width="30%" align="left">
-            TU101 รวมไฟนอล by Adriama
+            {props.sheetName}
           </td>
           <td width="5%">
-            <Button>อ่าน</Button>
-          </td>
-          <td width="5%">
-            <Button>พิมพ์</Button>
-          </td>
-        </tr>
-        <tr>
-          <td width="5%">2.</td>
-          <td width="30%" align="left">
-            EG216 by Minniemore
-          </td>
-          <td width="5%">
-            <Button>อ่าน</Button>
-          </td>
-          <td width="5%">
-            <Button>พิมพ์</Button>
+            <a href={props.pdfFile}>อ่าน</a>
           </td>
         </tr>
       </tbody>

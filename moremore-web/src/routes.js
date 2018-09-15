@@ -8,6 +8,7 @@ import {
   Register,
   Profile,
   Buy,
+  BuyComplete,
   DetailProduct
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
@@ -47,7 +48,7 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <Login />
+          <Login {...props}/>
         </div>
       )}
     />
@@ -87,6 +88,16 @@ const Routes = () => (
         </div>
       )}
     /> 
+
+    <Route
+      path="/BuyComplete/:id"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <BuyComplete {...props} />
+        </div>
+      )}
+    />
   </Switch>
 );
 

@@ -1,5 +1,9 @@
 import { database } from "../firebase";
-import { GET_BEST_SELLER,FIND_DATA_WITH_NAME } from "./type";
+import {
+  GET_BEST_SELLER,
+  FIND_DATA_WITH_NAME,
+  FIND_PDF_WITH_NAME
+} from "./type";
 
 export function getBestSeller() {
   return dispatch => {
@@ -21,7 +25,9 @@ export function getBestSeller() {
 
 export function findDataWithNameOfProduct(name) {
   return dispatch => {
-    const docRef = database.collection("bestSellerProduct").where("name","==",name);
+    const docRef = database
+      .collection("bestSellerProduct")
+      .where("name", "==", name);
     docRef.get().then(snapshot => {
       snapshot.docs.forEach(doc => {
         dispatch({
@@ -32,4 +38,39 @@ export function findDataWithNameOfProduct(name) {
       });
     });
   };
+}
+
+export function findPdfWithNameOfProduct(name) {
+  return dispatch => {
+    const docRef = database
+      .collection("bestSellerProduct")
+      .where("name", "==", name);
+    docRef.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        dispatch({
+          type: FIND_PDF_WITH_NAME,
+          pdfFile: doc.data().pdf
+        });
+      });
+    });
+  };
+}
+
+export function createSheetforUser(Email, sheetName, pdfFile) {
+  if (pdfFile == "") {
+    return;
+  }
+  const docRef = database.collection("payment").doc();
+  docRef
+    .set({
+      email: Email,
+      pdf: pdfFile,
+      name: sheetName
+    })
+    .then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
 }

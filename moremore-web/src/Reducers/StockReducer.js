@@ -1,9 +1,14 @@
-import { GET_BEST_SELLER, FIND_DATA_WITH_NAME } from "../Actions/type";
+import {
+  GET_BEST_SELLER,
+  FIND_DATA_WITH_NAME,
+  FIND_PDF_WITH_NAME
+} from "../Actions/type";
 
 const initialState = {
   data: [],
   price: 0,
-  product_description: ""
+  product_description: "",
+  pdf: ""
 };
 
 export default function(state = initialState, action) {
@@ -29,6 +34,11 @@ export default function(state = initialState, action) {
         ...state,
         price: action.prices,
         product_description: action.longDetail
+      };
+    case FIND_PDF_WITH_NAME:
+      return {
+        ...state,
+        pdf: action.pdfFile
       };
     default:
       return state;

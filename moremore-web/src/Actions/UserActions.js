@@ -1,5 +1,5 @@
-import { auth } from "../firebase";
-import { SIGN_IN_WITH_EMAIL } from "./type";
+import { auth, database } from "../firebase";
+import { SIGN_IN_WITH_EMAIL, FIND_PROFILE_WITH_EMAIL, FIND_PDF_WITH_EMAIL } from "./type";
 
 export function signInWithEmail(email, pass) {
   return dispatch => {
@@ -22,9 +22,39 @@ export function isLoggedIn() {
       if (firebaseUser) {
         dispatch({
           type: SIGN_IN_WITH_EMAIL,
-          isloggedIn: true
+          isloggedIn: true,
+          email: firebaseUser.email
         });
       }
+    });
+  };
+}
+
+export function findProfileWithEmail(email) {
+  return dispatch => {
+    const docRef = database.collection("user").where("email", "==", email);
+    docRef.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        dispatch({
+          type: FIND_PROFILE_WITH_EMAIL,
+          myUser: doc.data().user
+        });
+      });
+    });
+  };
+}
+
+export function findPdfWithEmail(email) {
+  return dispatch => {
+    const docRef = database.collection("payment").where("email", "==", email);
+    docRef.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        dispatch({
+          type: FIND_PDF_WITH_EMAIL,
+          sheetName: doc.data().name,
+          pdfFile: doc.data().pdf
+        });
+      });
     });
   };
 }
