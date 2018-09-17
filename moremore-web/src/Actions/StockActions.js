@@ -7,7 +7,6 @@ import {
 
 export function getBestSeller() {
   return dispatch => {
-    // database.settings({ timestampsInSnapshots: true });
     const docRef = database.collection("bestSellerProduct");
     docRef.get().then(snapshot => {
       snapshot.docs.forEach(doc => {
@@ -57,7 +56,7 @@ export function findPdfWithNameOfProduct(name) {
 }
 
 export function createSheetforUser(Email, sheetName, pdfFile) {
-  if (pdfFile == "") {
+  if (pdfFile === "") {
     return;
   }
   const docRef = database.collection("payment").doc();

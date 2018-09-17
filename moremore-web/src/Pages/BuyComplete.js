@@ -29,7 +29,7 @@ class BuyComplete extends Component {
     this.props.findPdfWithNameOfProduct(this.props.match.params.id);
   }
   render() {
-    if (this.props.user.isLoggedIn == true) {
+    if (this.props.user.isLoggedIn === true) {
       createSheetforUser(
         this.props.user.email,
         this.props.match.params.id,
