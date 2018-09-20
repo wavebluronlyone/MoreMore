@@ -1,5 +1,9 @@
 import { auth, database } from "../firebase";
-import { SIGN_IN_WITH_EMAIL, FIND_PROFILE_WITH_EMAIL, FIND_PDF_WITH_EMAIL } from "./type";
+import {
+  SIGN_IN_WITH_EMAIL,
+  FIND_PROFILE_WITH_EMAIL,
+  FIND_PDF_WITH_EMAIL
+} from "./type";
 
 export function signInWithEmail(email, pass) {
   return dispatch => {
@@ -12,6 +16,32 @@ export function signInWithEmail(email, pass) {
           isloggedIn: false
         });
       }
+    });
+  };
+}
+
+export function registerWithEmail(Email, Pass, User) {
+  return dispatch => {
+    const register = auth.createUserWithEmailAndPassword(Email, Pass);
+    const docRef = database.collection("user").doc();
+    register.then(users => {
+      docRef
+      .set({
+        email: Email,
+        user: User
+      })
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+    }).catch(e => {
+      console.log(e.message);
+      dispatch({
+        type: SIGN_IN_WITH_EMAIL,
+        text: e.message
+      });
     });
   };
 }

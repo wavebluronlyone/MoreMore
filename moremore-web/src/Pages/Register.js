@@ -1,114 +1,36 @@
-import React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  ControlLabel,
-  FormControl,
-  Radio,
-  Checkbox
-} from "react-bootstrap";
+import React, { Component } from "react";
+import RegisterForm from "../Components/RegisterForm";
+import { registerWithEmail } from "../Actions/UserActions";
+import { connect } from "react-redux";
+// import { Redirect } from "react-router-dom";
 
-const Register = () => (
-  <div>
-   
-    <p align="left">สมัครสมาชิก | Register</p>
-    <br />
-    <Form horizontal>
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          Username: *
-        </Col>
-        <Col sm={10}>
-          <FormControl type="email" placeholder="Email" />
-        </Col>
-      </FormGroup>
+const mapStatetoProps = state => {
+  return {
+    user: state.user
+  };
+};
 
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          Password: *
-        </Col>
-        <Col sm={10}>
-          <FormControl type="password" placeholder="Password" />
-        </Col>
-      </FormGroup>
+const mapDispatchtoProps = dispatch => ({
+  registerWithEmail: (email, pass, user) => {
+    dispatch(registerWithEmail(email, pass, user));
+  }
+});
 
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          Confirm Password: *
-        </Col>
-        <Col sm={10}>
-          <FormControl type="password" placeholder="Password" />
-        </Col>
-      </FormGroup>
+class Register extends Component {
+  submit = values => {
+    this.props.registerWithEmail(values.email, values.password, values.user);
+  };
+  render() {
+    return (
+      <div>
+        <RegisterForm onSubmit={this.submit} />
+        <p>{this.props.user.message}</p>
+      </div>
+    );
+  }
+}
 
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          Email: *
-        </Col>
-        <Col sm={10}>
-          <FormControl placeholder="Email" />
-        </Col>
-      </FormGroup>
-
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          ชื่อ-สกุล: *
-        </Col>
-        <Col sm={10}>
-          <FormControl placeholder="Email" />
-        </Col>
-      </FormGroup>
-
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          ชั้นปี: *
-        </Col>
-        <Radio name="radioGroup" inline>
-          1
-        </Radio>
-        <Radio name="radioGroup" inline>
-          2
-        </Radio>
-        <Radio name="radioGroup" inline>
-          3
-        </Radio>
-        <Radio name="radioGroup" inline>
-          4
-        </Radio>
-        <Radio name="radioGroup" inline>
-          อื่นๆ
-        </Radio>
-      </FormGroup>
-
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          คณะ: *
-        </Col>
-        <Col sm={10}>
-          <FormControl placeholder="Email" />
-        </Col>
-      </FormGroup>
-
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-          คุณรู้จัก TU more sheet จากที่ใด:
-        </Col>
-        <Checkbox>จากเพื่อนๆหรือคนรู้จัก</Checkbox>
-        <Checkbox>จากรุ่นพี่แนะนำมา</Checkbox>
-        <Checkbox>ป้ายโฆษณา</Checkbox>
-        <Checkbox>facebook</Checkbox>
-        <Checkbox>อื่นๆ</Checkbox>
-      </FormGroup>
-
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          <Button type="submit">Sign up</Button>
-        </Col>
-      </FormGroup>
-    </Form>
-  </div>
-);
-
-export default Register;
+export default connect(
+  mapStatetoProps,
+  mapDispatchtoProps
+)(Register);
