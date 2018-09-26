@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import LoginForm from "../Components/LoginForm";
-import { signInWithEmail, isLoggedIn } from "../Actions/UserActions";
+import {
+  signInWithEmail,
+  isLoggedIn,
+  findProfileWithEmail
+} from "../Actions/UserActions";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 
 const mapStatetoProps = state => {
   return {
@@ -14,23 +17,29 @@ const mapDispatchtoProps = dispatch => ({
   signInWithEmail: (user, pass) => {
     dispatch(signInWithEmail(user, pass));
   },
+  findProfileWithEmail: email => {
+    dispatch(findProfileWithEmail(email));
+  },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   }
 });
 
 class Login extends Component {
-  submit = values => {
-    this.props.signInWithEmail(values.email, values.password);
-  };
   componentDidMount() {
     this.props.isLoggedIn();
   }
+  submit = values => {
+    this.props.signInWithEmail(values.email, values.password);
+    this.props.findProfileWithEmail(values.email);
+  };
   render() {
-    const { from } = { from: { pathname: "/" } };
-    if (this.props.user.isLoggedIn === true) {
-      return <Redirect to={from} />;
-    }
+      if (this.props.user.isAdmin === 1) {
+        this.props.history.push("/Admin");
+      }
+      else if(this.props.user.isLoggedIn === true){
+        this.props.history.push("/");
+      }
     return (
       <div>
         <LoginForm onSubmit={this.submit} />

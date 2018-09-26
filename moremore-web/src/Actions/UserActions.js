@@ -28,7 +28,8 @@ export function registerWithEmail(Email, Pass, User) {
       docRef
       .set({
         email: Email,
-        user: User
+        user: User,
+        isadmin: 0
       })
       .then(function() {
         console.log("Document successfully written!");
@@ -67,7 +68,8 @@ export function findProfileWithEmail(email) {
       snapshot.docs.forEach(doc => {
         dispatch({
           type: FIND_PROFILE_WITH_EMAIL,
-          myUser: doc.data().user
+          myUser: doc.data().user,
+          isAdmin: doc.data().isadmin
         });
       });
     });
@@ -94,7 +96,9 @@ export function signOut() {
     auth.signOut();
     dispatch({
       type: SIGN_IN_WITH_EMAIL,
-      isloggedIn: false
+      isloggedIn: false,
+      isAdmin: 0,
+      pdf: ""
     });
   };
 }

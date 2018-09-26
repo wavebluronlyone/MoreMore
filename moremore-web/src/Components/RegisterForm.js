@@ -29,7 +29,7 @@ let RegisterForm = props => {
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2}>
-            Username: *
+            Username:
           </Col>
           <Col sm={10}>
             <Field
@@ -43,7 +43,7 @@ let RegisterForm = props => {
 
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2}>
-            Password: *
+            Password:
           </Col>
           <Col sm={10}>
             <Field
@@ -57,7 +57,7 @@ let RegisterForm = props => {
 
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2}>
-            Confirm Password: *
+            Confirm Password:
           </Col>
           <Col sm={10}>
             <Field
@@ -71,7 +71,7 @@ let RegisterForm = props => {
 
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2}>
-            Email: *
+            Email:
           </Col>
           <Col sm={10}>
             <Field
@@ -85,6 +85,7 @@ let RegisterForm = props => {
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
+            <br />
             <Button type="submit">Sign up</Button>
           </Col>
         </FormGroup>

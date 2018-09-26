@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "../Styles/Navigationbar.css";
 import { connect } from "react-redux";
-import { signOut } from "../Actions/UserActions";
+import { signOut, isLoggedIn } from "../Actions/UserActions";
 import { Redirect } from "react-router-dom";
 
 const mapStatetoProps = state => {
@@ -18,6 +18,9 @@ const mapStatetoProps = state => {
 const mapDispatchtoProps = dispatch => ({
   signOut: () => {
     dispatch(signOut());
+  },
+  isLoggedIn: () => {
+    dispatch(isLoggedIn());
   }
 });
 

@@ -12,6 +12,7 @@ import {
   DetailProduct
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
+import Admin from "./AdminPages/Admin";
 
 const Routes = () => (
   <Switch>
@@ -30,7 +31,7 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <Shop />
+          <Shop {...props} />
         </div>
       )}
     />
@@ -48,7 +49,7 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <Login {...props}/>
+          <Login {...props} />
         </div>
       )}
     />
@@ -70,7 +71,7 @@ const Routes = () => (
         </div>
       )}
     />
-     <Route
+    <Route
       path="/DetailProduct/:id"
       render={props => (
         <div>
@@ -78,7 +79,7 @@ const Routes = () => (
           <DetailProduct show={false} {...props} />
         </div>
       )}
-    /> 
+    />
     <Route
       path="/Buy/:id"
       render={props => (
@@ -87,7 +88,7 @@ const Routes = () => (
           <Buy {...props} />
         </div>
       )}
-    /> 
+    />
 
     <Route
       path="/BuyComplete/:id"
@@ -96,6 +97,13 @@ const Routes = () => (
           <Navigationbar show={false} {...props} />
           <BuyComplete {...props} />
         </div>
+      )}
+    />
+
+    <Route
+      path="/Admin"
+      render={props => (
+          <Admin {...props} />
       )}
     />
   </Switch>

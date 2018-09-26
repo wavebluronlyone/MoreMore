@@ -2,11 +2,12 @@ import { SIGN_IN_WITH_EMAIL, FIND_PROFILE_WITH_EMAIL, FIND_PDF_WITH_EMAIL } from
 
 const initialState = {
   message: "",
-  isLoggedIn: false,
+  isLoggedIn: "",
   email: "",
   username: "",
   name: "",
-  pdf: ""
+  pdf: "",
+  isAdmin: 0
 };
 
 export default function(state = initialState, action) {
@@ -16,12 +17,15 @@ export default function(state = initialState, action) {
         ...state,
         message: action.text,
         isLoggedIn: action.isloggedIn,
-        email: action.email
+        email: action.email,
+        isAdmin: action.isAdmin,
+        pdf: action.pdfFile
       };
     case FIND_PROFILE_WITH_EMAIL:
       return {
         ...state,
-        username: action.myUser
+        username: action.myUser,
+        isAdmin: action.isAdmin
       };
     case FIND_PDF_WITH_EMAIL:
       return {

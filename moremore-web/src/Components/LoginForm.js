@@ -38,7 +38,7 @@ let LoginForm = props => {
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2}>
-            Username: *
+            Email: 
           </Col>
           <Col sm={10}>
             <Field
