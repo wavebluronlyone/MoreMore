@@ -12,7 +12,7 @@ import {
   DetailProduct
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
-import Admin from "./AdminPages/Admin";
+import {Admin} from "./AdminPages";
 
 const Routes = () => (
   <Switch>
@@ -22,7 +22,7 @@ const Routes = () => (
       render={props => (
         <div>
           <Navigationbar show={false} {...props} />
-          <Home />
+          <Home {...props} />
         </div>
       )}
     />

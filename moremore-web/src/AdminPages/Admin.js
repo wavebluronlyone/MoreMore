@@ -31,7 +31,7 @@ class Admin extends Component {
             <p>this is admin page</p>
           </div>
         ) : (
-          <Login />
+          <Login/>
         )}
       </div>
     );

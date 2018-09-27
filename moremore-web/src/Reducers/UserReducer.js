@@ -1,13 +1,7 @@
-import { SIGN_IN_WITH_EMAIL, FIND_PROFILE_WITH_EMAIL, FIND_PDF_WITH_EMAIL } from "../Actions/type";
+import { SIGN_IN_WITH_EMAIL, FIND_PROFILE_WITH_EMAIL, FIND_PDF_WITH_EMAIL, LOGOUT } from "../Actions/type";
 
 const initialState = {
-  message: "",
-  isLoggedIn: "",
-  email: "",
-  username: "",
-  name: "",
-  pdf: "",
-  isAdmin: 0
+  isAdmin: 2
 };
 
 export default function(state = initialState, action) {
@@ -33,6 +27,8 @@ export default function(state = initialState, action) {
         name: action.sheetName,
         pdf: action.pdfFile
       };
+      case LOGOUT:
+      return initialState
     default:
       return state;
   }

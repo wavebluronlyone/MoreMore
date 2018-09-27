@@ -31,15 +31,16 @@ class Login extends Component {
   }
   submit = values => {
     this.props.signInWithEmail(values.email, values.password);
-    this.props.findProfileWithEmail(values.email);
+    if (this.props.user.isAdmin === 0) {
+      this.props.findProfileWithEmail(values.email);
+    }
   };
   render() {
-      if (this.props.user.isAdmin === 1) {
-        this.props.history.push("/Admin");
-      }
-      else if(this.props.user.isLoggedIn === true){
-        this.props.history.push("/");
-      }
+    if (this.props.user.isAdmin === 1) {
+      this.props.history.push("/Admin");
+    } else if (this.props.user.isLoggedIn === true) {
+      this.props.history.push("/");
+    }
     return (
       <div>
         <LoginForm onSubmit={this.submit} />

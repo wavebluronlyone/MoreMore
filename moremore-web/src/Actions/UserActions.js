@@ -2,7 +2,8 @@ import { auth, database } from "../firebase";
 import {
   SIGN_IN_WITH_EMAIL,
   FIND_PROFILE_WITH_EMAIL,
-  FIND_PDF_WITH_EMAIL
+  FIND_PDF_WITH_EMAIL,
+  LOGOUT
 } from "./type";
 
 export function signInWithEmail(email, pass) {
@@ -17,6 +18,7 @@ export function signInWithEmail(email, pass) {
         });
       }
     });
+
   };
 }
 
@@ -95,10 +97,7 @@ export function signOut() {
   return dispatch => {
     auth.signOut();
     dispatch({
-      type: SIGN_IN_WITH_EMAIL,
-      isloggedIn: false,
-      isAdmin: 0,
-      pdf: ""
+      type: LOGOUT
     });
   };
 }
