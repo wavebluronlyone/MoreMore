@@ -25,20 +25,18 @@ const mapDispatchtoProps = dispatch => ({
   }
 });
 
+
+
 class Login extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
   }
   submit = values => {
     this.props.signInWithEmail(values.email, values.password);
-    if (this.props.user.isAdmin === 0) {
-      this.props.findProfileWithEmail(values.email);
-    }
+    this.props.findProfileWithEmail(values.email);
   };
   render() {
-    if (this.props.user.isAdmin === 1) {
-      this.props.history.push("/Admin");
-    } else if (this.props.user.isLoggedIn === true) {
+    if (this.props.user.isLoggedIn === true) {
       this.props.history.push("/");
     }
     return (

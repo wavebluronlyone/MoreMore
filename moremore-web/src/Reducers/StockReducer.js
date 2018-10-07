@@ -14,6 +14,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_BEST_SELLER:
+      console.log("dispatching", action);
       if (state.data.length > 2) {
         return state;
       } else {
@@ -30,12 +31,14 @@ export default function(state = initialState, action) {
         };
       }
     case FIND_DATA_WITH_NAME:
+      console.log("dispatching", action);
       return {
         ...state,
         price: action.prices,
         product_description: action.longDetail
       };
     case FIND_PDF_WITH_NAME:
+      console.log("dispatching", action);
       return {
         ...state,
         pdf: action.pdfFile

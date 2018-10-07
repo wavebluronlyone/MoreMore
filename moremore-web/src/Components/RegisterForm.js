@@ -24,6 +24,8 @@ let RegisterForm = props => {
   const { handleSubmit } = props;
   return (
     <div>
+      <br/>
+      <br/>
       <p align="left">สมัครสมาชิก | Register</p>
       <br />
       <Form onSubmit={handleSubmit}>

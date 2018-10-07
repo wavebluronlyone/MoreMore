@@ -18,7 +18,6 @@ export function signInWithEmail(email, pass) {
         });
       }
     });
-
   };
 }
 
@@ -26,37 +25,47 @@ export function registerWithEmail(Email, Pass, User) {
   return dispatch => {
     const register = auth.createUserWithEmailAndPassword(Email, Pass);
     const docRef = database.collection("user").doc();
-    register.then(users => {
-      docRef
-      .set({
-        email: Email,
-        user: User,
-        isadmin: 0
+    register
+      .then(users => {
+        docRef
+          .set({
+            email: Email,
+            user: User,
+            isadmin: 0
+          })
+          .then(function() {
+            console.log("Document successfully written!");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
       })
-      .then(function() {
-        console.log("Document successfully written!");
-      })
-      .catch(function(error) {
-        console.error("Error writing document: ", error);
+      .catch(e => {
+        console.log(e.message);
+        dispatch({
+          type: SIGN_IN_WITH_EMAIL,
+          text: e.message
+        });
       });
-    }).catch(e => {
-      console.log(e.message);
-      dispatch({
-        type: SIGN_IN_WITH_EMAIL,
-        text: e.message
-      });
-    });
   };
 }
 
 export function isLoggedIn() {
   return dispatch => {
     auth.onAuthStateChanged(firebaseUser => {
+      const docRef = database
+        .collection("user")
+        .where("email", "==", firebaseUser.email)
+        .where("isadmin", "==", 0);
       if (firebaseUser) {
-        dispatch({
-          type: SIGN_IN_WITH_EMAIL,
-          isloggedIn: true,
-          email: firebaseUser.email
+        docRef.get().then(snapshot => {
+          snapshot.docs.forEach(doc => {
+            dispatch({
+              type: SIGN_IN_WITH_EMAIL,
+              email: firebaseUser.email,
+              isloggedIn: true
+            });
+          });
         });
       }
     });
@@ -64,33 +73,50 @@ export function isLoggedIn() {
 }
 
 export function findProfileWithEmail(email) {
-  return dispatch => {
-    const docRef = database.collection("user").where("email", "==", email);
-    docRef.get().then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        dispatch({
-          type: FIND_PROFILE_WITH_EMAIL,
-          myUser: doc.data().user,
-          isAdmin: doc.data().isadmin
+  if (email === undefined) {
+    return dispatch => {
+      dispatch({
+        type: SIGN_IN_WITH_EMAIL,
+        isloggedIn: false
+      });
+    };
+  } else {
+    return dispatch => {
+      const docRef = database.collection("user").where("email", "==", email);
+      docRef.get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          dispatch({
+            type: FIND_PROFILE_WITH_EMAIL,
+            myUser: doc.data().user
+          });
         });
       });
-    });
-  };
+    };
+  }
 }
 
 export function findPdfWithEmail(email) {
-  return dispatch => {
-    const docRef = database.collection("payment").where("email", "==", email);
-    docRef.get().then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        dispatch({
-          type: FIND_PDF_WITH_EMAIL,
-          sheetName: doc.data().name,
-          pdfFile: doc.data().pdf
+  if (email === undefined) {
+    return dispatch => {
+      dispatch({
+        type: SIGN_IN_WITH_EMAIL,
+        isloggedIn: false
+      });
+    };
+  } else {
+    return dispatch => {
+      const docRef = database.collection("payment").where("email", "==", email);
+      docRef.get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          dispatch({
+            type: FIND_PDF_WITH_EMAIL,
+            sheetName: doc.data().name,
+            pdfFile: doc.data().pdf
+          });
         });
       });
-    });
-  };
+    };
+  }
 }
 
 export function signOut() {
@@ -98,6 +124,10 @@ export function signOut() {
     auth.signOut();
     dispatch({
       type: LOGOUT
+    });
+    dispatch({
+      type: SIGN_IN_WITH_EMAIL,
+      isLoggedIn: false
     });
   };
 }

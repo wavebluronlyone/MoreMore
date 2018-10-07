@@ -12,7 +12,8 @@ import {
   DetailProduct
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
-import {Admin} from "./AdminPages";
+import { AdminLogin } from "./AdminPages";
+import Admin from "./AdminPages/Admin";
 
 const Routes = () => (
   <Switch>
@@ -100,12 +101,8 @@ const Routes = () => (
       )}
     />
 
-    <Route
-      path="/Admin"
-      render={props => (
-          <Admin {...props} />
-      )}
-    />
+    <Route path="/AdminLogin" render={props => <AdminLogin {...props} />} />
+    <Route path="/Admin" render={props => <Admin {...props} />} />
   </Switch>
 );
 
