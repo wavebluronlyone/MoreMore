@@ -5,6 +5,7 @@ import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import { isLoggedIn } from "../Actions/UserActions";
 import { findDataWithNameOfProduct } from "../Actions/StockActions";
+import { Link } from "react-router-dom";
 
 const mapStatetoProps = state => {
   return {
@@ -53,7 +54,7 @@ class DetailProduct extends Component {
             <br />
             <br />
             <h2>{this.props.stock.price + " บาท"}</h2>
-            <a href={"/Buy/"+this.props.match.params.id}>Buy</a>
+            <Link to={"/Buy/" + this.props.match.params.id}>Buy</Link>
           </Col>
         </Row>
         <br />

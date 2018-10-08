@@ -14,13 +14,45 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/", function(req, res) {
-  request.get(
-    "https://api.omise.co/recipients",
+app.post("/", function(req, res) {
+  var data = req.body;
+  var dataString =
+    "card[name]=JOHN DOE&card[number]=" +
+    data.number +
+    "&card[security_code]=" +
+    data.code +
+    "&card[expiration_month]=" +
+    data.expireMonth +
+    "&card[expiration_year]=" +
+    data.expireYear;
+  request.post(
+    "https://vault.omise.co/tokens",
+    {
+      auth: {
+        user: "pkey_test_5clqj3htialgwn3tg8a"
+      },
+      body: dataString
+    },
+    function(error, response, body) {
+      res.send(body);
+    }
+  );
+});
+
+app.post("/charges", function(req, res) {
+  var data = req.body;
+  var dataString =
+    "description=Charge for order 3947&amount=" +
+    data.prices +
+    "&currency=thb&return_uri=http://www.example.com/orders/3947/complete&card=" +
+    data.tokens;
+  request.post(
+    "https://api.omise.co/charges",
     {
       auth: {
         user: "skey_test_5clqj3htt3fid9b9vfe"
-      }
+      },
+      body: dataString
     },
     function(error, response, body) {
       res.send(body);

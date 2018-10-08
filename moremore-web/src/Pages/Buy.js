@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import { isLoggedIn } from "../Actions/UserActions";
 import Navigationbar from "../Components/Navigationbar";
 import Login from "../Pages/Login";
+import { Link } from "react-router-dom";
 
 const mapStatetoProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    stock: state.stock
   };
 };
 
@@ -22,6 +24,7 @@ class Buy extends Component {
     this.props.isLoggedIn();
   }
   render() {
+    const total = this.props.stock.price + 5;
     return (
       <div>
         {this.props.user.isLoggedIn === true ? (
@@ -35,18 +38,18 @@ class Buy extends Component {
                 <p align="left">Order Summary</p>
                 <p align="left">
                   {" "}
-                  {this.props.match.params.id} &nbsp;&nbsp;&nbsp; 20 บาท
+                  {this.props.match.params.id} &nbsp;&nbsp;&nbsp; {this.props.stock.price} บาท
                 </p>
                 <p align="left"> ค่าธรรมเนียม &nbsp;&nbsp;&nbsp; 5 บาท</p>
-                <p align="left"> รวม &nbsp;&nbsp;&nbsp; {20 + 5} บาท</p>
+                <p align="left"> รวม &nbsp;&nbsp;&nbsp; {total} บาท</p>
                 <br />
                 <br />
                 <p align="left">เลือกการชำระเงิน</p>
                 <p align="left">Internet Banking</p>
                 <br />
-                <a href={"/BuyComplete/" + this.props.match.params.id}>
+                <Link to={"/Order/" + this.props.match.params.id}>
                   ยืนยัน
-                </a>
+                </Link>
               </Col>
             </Row>
           </div>

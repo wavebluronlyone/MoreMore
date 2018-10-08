@@ -15,8 +15,7 @@ export default function(state = initialState, action) {
         ...state,
         message: action.text,
         isLoggedIn: action.isloggedIn,
-        email: action.email,
-        pdf: action.pdfFile
+        email: action.email
       };
     case FIND_PROFILE_WITH_EMAIL:
       console.log("dispatching", action);

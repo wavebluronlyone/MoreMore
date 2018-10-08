@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardImg, CardTitle, CardText, CardBody } from "reactstrap";
 import { Grid, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CardView = props => (
   <div className="container">
@@ -18,7 +19,7 @@ const CardView = props => (
                 />
                 <CardBody>
                   <CardTitle align="left">
-                    <a href={"DetailProduct/" + res.name}>{res.name}</a>
+                    <Link to={"/DetailProduct/" + res.name}>{res.name}</Link>
                   </CardTitle>
                   <CardText align="left">
                     <p>{res.short_description}</p>

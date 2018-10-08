@@ -9,7 +9,8 @@ import {
   Profile,
   Buy,
   BuyComplete,
-  DetailProduct
+  DetailProduct,
+  Order
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
 import { AdminLogin } from "./AdminPages";
@@ -87,6 +88,16 @@ const Routes = () => (
         <div>
           <Navigationbar show={false} {...props} />
           <Buy {...props} />
+        </div>
+      )}
+    />
+
+    <Route
+      path="/Order/:id"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Order {...props} />
         </div>
       )}
     />

@@ -1,4 +1,5 @@
 import { database } from "../firebase";
+import axios from "axios";
 import {
   GET_BEST_SELLER,
   FIND_DATA_WITH_NAME,
@@ -72,4 +73,35 @@ export function createSheetforUser(Email, sheetName, pdfFile) {
     .catch(function(error) {
       console.error("Error writing document: ", error);
     });
+}
+
+export function createCardWithToken(
+  cardNumber,
+  nameOnCard,
+  expiryDate,
+  securityCode,
+  totalPrice
+) {
+  var expiryDateSplit = expiryDate.split("/");
+  var data = {
+    number: cardNumber,
+    name: nameOnCard,
+    expireMonth: expiryDateSplit[0],
+    expireYear: parseInt(expiryDateSplit[1]) + 2000,
+    code: securityCode,
+    prices: totalPrice * 100
+  };
+  axios.post("http://localhost:8080/", data).then(function(response) {
+    chargesWithToken(response.data.id, data.prices);
+  });
+}
+
+function chargesWithToken(token, price) {
+  var data = {
+    tokens: token,
+    prices: price
+  };
+  axios.post("http://localhost:8080/charges", data).then(function(response) {
+    console.log(response);
+  });
 }
