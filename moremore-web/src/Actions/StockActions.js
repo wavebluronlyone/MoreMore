@@ -83,11 +83,12 @@ export function createCardWithToken(
   totalPrice
 ) {
   var expiryDateSplit = expiryDate.split("/");
+  var year = parseInt(expiryDateSplit[1],10) + 2000;
   var data = {
     number: cardNumber,
     name: nameOnCard,
     expireMonth: expiryDateSplit[0],
-    expireYear: parseInt(expiryDateSplit[1]) + 2000,
+    expireYear: year,
     code: securityCode,
     prices: totalPrice * 100
   };

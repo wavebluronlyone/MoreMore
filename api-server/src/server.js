@@ -3,6 +3,9 @@ var app = express();
 var bodyParser = require("body-parser");
 var request = require("request");
 
+var publicKey =  "pkey_test_5dk77lui11gdmmp9jc4"
+var privateKey = "skey_test_5dk77lui9m6jv0s33pp"
+
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
@@ -29,7 +32,7 @@ app.post("/", function(req, res) {
     "https://vault.omise.co/tokens",
     {
       auth: {
-        user: "pkey_test_5clqj3htialgwn3tg8a"
+        user: publicKey
       },
       body: dataString
     },
@@ -50,7 +53,7 @@ app.post("/charges", function(req, res) {
     "https://api.omise.co/charges",
     {
       auth: {
-        user: "skey_test_5clqj3htt3fid9b9vfe"
+        user: privateKey
       },
       body: dataString
     },
