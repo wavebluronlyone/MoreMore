@@ -1,4 +1,4 @@
-import { auth, database } from "../firebase";
+import { auth, database, storage } from "../firebase";
 import { ADMIN_LOGOUT, SIGN_IN_WITH_EMAIL_FOR_ADMIN } from "./type";
 
 export function signInWithEmail(email, pass) {
@@ -35,6 +35,92 @@ export function isLoggedIn() {
       }
     });
   };
+}
+
+export function createPdf(pdf, sheetName) {
+  const fileRef = storage.ref("image/" + pdf.name);
+  const task = fileRef.put(pdf);
+  const pdfRef = database.collection("file").doc(sheetName);
+
+  task.on(
+    "state_changed",
+    function(snapshot) {
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload Pdf is " + progress + "% done");
+    },
+    function(error) {
+      // Handle unsuccessful uploads
+    },
+    function() {
+      task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        pdfRef
+          .set({
+            image: downloadURL
+          })
+          .then(function() {
+            console.log("Document successfully written Pdf");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+      });
+    }
+  );
+}
+
+export function createImage(img, sheetName) {
+  const imageRef = storage.ref("image/" + img.name);
+  const task = imageRef.put(img);
+  const imgRef = database.collection("image").doc(sheetName);
+
+  task.on(
+    "state_changed",
+    function(snapshot) {
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload Image is " + progress + "% done");
+    },
+    function(error) {
+      // Handle unsuccessful uploads
+    },
+    function() {
+      task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        imgRef
+          .set({
+            image: downloadURL
+          })
+          .then(function() {
+            console.log("Document successfully written Image");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+      });
+    }
+  );
+}
+
+export function createProductText(
+  sheetName,
+  price,
+  hiLight,
+  longDetail,
+  profile
+) {
+  price = parseInt(price);
+  const docRef = database.collection("product").doc(sheetName);
+  docRef
+    .set({
+      price: price,
+      hiLight: hiLight,
+      longDetail: longDetail,
+      profile: profile
+    })
+    .then(function() {
+      console.log("Document successfully written Text");
+    })
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
 }
 
 export function adminSignOut() {

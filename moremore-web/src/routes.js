@@ -13,7 +13,6 @@ import {
   Order
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
-import { AdminLogin } from "./AdminPages";
 import Admin from "./AdminPages/Admin";
 
 const Routes = () => (
@@ -111,8 +110,6 @@ const Routes = () => (
         </div>
       )}
     />
-
-    <Route path="/AdminLogin" render={props => <AdminLogin {...props} />} />
     <Route path="/Admin" render={props => <Admin {...props} />} />
   </Switch>
 );

@@ -9,6 +9,16 @@ import {
 } from "react-bootstrap";
 import { Field, reduxForm } from "redux-form";
 
+const adapFileEventToValue = delegate => e => delegate(e.target.files[0]);
+
+const FileInput = ({
+  input: { value: onChange, ...inputProps },
+  meta: omitMeta,
+  ...props
+}) => (
+  <input onChange={adapFileEventToValue(onChange)} {...inputProps} {...props} />
+);
+
 const FieldInput = ({ type, placeholder, input }) => {
   return (
     <FormControl
@@ -44,12 +54,16 @@ let AddProductForm = props => {
             ไฟล์:
           </Col>
           <Col sm={10}>
-            <Field
-              name="sheetPdf"
-              type="text"
-              component={FieldInput}
-              placeholder="กรุณาอัพโหลดไฟล์"
-            />
+            <Field name="sheetPdf" type="file" component={FileInput} />
+          </Col>
+        </FormGroup>
+
+        <FormGroup>
+          <Col componentClass={ControlLabel} sm={2}>
+            รูปภาพ:
+          </Col>
+          <Col sm={10}>
+            <Field name="sheetImage" type="file" component={FileInput} />
           </Col>
         </FormGroup>
 
@@ -75,7 +89,7 @@ let AddProductForm = props => {
             <Field
               name="sheetHiLight"
               type="text"
-              component={FieldInput}
+              component="textarea"
               placeholder="กรุณากรอกรายละเอียดสินค้าโดยย่อ"
             />
           </Col>
@@ -89,7 +103,7 @@ let AddProductForm = props => {
             <Field
               name="sheetProductDescription"
               type="text"
-              component={FieldInput}
+              component="textarea"
               placeholder="กรุณากรอกรายละเอียดสินค้า"
             />
           </Col>
@@ -112,7 +126,9 @@ let AddProductForm = props => {
         <FormGroup>
           <Col smOffset={2} sm={10}>
             <br />
-            <Button type="submit">เพิ่ม</Button>
+            <Button onclick="" type="submit">
+              เพิ่ม
+            </Button>
           </Col>
         </FormGroup>
       </Form>
@@ -125,4 +141,3 @@ AddProductForm = reduxForm({
 })(AddProductForm);
 
 export default AddProductForm;
-

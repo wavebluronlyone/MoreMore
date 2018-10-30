@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { isLoggedIn } from "../Actions/AdminAction";
+import {
+  isLoggedIn,
+  createPdf,
+  createImage,
+  createProductText
+} from "../Actions/AdminAction";
 import AdminNavigationbar from "../AdminComponents/AdminNavigationbar";
 import { Login } from "../Pages";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
@@ -22,6 +27,26 @@ class Admin extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
   }
+
+  submit = values => {
+    // console.log(values.sheetName);
+    // console.log(values.sheetPdf[0]);
+    // console.log(values.sheetImage[0]);
+    // console.log(values.sheetPrice);
+    // console.log(values.sheetHiLight);
+    // console.log(values.sheetProductDescription);
+    // console.log(values.sheetProfile);
+    createPdf(values.sheetPdf[0], values.sheetName);
+    createImage(values.sheetImage[0], values.sheetName);
+    createProductText(
+      values.sheetName,
+      values.sheetPrice,
+      values.sheetHiLight,
+      values.sheetProductDescription,
+      values.sheetProfile,
+    );
+  };
+
   render() {
     return (
       <div>
@@ -39,7 +64,7 @@ class Admin extends Component {
                 <Row>
                   <Col sm={2} />
                   <Col>
-                  <AddProductForm onSubmit={this.submit} />
+                    <AddProductForm onSubmit={this.submit} />
                   </Col>
                 </Row>
               </Tab>
@@ -55,7 +80,7 @@ class Admin extends Component {
                 <Row>
                   <Col sm={2} />
                   <Col>
-                    <p align="left">history</p>
+                    <p align="left">{this.props.admin.pdf}</p>
                   </Col>
                 </Row>
               </Tab>
