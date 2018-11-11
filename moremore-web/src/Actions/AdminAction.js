@@ -1,5 +1,10 @@
 import { auth, database, storage } from "../firebase";
-import { ADMIN_LOGOUT, SIGN_IN_WITH_EMAIL_FOR_ADMIN } from "./type";
+import {
+  ADMIN_LOGOUT,
+  SIGN_IN_WITH_EMAIL_FOR_ADMIN,
+  GET_ALL_PRODUCT,
+  IS_EDIT
+} from "./type";
 
 export function signInWithEmail(email, pass) {
   return dispatch => {
@@ -38,7 +43,7 @@ export function isLoggedIn() {
 }
 
 export function createPdf(pdf, sheetName) {
-  const fileRef = storage.ref("image/" + pdf.name);
+  const fileRef = storage.ref("file/" + pdf.name);
   const task = fileRef.put(pdf);
   const pdfRef = database.collection("file").doc(sheetName);
 
@@ -58,7 +63,7 @@ export function createPdf(pdf, sheetName) {
             image: downloadURL
           })
           .then(function() {
-            console.log("Document successfully written Pdf");
+            console.log("Document successfully written " + pdf.name);
           })
           .catch(function(error) {
             console.error("Error writing document: ", error);
@@ -89,7 +94,7 @@ export function createImage(img, sheetName) {
             image: downloadURL
           })
           .then(function() {
-            console.log("Document successfully written Image");
+            console.log("Document successfully written Image " + img.name);
           })
           .catch(function(error) {
             console.error("Error writing document: ", error);
@@ -120,6 +125,69 @@ export function createProductText(
     })
     .catch(function(error) {
       console.error("Error writing document: ", error);
+    });
+}
+
+export function isEdit(boolean, sheetName) {
+  return dispatch => {
+    dispatch({
+      type: IS_EDIT,
+      isEdit: boolean,
+      name: sheetName
+    });
+  };
+}
+
+export function editProduct(sheetName, price, hiLight, longDetail, profile) {
+  price = parseInt(price);
+  const docRef = database.collection("product").doc(sheetName);
+  docRef
+    .set({
+      price: price,
+      hiLight: hiLight,
+      longDetail: longDetail,
+      profile: profile
+    })
+    .then(function() {
+      console.log("Document successfully written Text");
+    })
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
+}
+
+export function deleteProduct(name) {
+  database
+    .collection("product")
+    .doc(name)
+    .delete()
+    .then(function() {
+      console.log("Document successfully deleted!");
+    })
+    .catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+
+  database
+    .collection("file")
+    .doc(name)
+    .delete()
+    .then(function() {
+      console.log("File successfully deleted!");
+    })
+    .catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+
+  database
+    .collection("image")
+    .doc(name)
+    .delete()
+    .then(function() {
+      console.log("Image successfully deleted!");
+    })
+    .catch(function(error) {
+      console.error("Error removing document: ", error);
     });
 }
 

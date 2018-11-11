@@ -4,7 +4,7 @@ import ProductDescription from "../Components/ProductDescription";
 import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import { isLoggedIn } from "../Actions/UserActions";
-import { findDataWithNameOfProduct } from "../Actions/StockActions";
+import { findDataWithNameOfProduct, reset } from "../Actions/StockActions";
 import { Link } from "react-router-dom";
 
 const mapStatetoProps = state => {
@@ -20,6 +20,9 @@ const mapDispatchtoProps = dispatch => ({
   },
   findDataWithNameOfProduct: name => {
     dispatch(findDataWithNameOfProduct(name));
+  },
+  reset: () => {
+    dispatch(reset());
   }
 });
 
@@ -27,6 +30,7 @@ class DetailProduct extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
     this.props.findDataWithNameOfProduct(this.props.match.params.id);
+    this.props.reset();
   }
   render() {
     return (
@@ -47,7 +51,7 @@ class DetailProduct extends Component {
               align="left"
               height="300px"
               width="300px"
-              src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+              src={this.props.stock.img}
             />
           </Col>
           <Col sm={5}>
@@ -58,7 +62,7 @@ class DetailProduct extends Component {
           </Col>
         </Row>
         <br />
-        <ProductDescription detail={this.props.stock.product_description} />
+        <ProductDescription detail={this.props.stock.longDetail} />
       </div>
     );
   }

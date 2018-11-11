@@ -15,18 +15,18 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  getBestSeller: () => {
-    dispatch(getBestSeller());
-  },
+  // getBestSeller: () => {
+  //   dispatch(getBestSeller());
+  // },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   }
 });
 
 class Home extends Component {
-  componentDidMount() {
-    this.props.getBestSeller();
-  }
+  // componentDidMount() {
+  //   this.props.getBestSeller();
+  // }
   render() {
     return (
       <div>
@@ -47,7 +47,7 @@ class Home extends Component {
         <hr />
         <br />
         <h1>Best Seller</h1>
-        <CardView sheetData={this.props.stock} />
+        {/* <CardView sheetData={this.props.stock} /> */}
       </div>
     );
   }

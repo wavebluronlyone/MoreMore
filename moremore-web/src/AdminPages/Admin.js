@@ -4,12 +4,17 @@ import {
   isLoggedIn,
   createPdf,
   createImage,
-  createProductText
+  createProductText,
+  isEdit,
+  editProduct
 } from "../Actions/AdminAction";
+import { getAllProduct } from "../Actions/StockActions";
 import AdminNavigationbar from "../AdminComponents/AdminNavigationbar";
+import ShowAllProduct from "../AdminComponents/ShowAllProduct";
 import { Login } from "../Pages";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
 import AddProductForm from "../AdminComponents/AddProductForm";
+import EditProductForm from "../AdminComponents/EditProductForm";
 
 const mapStatetoProps = state => {
   return {
@@ -20,6 +25,12 @@ const mapStatetoProps = state => {
 const mapDispatchtoProps = dispatch => ({
   isLoggedIn: () => {
     dispatch(isLoggedIn());
+  },
+  getAllProduct: () => {
+    dispatch(getAllProduct());
+  },
+  isEdit: (boolean, name) => {
+    dispatch(isEdit(boolean, name));
   }
 });
 
@@ -28,14 +39,11 @@ class Admin extends Component {
     this.props.isLoggedIn();
   }
 
+  componentWillMount() {
+    this.props.getAllProduct();
+  }
+
   submit = values => {
-    // console.log(values.sheetName);
-    // console.log(values.sheetPdf[0]);
-    // console.log(values.sheetImage[0]);
-    // console.log(values.sheetPrice);
-    // console.log(values.sheetHiLight);
-    // console.log(values.sheetProductDescription);
-    // console.log(values.sheetProfile);
     createPdf(values.sheetPdf[0], values.sheetName);
     createImage(values.sheetImage[0], values.sheetName);
     createProductText(
@@ -43,7 +51,17 @@ class Admin extends Component {
       values.sheetPrice,
       values.sheetHiLight,
       values.sheetProductDescription,
-      values.sheetProfile,
+      values.sheetProfile
+    );
+  };
+
+  submit2 = values => {
+    editProduct(
+      this.props.admin.name,
+      values.sheetPrice,
+      values.sheetHiLight,
+      values.sheetProductDescription,
+      values.sheetProfile
     );
   };
 
@@ -72,7 +90,14 @@ class Admin extends Component {
                 <Row>
                   <Col sm={2} />
                   <Col>
-                    <p align="left">watch</p>
+                    {this.props.admin.isEdit === true ? (
+                      <EditProductForm
+                        name={this.props.admin.name}
+                        onSubmit={this.submit2}
+                      />
+                    ) : (
+                      <ShowAllProduct list={this.props.admin} />
+                    )}
                   </Col>
                 </Row>
               </Tab>

@@ -4,7 +4,8 @@ import {
   CREATE_PDF,
   CREATE_IMAGE,
   CREATE_PRODUCT,
-  RESET
+  RESET,
+  IS_EDIT
 } from "../Actions/type";
 
 const initialState = {
@@ -13,7 +14,9 @@ const initialState = {
   email: "",
   pdf: "",
   image: "",
-  create: true
+  create: true,
+  name: "",
+  isEdit: false
 };
 
 export default function(state = initialState, action) {
@@ -54,6 +57,13 @@ export default function(state = initialState, action) {
         longDetail: action.longDetail,
         profile: action.profile,
         create: action.create
+      };
+    case IS_EDIT:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        isEdit: action.isEdit,
+        name: action.name
       };
     case RESET:
       console.log("dispatching", action);
