@@ -3,6 +3,7 @@ import {
   SIGN_IN_WITH_EMAIL,
   FIND_PROFILE_WITH_EMAIL,
   FIND_PDF_WITH_EMAIL,
+  RESET_USER,
   LOGOUT
 } from "./type";
 
@@ -106,17 +107,30 @@ export function findPdfWithEmail(email) {
   } else {
     return dispatch => {
       const docRef = database.collection("payment").where("email", "==", email);
+      const data = [];
+      let i = 0;
       docRef.get().then(snapshot => {
         snapshot.docs.forEach(doc => {
-          dispatch({
-            type: FIND_PDF_WITH_EMAIL,
-            sheetName: doc.data().name,
-            pdfFile: doc.data().pdf
-          });
+          data[i] = { name: doc.data().name, pdf: doc.data().pdf };
+          i++;
+          if (i === snapshot.docs.length) {
+            dispatch({
+              type: FIND_PDF_WITH_EMAIL,
+              product: data
+            });
+          }
         });
       });
     };
   }
+}
+
+export function resetData() {
+  return dispatch => {
+    dispatch({
+      type: RESET_USER
+    });
+  };
 }
 
 export function signOut() {

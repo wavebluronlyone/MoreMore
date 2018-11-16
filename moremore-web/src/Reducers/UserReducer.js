@@ -2,10 +2,17 @@ import {
   SIGN_IN_WITH_EMAIL,
   FIND_PROFILE_WITH_EMAIL,
   FIND_PDF_WITH_EMAIL,
-  LOGOUT
+  LOGOUT,
+  RESET_USER
 } from "../Actions/type";
 
-const initialState = [];
+const initialState = {
+  data: [],
+  message: "",
+  isloggedIn: false,
+  email: "",
+  username: ""
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -24,11 +31,14 @@ export default function(state = initialState, action) {
         username: action.myUser
       };
     case FIND_PDF_WITH_EMAIL:
-      console.log("dispatching", action);
       return {
         ...state,
-        name: action.sheetName,
-        pdf: action.pdfFile
+        data: action.product
+      };
+    case RESET_USER:
+      console.log("dispatching", action);
+      return {
+        data: []
       };
     case LOGOUT:
       console.log("dispatching", action);

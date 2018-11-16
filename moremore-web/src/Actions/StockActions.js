@@ -5,7 +5,9 @@ import {
   FIND_DATA_WITH_NAME,
   FIND_PDF_WITH_NAME,
   GET_ALL_PRODUCT,
-  RESET
+  RESET_STOCK,
+  IS_PAID,
+  ADD_PRODUCT_TO_CART
 } from "./type";
 
 export function getBestSeller() {
@@ -46,20 +48,28 @@ export function getAllProduct() {
   return dispatch => {
     const docRef = database.collection("product");
     const imageRef = database.collection("image");
+    const data = [];
+    let i = 0;
     docRef.get().then(snapshot => {
       snapshot.docs.forEach(doc => {
         imageRef
           .doc(doc.id)
           .get()
           .then(doc2 => {
-            dispatch({
-              type: GET_ALL_PRODUCT,
+            data[i] = {
               name: doc.id,
               hiLight: doc.data().hiLight,
               price: doc.data().price,
               profile: doc.data().profile,
               img: doc2.data().image
-            });
+            };
+            i++;
+            if (i === snapshot.docs.length) {
+              dispatch({
+                type: GET_ALL_PRODUCT,
+                product: data
+              });
+            }
           });
       });
     });
@@ -69,42 +79,56 @@ export function getAllProduct() {
 export function findPdfWithNameOfProduct(name) {
   return dispatch => {
     const docRef = database.collection("file").doc(name);
-    docRef.get().then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        dispatch({
-          type: FIND_PDF_WITH_NAME,
-          pdfFile: doc.data().pdf
-        });
+    docRef.get().then(doc => {
+      dispatch({
+        type: FIND_PDF_WITH_NAME,
+        pdfFile: doc.data().pdf
       });
     });
   };
 }
 
-export function reset() {
+export function resetStock() {
   return dispatch => {
     dispatch({
-      type: RESET
+      type: RESET_STOCK
     });
   };
 }
 
 export function createSheetforUser(Email, sheetName, pdfFile) {
-  if (pdfFile === "") {
-    return;
-  }
-  const docRef = database.collection("payment").doc();
-  docRef
-    .set({
-      email: Email,
-      pdf: pdfFile,
-      name: sheetName
-    })
-    .then(function() {
-      console.log("Document successfully written!");
-    })
-    .catch(function(error) {
-      console.error("Error writing document: ", error);
+  return dispatch => {
+    if (pdfFile === "") {
+      return;
+    }
+    const docRef = database.collection("payment").doc();
+    docRef
+      .set({
+        email: Email,
+        pdf: pdfFile,
+        name: sheetName
+      })
+      .then(function() {
+        console.log("Document successfully written!");
+        dispatch({
+          type: IS_PAID,
+          isPaid: false
+        });
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+  };
+}
+
+export function addProductToCart(name) {
+  return dispatch => {
+    dispatch({
+      type: ADD_PRODUCT_TO_CART,
+      product: name,
+      message: "คุณเพิ่มสินค้าแล้ว"
     });
+  };
 }
 
 export function createCardWithToken(
@@ -114,27 +138,35 @@ export function createCardWithToken(
   securityCode,
   totalPrice
 ) {
-  var expiryDateSplit = expiryDate.split("/");
-  var year = parseInt(expiryDateSplit[1], 10) + 2000;
-  var data = {
-    number: cardNumber,
-    name: nameOnCard,
-    expireMonth: expiryDateSplit[0],
-    expireYear: year,
-    code: securityCode,
-    prices: totalPrice * 100
+  return dispatch => {
+    var expiryDateSplit = expiryDate.split("/");
+    var year = parseInt(expiryDateSplit[1], 10) + 2000;
+    var data = {
+      number: cardNumber,
+      name: nameOnCard,
+      expireMonth: expiryDateSplit[0],
+      expireYear: year,
+      code: securityCode,
+      prices: totalPrice * 100
+    };
+    axios
+      .post("https://phiyawat-comsci.herokuapp.com/card", data)
+      .then(function(response) {
+        var data2 = {
+          tokens: response.data.id,
+          prices: data.prices
+        };
+        axios
+          .post("https://phiyawat-comsci.herokuapp.com/charges", data2)
+          .then(function(response2) {
+            console.log(response2);
+            if (response2.data.paid === true) {
+              dispatch({
+                type: IS_PAID,
+                isPaid: true
+              });
+            }
+          });
+      });
   };
-  axios.post("http://localhost:8080/", data).then(function(response) {
-    chargesWithToken(response.data.id, data.prices);
-  });
-}
-
-function chargesWithToken(token, price) {
-  var data = {
-    tokens: token,
-    prices: price
-  };
-  axios.post("http://localhost:8080/charges", data).then(function(response) {
-    console.log(response);
-  });
 }

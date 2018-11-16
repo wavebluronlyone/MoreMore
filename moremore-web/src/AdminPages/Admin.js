@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  isLoggedIn,
+  isAdminLoggedIn,
   createPdf,
   createImage,
   createProductText,
   isEdit,
-  editProduct
+  editProduct,
+  getAllOrderFromProfile
 } from "../Actions/AdminAction";
 import { getAllProduct } from "../Actions/StockActions";
 import AdminNavigationbar from "../AdminComponents/AdminNavigationbar";
@@ -15,36 +16,53 @@ import { Login } from "../Pages";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
 import AddProductForm from "../AdminComponents/AddProductForm";
 import EditProductForm from "../AdminComponents/EditProductForm";
+import OrderHistory from "../AdminComponents/OrderHistory";
 
 const mapStatetoProps = state => {
   return {
-    admin: state.admin
+    admin: state.admin,
+    stock: state.stock
   };
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
+  isAdminLoggedIn: () => {
+    dispatch(isAdminLoggedIn());
   },
   getAllProduct: () => {
     dispatch(getAllProduct());
   },
   isEdit: (boolean, name) => {
     dispatch(isEdit(boolean, name));
+  },
+  getAllOrderFromProfile: () => {
+    dispatch(getAllOrderFromProfile());
+  },
+  createPdf: (pdf, sheetName) => {
+    dispatch(createPdf(pdf, sheetName));
   }
 });
 
 class Admin extends Component {
   componentDidMount() {
-    this.props.isLoggedIn();
+    this.props.isAdminLoggedIn();
+    this.props.getAllProduct();
+    this.props.getAllOrderFromProfile();
+
+    this.interval = setInterval(() => this.props.getAllProduct(), 20000);
+    this.interval2 = setInterval(
+      () => this.props.getAllOrderFromProfile(),
+      20000
+    );
   }
 
-  componentWillMount() {
-    this.props.getAllProduct();
+  componentWillUnmount() {
+    clearInterval(this.interval);
+    clearInterval(this.interval2);
   }
 
   submit = values => {
-    createPdf(values.sheetPdf[0], values.sheetName);
+    this.props.createPdf(values.sheetPdf[0], values.sheetName);
     createImage(values.sheetImage[0], values.sheetName);
     createProductText(
       values.sheetName,
@@ -73,6 +91,7 @@ class Admin extends Component {
             <AdminNavigationbar />
             <br />
             <br />
+            <p>{this.props.admin.message}</p>
             <Tabs
               defaultActiveKey={1}
               animation={false}
@@ -96,7 +115,7 @@ class Admin extends Component {
                         onSubmit={this.submit2}
                       />
                     ) : (
-                      <ShowAllProduct list={this.props.admin} />
+                      <ShowAllProduct list={this.props.stock} />
                     )}
                   </Col>
                 </Row>
@@ -105,7 +124,7 @@ class Admin extends Component {
                 <Row>
                   <Col sm={2} />
                   <Col>
-                    <p align="left">{this.props.admin.pdf}</p>
+                    <OrderHistory list={this.props.admin} />
                   </Col>
                 </Row>
               </Tab>

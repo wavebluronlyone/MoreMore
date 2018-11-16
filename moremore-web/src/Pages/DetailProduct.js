@@ -4,7 +4,7 @@ import ProductDescription from "../Components/ProductDescription";
 import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import { isLoggedIn } from "../Actions/UserActions";
-import { findDataWithNameOfProduct, reset } from "../Actions/StockActions";
+import { findDataWithNameOfProduct } from "../Actions/StockActions";
 import { Link } from "react-router-dom";
 
 const mapStatetoProps = state => {
@@ -20,9 +20,6 @@ const mapDispatchtoProps = dispatch => ({
   },
   findDataWithNameOfProduct: name => {
     dispatch(findDataWithNameOfProduct(name));
-  },
-  reset: () => {
-    dispatch(reset());
   }
 });
 
@@ -30,7 +27,6 @@ class DetailProduct extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
     this.props.findDataWithNameOfProduct(this.props.match.params.id);
-    this.props.reset();
   }
   render() {
     return (

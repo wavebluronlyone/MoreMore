@@ -5,7 +5,7 @@ import NavItem from "react-bootstrap/lib/NavItem";
 import "bootstrap/dist/css/bootstrap.css";
 import "../Styles/Navigationbar.css";
 import { connect } from "react-redux";
-import { isLoggedIn,adminSignOut } from "../Actions/AdminAction";
+import { isAdminLoggedIn, adminSignOut } from "../Actions/AdminAction";
 
 const mapStatetoProps = state => {
   return {
@@ -17,8 +17,8 @@ const mapDispatchtoProps = dispatch => ({
   adminSignOut: () => {
     dispatch(adminSignOut());
   },
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
+  isAdminLoggedIn: () => {
+    dispatch(isAdminLoggedIn());
   }
 });
 
@@ -30,7 +30,9 @@ const AdminNavigationbar = props => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav className="nav">
-        {props.admin.isLoggedIn === false ? props.history.push("/AdminLogin") : null}
+        {props.admin.isLoggedIn === false
+          ? props.history.push("/AdminLogin")
+          : null}
         <div className="left-sub">
           <NavItem className="nav-item" eventKey={7}>
             <a

@@ -20,21 +20,33 @@ const mapDispatchtoProps = dispatch => ({
   },
   findPdfWithNameOfProduct: name => {
     dispatch(findPdfWithNameOfProduct(name));
+  },
+  createSheetforUser: (email, sheetName, pdf) => {
+    dispatch(createSheetforUser(email, sheetName, pdf));
   }
 });
+
+let call = 0;
 
 class BuyComplete extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
     this.props.findPdfWithNameOfProduct(this.props.match.params.id);
   }
+
   render() {
     if (this.props.user.isLoggedIn === true) {
-      createSheetforUser(
-        this.props.user.email,
-        this.props.match.params.id,
-        this.props.stock.pdf
-      );
+      console.log(call);
+      if (call === 1) {
+        this.props.createSheetforUser(
+          this.props.user.email,
+          this.props.match.params.id,
+          this.props.stock.pdf
+        );
+        call++;
+      } else {
+        call++;
+      }
     }
     return (
       <div>

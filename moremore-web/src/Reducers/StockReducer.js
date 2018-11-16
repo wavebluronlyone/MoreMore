@@ -3,15 +3,19 @@ import {
   FIND_DATA_WITH_NAME,
   FIND_PDF_WITH_NAME,
   GET_ALL_PRODUCT,
-  RESET
+  IS_PAID,
+  ADD_PRODUCT_TO_CART
 } from "../Actions/type";
 
 const initialState = {
   data: [],
+  addCart: [],
   price: 0,
   longDetail: "",
   pdf: "",
-  img: ""
+  img: "",
+  isPaid: false,
+  message: ""
 };
 
 export default function(state = initialState, action) {
@@ -34,19 +38,9 @@ export default function(state = initialState, action) {
     //     };
     //   }
     case GET_ALL_PRODUCT:
-      console.log("get_all_product", action);
       return {
         ...state,
-        data: [
-          ...state.data,
-          {
-            name: action.name,
-            img: action.img,
-            hiLight: action.hiLight,
-            price: action.price,
-            profile: action.profile
-          }
-        ]
+        data: action.product
       };
     case FIND_DATA_WITH_NAME:
       console.log("dispatching", action);
@@ -56,14 +50,30 @@ export default function(state = initialState, action) {
         longDetail: action.longDetail,
         img: action.img
       };
+    case ADD_PRODUCT_TO_CART:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        addCart: [
+          ...state.addCart,
+          {
+            name: action.product
+          }
+        ],
+        message: action.message
+      };
     case FIND_PDF_WITH_NAME:
       console.log("dispatching", action);
       return {
         ...state,
         pdf: action.pdfFile
       };
-    case RESET:
-      return initialState;
+    case IS_PAID:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        isPaid: action.isPaid
+      };
     default:
       console.log("dispatching", state);
       return state;

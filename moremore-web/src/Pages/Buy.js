@@ -38,18 +38,17 @@ class Buy extends Component {
                 <p align="left">Order Summary</p>
                 <p align="left">
                   {" "}
-                  {this.props.match.params.id} &nbsp;&nbsp;&nbsp; {this.props.stock.price} บาท
+                  {this.props.match.params.id} &nbsp;&nbsp;&nbsp;{" "}
+                  {this.props.stock.price} บาท
                 </p>
                 <p align="left"> ค่าธรรมเนียม &nbsp;&nbsp;&nbsp; 5 บาท</p>
                 <p align="left"> รวม &nbsp;&nbsp;&nbsp; {total} บาท</p>
                 <br />
                 <br />
                 <p align="left">เลือกการชำระเงิน</p>
-                <p align="left">Internet Banking</p>
+                <p align="left">Credit Card</p>
                 <br />
-                <Link to={"/Order/" + this.props.match.params.id}>
-                  ยืนยัน
-                </Link>
+                <Link to={"/Order/" + this.props.match.params.id}>ยืนยัน</Link>
               </Col>
             </Row>
           </div>

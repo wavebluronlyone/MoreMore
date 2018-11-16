@@ -2,17 +2,9 @@ import React, { Component } from "react";
 import { Grid, Row, Col, Pagination } from "react-bootstrap";
 import CardView from "../Components/CardView";
 import { connect } from "react-redux";
-import { getAllProduct, reset } from "../Actions/StockActions";
+import { getAllProduct } from "../Actions/StockActions";
 import { isLoggedIn } from "../Actions/UserActions";
 import Navigationbar from "../Components/Navigationbar";
-
-let active = 7;
-let items = [];
-for (let number = 1; number <= 10; number++) {
-  items.push(
-    <Pagination.Item active={number === active}>{number}</Pagination.Item>
-  );
-}
 
 const mapStatetoProps = state => {
   return {
@@ -27,16 +19,17 @@ const mapDispatchtoProps = dispatch => ({
   },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
-  },
-  reset: () => {
-    dispatch(reset());
   }
 });
 
 class Shop extends Component {
-  componentWillMount() {
+  componentDidMount() {
+    this.props.isLoggedIn();
     this.props.getAllProduct();
-    this.props.reset();
+    this.interval = setInterval(() => this.props.getAllProduct(), 20000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
   render() {
     return (
@@ -50,21 +43,7 @@ class Shop extends Component {
         <br />
         <br />
         <br />
-        <Grid>
-          <Row>
-            <Col sm={3}>
-              <p>ผลการค้นหา ({this.props.stock.data.length} รายการ)</p>
-            </Col>
-            <Col sm={2}>
-              <p>Sort by</p>
-            </Col>
-            <Col sm={2}>
-              <p>Show</p>
-            </Col>
-          </Row>
-        </Grid>
-        <CardView sheetData={this.props.stock} />
-        <Pagination bsSize="small">{items}</Pagination>
+        <CardView list={this.props.stock} />
       </div>
     );
   }

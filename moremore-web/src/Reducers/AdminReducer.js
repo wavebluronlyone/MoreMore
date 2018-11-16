@@ -2,10 +2,10 @@ import {
   SIGN_IN_WITH_EMAIL_FOR_ADMIN,
   ADMIN_LOGOUT,
   CREATE_PDF,
-  CREATE_IMAGE,
-  CREATE_PRODUCT,
   RESET,
-  IS_EDIT
+  IS_EDIT,
+  GET_ALL_ORDER_FROM_PROFILE,
+  DELETE_PRODUCT
 } from "../Actions/type";
 
 const initialState = {
@@ -16,7 +16,8 @@ const initialState = {
   image: "",
   create: true,
   name: "",
-  isEdit: false
+  isEdit: false,
+  data: []
 };
 
 export default function(state = initialState, action) {
@@ -39,25 +40,26 @@ export default function(state = initialState, action) {
       console.log("dispatching", action);
       return {
         ...state,
-        pdf: action.pdfFile
+        pdf: action.pdfFile,
+        message: action.text
       };
-    case CREATE_IMAGE:
+    case DELETE_PRODUCT:
       console.log("dispatching", action);
       return {
         ...state,
-        image: action.imageFile
+        message: action.text
       };
-    case CREATE_PRODUCT:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        name: action.sheetName,
-        price: action.price,
-        hiLight: action.hiLight,
-        longDetail: action.longDetail,
-        profile: action.profile,
-        create: action.create
-      };
+    // case CREATE_PRODUCT:
+    //   console.log("dispatching", action);
+    //   return {
+    //     ...state,
+    //     name: action.sheetName,
+    //     price: action.price,
+    //     hiLight: action.hiLight,
+    //     longDetail: action.longDetail,
+    //     profile: action.profile,
+    //     create: action.create
+    //   };
     case IS_EDIT:
       console.log("dispatching", action);
       return {
@@ -68,6 +70,12 @@ export default function(state = initialState, action) {
     case RESET:
       console.log("dispatching", action);
       return state;
+    case GET_ALL_ORDER_FROM_PROFILE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        data: action.profile
+      };
     default:
       return state;
   }

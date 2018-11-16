@@ -7,11 +7,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../Styles/Navigationbar.css";
 import { connect } from "react-redux";
 import { signOut, isLoggedIn } from "../Actions/UserActions";
+import { resetStock } from "../Actions/StockActions";
 import { Redirect } from "react-router-dom";
 
 const mapStatetoProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    stock: state.stock
   };
 };
 
@@ -21,6 +23,9 @@ const mapDispatchtoProps = dispatch => ({
   },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
+  },
+  resetStock: () => {
+    dispatch(resetStock());
   }
 });
 
@@ -55,6 +60,7 @@ const Navigationbar = props => (
             <div className="menu-item">{Item("Home", "/", 1)}</div>
             <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
             <div className="menu-item">{Item("About", "/About", 3)}</div>
+            <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 4)}</div>
             <div className="right">
               <div className="right-sub">{Item("Login", "/Login", 6)}</div>
               <div className="left-sub">{Item("Register", "/Register", 7)}</div>
@@ -65,6 +71,7 @@ const Navigationbar = props => (
             <div className="menu-item">{Item("Home", "/", 1)}</div>
             <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
             <div className="menu-item">{Item("About", "/About", 3)}</div>
+            <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 4)}</div>
             <div className="right">
               <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
               <div className="left-sub">

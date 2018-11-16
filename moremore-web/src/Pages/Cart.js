@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import Search from "../Components/Search";
-import Slide from "../Components/Slide";
-import CardView from "../Components/CardView";
 import { connect } from "react-redux";
-import { getBestSeller } from "../Actions/StockActions";
-import { isLoggedIn } from "../Actions/UserActions";
 import Navigationbar from "../Components/Navigationbar";
+import { isLoggedIn } from "../Actions/UserActions";
 
 const mapStatetoProps = state => {
   return {
@@ -15,15 +11,12 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  // getBestSeller: () => {
-  //   dispatch(getBestSeller());
-  // },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   }
 });
 
-class Home extends Component {
+class Cart extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
   }
@@ -36,18 +29,10 @@ class Home extends Component {
           <Navigationbar show={false} />
         )}
         <br />
-        <br />
-        <br />
-        <h1>หาตัวช่วยในการสอบของคุณได้ที่นี่</h1>
-        <br />
-        <Search />
-        <br />
-        <hr />
-        <Slide />
-        <hr />
-        <br />
-        <h1>Best Seller</h1>
-        {/* <CardView sheetData={this.props.stock} /> */}
+        <p align="left">รายชื่อสินค้าที่ถูกกด</p>
+        {this.props.stock.addCart.map(res => {
+          return <p>{res.name}</p>;
+        })}
       </div>
     );
   }
@@ -56,4 +41,4 @@ class Home extends Component {
 export default connect(
   mapStatetoProps,
   mapDispatchtoProps
-)(Home);
+)(Cart);

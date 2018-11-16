@@ -25,8 +25,6 @@ const mapDispatchtoProps = dispatch => ({
   }
 });
 
-
-
 class Login extends Component {
   componentDidMount() {
     this.props.isLoggedIn();

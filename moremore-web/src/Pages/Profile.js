@@ -30,6 +30,8 @@ class Profile extends Component {
   componentDidMount() {
     this.props.isLoggedIn();
     this.props.findProfileWithEmail(this.props.user.email);
+  }
+  componentWillMount() {
     this.props.findPdfWithEmail(this.props.user.email);
   }
   render() {
@@ -66,10 +68,7 @@ class Profile extends Component {
           <hr />
           <h1 align="left"> My library </h1>
           <br />
-          <TableView
-            sheetName={this.props.user.name}
-            pdfFile={this.props.user.pdf}
-          />
+          <TableView list={this.props.user} />
         </Grid>
       </div>
     );

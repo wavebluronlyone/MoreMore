@@ -10,7 +10,8 @@ import {
   Buy,
   BuyComplete,
   DetailProduct,
-  Order
+  Order,
+  Cart
 } from "./Pages";
 import Navigationbar from "./Components/Navigationbar";
 import Admin from "./AdminPages/Admin";
@@ -33,6 +34,15 @@ const Routes = () => (
         <div>
           <Navigationbar show={false} {...props} />
           <Shop {...props} />
+        </div>
+      )}
+    />
+    <Route
+      path="/Cart"
+      render={props => (
+        <div>
+          <Navigationbar show={false} {...props} />
+          <Cart {...props} />
         </div>
       )}
     />

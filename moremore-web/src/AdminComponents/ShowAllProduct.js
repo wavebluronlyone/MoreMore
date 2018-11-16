@@ -13,6 +13,9 @@ const mapStatetoProps = state => {
 const mapDispatchtoProps = dispatch => ({
   isEdit: (boolean, name) => {
     dispatch(isEdit(boolean, name));
+  },
+  deleteProduct: name => {
+    dispatch(deleteProduct(name));
   }
 });
 
@@ -31,7 +34,7 @@ const ShowAllProduct = props => (
                     <a
                       className="linker"
                       onClick={() => {
-                        deleteProduct(res.name);
+                        props.deleteProduct(res.name);
                       }}
                     >
                       {" "}
