@@ -2,21 +2,27 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   isAdminLoggedIn,
-  createPdf,
-  createImage,
-  createProductText,
   isEdit,
   editProduct,
-  getAllOrderFromProfile
-} from "../Actions/AdminAction";
-import { getAllProduct } from "../Actions/StockActions";
+  getAllOrderFromProfile,
+  resetMessage
+} from "../Actions/AdminActions";
+import {
+  findSheetDataWithPagination,
+  findSheetDataWithPaginationFromSearch
+} from "../Actions/StockActions";
 import AdminNavigationbar from "../AdminComponents/AdminNavigationbar";
 import ShowAllProduct from "../AdminComponents/ShowAllProduct";
-import { Login } from "../Pages";
-import { Col, Row, Tabs, Tab } from "react-bootstrap";
-import AddProductForm from "../AdminComponents/AddProductForm";
 import EditProductForm from "../AdminComponents/EditProductForm";
-import OrderHistory from "../AdminComponents/OrderHistory";
+import SearchForm from "../Components/SearchForm";
+import { Col, Row, Tabs, Tab, Button } from "react-bootstrap";
+import Pagination from "react-js-pagination";
+import DateTime from "react-datetime";
+import { AdminLogin } from "../AdminPages";
+import { CSVLink } from "react-csv";
+import FaFacebook from "react-icons/lib/fa/facebook";
+import "react-datetime/css/react-datetime.css";
+import AddProduct from "../AdminComponents/AddProduct";
 
 const mapStatetoProps = state => {
   return {
@@ -29,51 +35,64 @@ const mapDispatchtoProps = dispatch => ({
   isAdminLoggedIn: () => {
     dispatch(isAdminLoggedIn());
   },
-  getAllProduct: () => {
-    dispatch(getAllProduct());
+  findSheetDataWithPagination: (currentPage, limitPage) => {
+    dispatch(findSheetDataWithPagination(currentPage, limitPage));
+  },
+  findSheetDataWithPaginationFromSearch: (currentPage, limitPage, input) => {
+    dispatch(findSheetDataWithPaginationFromSearch(currentPage, limitPage, input));
   },
   isEdit: (boolean, name) => {
     dispatch(isEdit(boolean, name));
   },
-  getAllOrderFromProfile: () => {
-    dispatch(getAllOrderFromProfile());
+  getAllOrderFromProfile: (month, year) => {
+    dispatch(getAllOrderFromProfile(month, year));
   },
-  createPdf: (pdf, sheetName) => {
-    dispatch(createPdf(pdf, sheetName));
+  resetMessage: () => {
+    dispatch(resetMessage());
   }
 });
 
-class Admin extends Component {
-  componentDidMount() {
-    this.props.isAdminLoggedIn();
-    this.props.getAllProduct();
-    this.props.getAllOrderFromProfile();
+const headers = [
+  { label: "ชื่อชีท", key: "name" },
+  { label: "ผู้จัดทำ", key: "profile" },
+  { label: "ราคา", key: "price" },
+  { label: "จำนวนคนซื้อ", key: "payment" }
+];
 
-    this.interval = setInterval(() => this.props.getAllProduct(), 20000);
-    this.interval2 = setInterval(
-      () => this.props.getAllOrderFromProfile(),
-      20000
+class Admin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activePage: 1,
+      limitPage: 5,
+      month: "",
+      year: ""
+    };
+  }
+  componentWillMount() {
+    this.props.isAdminLoggedIn();
+    this.props.findSheetDataWithPagination(
+      this.state.activePage,
+      this.state.limitPage
     );
   }
-
   componentWillUnmount() {
-    clearInterval(this.interval);
-    clearInterval(this.interval2);
+    this.props.resetMessage();
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.admin.email !== nextProps.admin.email) {
+      this.props.findSheetDataWithPagination(
+        this.state.activePage,
+        this.state.limitPage
+      );
+      const date = new Date();
+      const currentDate = date.toDateString().split(" ");
+      this.setState({ month: currentDate[1], year: currentDate[3] });
+      this.props.getAllOrderFromProfile(currentDate[1], currentDate[3]);
+    }
   }
 
   submit = values => {
-    this.props.createPdf(values.sheetPdf[0], values.sheetName);
-    createImage(values.sheetImage[0], values.sheetName);
-    createProductText(
-      values.sheetName,
-      values.sheetPrice,
-      values.sheetHiLight,
-      values.sheetProductDescription,
-      values.sheetProfile
-    );
-  };
-
-  submit2 = values => {
     editProduct(
       this.props.admin.name,
       values.sheetPrice,
@@ -83,6 +102,21 @@ class Admin extends Component {
     );
   };
 
+  handlePaginationChange(currentPage, limitPage, input) {
+    this.setState({ activePage: currentPage });
+    if (this.props.stock.isTyping === 0) {
+      this.props.findSheetDataWithPagination(currentPage, limitPage);
+    } else {
+      this.props.findSheetDataWithPaginationFromSearch(currentPage, limitPage, input);
+    }
+  }
+
+  handleDateChange(date) {
+    const inputDate = date._d.toString().split(" ");
+    this.setState({ month: inputDate[1], year: inputDate[3] });
+    this.props.getAllOrderFromProfile(inputDate[1], inputDate[3]);
+  }
+
   render() {
     return (
       <div>
@@ -91,7 +125,7 @@ class Admin extends Component {
             <AdminNavigationbar />
             <br />
             <br />
-            <p>{this.props.admin.message}</p>
+            <p>{this.props.admin.messageAddProduct}</p>
             <Tabs
               defaultActiveKey={1}
               animation={false}
@@ -101,7 +135,7 @@ class Admin extends Component {
                 <Row>
                   <Col sm={2} />
                   <Col>
-                    <AddProductForm onSubmit={this.submit} />
+                    <AddProduct />
                   </Col>
                 </Row>
               </Tab>
@@ -112,26 +146,102 @@ class Admin extends Component {
                     {this.props.admin.isEdit === true ? (
                       <EditProductForm
                         name={this.props.admin.name}
-                        onSubmit={this.submit2}
+                        onSubmit={this.submit}
                       />
                     ) : (
-                      <ShowAllProduct list={this.props.stock} />
+                      <div>
+                        <SearchForm />
+                        <br />
+                        <ShowAllProduct sheetList={this.props.stock} />
+                        {this.props.stock.isTyping === 0 ? (
+                          <div>
+                            <Pagination
+                              prevPageText="prev"
+                              nextPageText="next"
+                              firstPageText="first"
+                              lastPageText="last"
+                              activePage={this.state.activePage}
+                              itemsCountPerPage={this.state.limitPage}
+                              totalItemsCount={this.props.stock.pageNumber}
+                              pageRangeDisplayed={5}
+                              onChange={currentPage => {
+                                this.handlePaginationChange(
+                                  currentPage,
+                                  this.state.limitPage,
+                                  this.props.stock.input
+                                );
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <Pagination
+                              prevPageText="prev"
+                              nextPageText="next"
+                              firstPageText="first"
+                              lastPageText="last"
+                              activePage={this.state.activePage}
+                              itemsCountPerPage={this.state.limitPage}
+                              totalItemsCount={this.props.stock.pageNumber}
+                              pageRangeDisplayed={5}
+                              onChange={currentPage => {
+                                this.handlePaginationChange(
+                                  currentPage,
+                                  this.state.limitPage,
+                                  this.props.stock.input
+                                );
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     )}
                   </Col>
                 </Row>
               </Tab>
               <Tab eventKey={3} title="ประวัติการสั่งซื้อ">
+                <Col sm={4} />
+                <Col sm={3}>
+                  <DateTime
+                    inputProps={{ placeholder: "Enter your date" }}
+                    onChange={date => {
+                      this.handleDateChange(date);
+                    }}
+                  />
+                </Col>
+                <br />
+                <br />
                 <Row>
-                  <Col sm={2} />
-                  <Col>
-                    <OrderHistory list={this.props.admin} />
+                  <Col sm={4} />
+                  <Col sm={3}>
+                    <CSVLink
+                      data={this.props.admin.data}
+                      headers={headers}
+                      filename={
+                        this.state.month + "-" + this.state.year + ".csv"
+                      }
+                    >
+                      ดาวน์โหลดประวัติการสั่งซื้อของ {this.state.month}{" "}
+                      {this.state.year}
+                    </CSVLink>
                   </Col>
                 </Row>
               </Tab>
             </Tabs>
           </div>
         ) : (
-          <Login />
+          <div>
+            <br />
+            <br />
+            <br />
+            <p align="center">ลงชื่อเข้าสู่ระบบ</p>
+            <Button bsStyle="primary">
+              <FaFacebook /> &nbsp;login with facebook
+            </Button>
+            <br />
+            <br />
+            <AdminLogin />
+          </div>
         )}
       </div>
     );

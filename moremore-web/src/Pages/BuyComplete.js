@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { isLoggedIn } from "../Actions/UserActions";
 import Navigationbar from "../Components/Navigationbar";
-import {
-  createSheetforUser,
-  findPdfWithNameOfProduct
-} from "../Actions/StockActions";
+import { createSheetforUser, resetPayment } from "../Actions/StockActions";
+import { isLoggedIn, getSheetDataFromAddCart } from "../Actions/UserActions";
 
 const mapStatetoProps = state => {
   return {
@@ -18,36 +15,39 @@ const mapDispatchtoProps = dispatch => ({
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   },
-  findPdfWithNameOfProduct: name => {
-    dispatch(findPdfWithNameOfProduct(name));
+  getSheetDataFromAddCart: (email, transactionId) => {
+    dispatch(getSheetDataFromAddCart(email, transactionId));
   },
-  createSheetforUser: (email, sheetName, pdf) => {
-    dispatch(createSheetforUser(email, sheetName, pdf));
+  resetPayment: () => {
+    dispatch(resetPayment());
   }
 });
 
-let call = 0;
-
 class BuyComplete extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.isLoggedIn();
-    this.props.findPdfWithNameOfProduct(this.props.match.params.id);
   }
-
-  render() {
-    if (this.props.user.isLoggedIn === true) {
-      console.log(call);
-      if (call === 1) {
-        this.props.createSheetforUser(
-          this.props.user.email,
-          this.props.match.params.id,
-          this.props.stock.pdf
+  componentWillReceiveProps(nextProps) {
+    if (this.props.user.email !== nextProps.user.email) {
+      this.props.getSheetDataFromAddCart(
+        nextProps.user.email,
+        this.props.location.search
+      );
+    }
+    if (this.props.user.addCart.length < nextProps.user.addCart.length) {
+      let sheetDataAddCartSize = nextProps.user.addCart.length;
+      for (let i = 0; i < sheetDataAddCartSize; i++) {
+        createSheetforUser(
+          nextProps.user.email,
+          nextProps.user.addCart[i].name
         );
-        call++;
-      } else {
-        call++;
       }
     }
+  }
+  componentWillUnmount() {
+    this.props.resetPayment();
+  }
+  render() {
     return (
       <div>
         {this.props.user.isLoggedIn === true ? (

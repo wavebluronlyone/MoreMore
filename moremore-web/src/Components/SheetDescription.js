@@ -1,14 +1,14 @@
 import React from "react";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
 
-const ProductDescription = props => (
+const SheetDescription = props => (
   <div>
     <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example">
-      <Tab eventKey={1} title="รายละเอียดสินค้า">
+      <Tab eventKey={1} title="รายละเอียดของชีท">
         <Row>
           <Col sm={2} />
           <Col>
-            <p align="left">{props.detail}</p>
+            <p align="left">{props.sheetDetail}</p>
           </Col>
         </Row>
       </Tab>
@@ -16,4 +16,4 @@ const ProductDescription = props => (
   </div>
 );
 
-export default ProductDescription;
+export default SheetDescription;

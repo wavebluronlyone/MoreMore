@@ -2,18 +2,24 @@ import {
   SIGN_IN_WITH_EMAIL_FOR_ADMIN,
   ADMIN_LOGOUT,
   CREATE_PDF,
-  RESET,
   IS_EDIT,
   GET_ALL_ORDER_FROM_PROFILE,
-  DELETE_PRODUCT
+  SHOW_IMAGE,
+  SHOW_SUB_IMAGE,
+  REMOVE_SUB_IMAGE,
+  RESET_ORDER,
+  DELETE_PRODUCT,
+  RESET_MESSAGE_ADD_PRODUCT
 } from "../Actions/type";
 
 const initialState = {
   message: "",
+  messageAddProduct: "",
   isLoggedIn: false,
   email: "",
   pdf: "",
   image: "",
+  subImage: [],
   create: true,
   name: "",
   isEdit: false,
@@ -27,7 +33,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         message: action.text,
-        isLoggedIn: action.isloggedIn,
+        isLoggedIn: action.isLoggedIn,
         email: action.email
       };
     case ADMIN_LOGOUT:
@@ -41,25 +47,32 @@ export default function(state = initialState, action) {
       return {
         ...state,
         pdf: action.pdfFile,
-        message: action.text
+        messageAddProduct: action.text
+      };
+    case SHOW_IMAGE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        image: action.image
+      };
+    case SHOW_SUB_IMAGE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        subImage: action.subImage
+      };
+    case REMOVE_SUB_IMAGE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        subImage: []
       };
     case DELETE_PRODUCT:
       console.log("dispatching", action);
       return {
         ...state,
-        message: action.text
+        messageAddProduct: action.text
       };
-    // case CREATE_PRODUCT:
-    //   console.log("dispatching", action);
-    //   return {
-    //     ...state,
-    //     name: action.sheetName,
-    //     price: action.price,
-    //     hiLight: action.hiLight,
-    //     longDetail: action.longDetail,
-    //     profile: action.profile,
-    //     create: action.create
-    //   };
     case IS_EDIT:
       console.log("dispatching", action);
       return {
@@ -67,14 +80,29 @@ export default function(state = initialState, action) {
         isEdit: action.isEdit,
         name: action.name
       };
-    case RESET:
+    case RESET_MESSAGE_ADD_PRODUCT:
       console.log("dispatching", action);
-      return state;
+      return {
+        messageAddProduct: ""
+      };
+    case RESET_ORDER:
+      return {
+        ...state,
+        data: []
+      };
     case GET_ALL_ORDER_FROM_PROFILE:
       console.log("dispatching", action);
       return {
         ...state,
-        data: action.profile
+        data: [
+          ...state.data,
+          {
+            name: action.name,
+            profile: action.profile,
+            price: action.price,
+            payment: action.payment
+          }
+        ]
       };
     default:
       return state;

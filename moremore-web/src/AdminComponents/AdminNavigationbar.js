@@ -5,7 +5,7 @@ import NavItem from "react-bootstrap/lib/NavItem";
 import "bootstrap/dist/css/bootstrap.css";
 import "../Styles/Navigationbar.css";
 import { connect } from "react-redux";
-import { isAdminLoggedIn, adminSignOut } from "../Actions/AdminAction";
+import { isAdminLoggedIn, adminSignOut } from "../Actions/AdminActions";
 
 const mapStatetoProps = state => {
   return {

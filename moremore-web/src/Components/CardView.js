@@ -3,7 +3,7 @@ import { Card, CardImg, CardTitle, CardText, CardBody } from "reactstrap";
 import { Grid, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { addProductToCart } from "../Actions/StockActions";
+import { addSheetToCart } from "../Actions/StockActions";
 
 const mapStatetoProps = state => {
   return {
@@ -12,8 +12,8 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  addProductToCart: name => {
-    dispatch(addProductToCart(name));
+  addSheetToCart: (sheetName, sheetPrice, sheetAddCart) => {
+    dispatch(addSheetToCart(sheetName, sheetPrice, sheetAddCart));
   }
 });
 
@@ -21,28 +21,37 @@ const CardView = props => (
   <div className="container">
     <Grid>
       <Row>
-        {props.list.data.map(res => {
+        <Col sm={1} />
+        {props.sheetList.map(sheet => {
           return (
-            <Col sm={3}>
-              <Card>
-                <CardImg width="100%" src={res.img} />
-                <CardBody>
-                  <CardTitle align="left">
-                    <Link to={"/DetailProduct/" + res.name}>{res.name}</Link>
-                  </CardTitle>
-                  <CardText align="left">
-                    <p>{res.hiLight}</p>
-                    <Button
-                      onClick={() => {
-                        props.addProductToCart(res.name);
-                      }}
-                    >
-                      เพิ่มสินค้าลงในตะกร้า
-                    </Button>
-                  </CardText>
-                </CardBody>
-              </Card>
-            </Col>
+            <div>
+              <Col sm={2}>
+                <Card>
+                  <CardImg width="100%" src={sheet.img} />
+                  <CardBody>
+                    <CardTitle align="left">
+                      <Link to={"/DetailSheet/" + sheet.name}>
+                        {sheet.name}
+                      </Link>
+                    </CardTitle>
+                    <CardText align="left">
+                      <p>{sheet.hiLight}</p>
+                      <Button
+                        onClick={() => {
+                          props.addSheetToCart(
+                            sheet.name,
+                            sheet.price,
+                            props.stock.addCart
+                          );
+                        }}
+                      >
+                        เพิ่มสินค้าลงในตะกร้า
+                      </Button>
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
           );
         })}
       </Row>

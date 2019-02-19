@@ -7,8 +7,8 @@ import {
   ControlLabel,
   FormControl
 } from "react-bootstrap";
-import FaFacebook from "react-icons/lib/fa/facebook";
 import { Field, reduxForm } from "redux-form";
+import { Link } from "react-router-dom";
 
 const FieldInput = ({ type, placeholder, input }) => {
   return (
@@ -25,22 +25,13 @@ let LoginForm = props => {
   const { handleSubmit } = props;
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <p align="center">ลงชื่อเข้าสู่ระบบ</p>
-      <Button bsStyle="primary">
-        <FaFacebook /> &nbsp;login with facebook
-      </Button>
-      <br />
-      <br />
-
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            Email: 
+          <Col sm={4} />
+          <Col sm={1} componentClass={ControlLabel}>
+            <p align="right">Email:</p>
           </Col>
-          <Col sm={10}>
+          <Col sm={3}>
             <Field
               name="email"
               type="email"
@@ -50,11 +41,15 @@ let LoginForm = props => {
           </Col>
         </FormGroup>
 
+        <br />
+        <br />
+
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            Password:
+          <Col sm={4} />
+          <Col sm={1} componentClass={ControlLabel}>
+            <p align="right">Password:</p>
           </Col>
-          <Col sm={10}>
+          <Col sm={3}>
             <Field
               name="password"
               type="password"
@@ -64,17 +59,20 @@ let LoginForm = props => {
           </Col>
         </FormGroup>
 
-        <FormGroup>
-          <Col smOffset={2} sm={10}>
-            ลืมรหัสผ่าน
-          </Col>
-        </FormGroup>
+        <br />
+        <br />
 
         <FormGroup>
-          <Col smOffset={2} sm={10}>
+          <Col sm={3} />
+          <Col sm={5}>
             <Button type="submit">Sign in</Button>
+            <br />
+            <Link to="/ForgotPassword">ลืมรหัสผ่าน</Link>
           </Col>
         </FormGroup>
+        <br />
+        <br />
+        <p>{props.message}</p>
       </Form>
     </div>
   );

@@ -7,119 +7,35 @@ import {
   Login,
   Register,
   Profile,
-  Buy,
   BuyComplete,
-  DetailProduct,
-  Order,
-  Cart
+  DetailSheet,
+  Cart,
+  BuyCancel,
+  ReadSheet,
+  ForgotPassword
 } from "./Pages";
-import Navigationbar from "./Components/Navigationbar";
 import Admin from "./AdminPages/Admin";
 
 const Routes = () => (
   <Switch>
+    <Route exact path="/" render={props => <Home {...props} />} />
+    <Route path="/Shop" render={props => <Shop {...props} />} />
+    <Route path="/Cart" render={props => <Cart {...props} />} />
+    <Route path="/About" render={props => <About />} />
+    <Route path="/Login" render={props => <Login {...props} />} />
     <Route
-      exact
-      path="/"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Home {...props} />
-        </div>
-      )}
+      path="/ForgotPassword"
+      render={props => <ForgotPassword {...props} />}
     />
+    <Route path="/Register" render={props => <Register />} />
+    <Route path="/Profile" render={props => <Profile {...props} />} />
     <Route
-      path="/Shop"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Shop {...props} />
-        </div>
-      )}
+      path="/DetailSheet/:id"
+      render={props => <DetailSheet {...props} />}
     />
-    <Route
-      path="/Cart"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Cart {...props} />
-        </div>
-      )}
-    />
-    <Route
-      path="/About"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <About />
-        </div>
-      )}
-    />
-    <Route
-      path="/Login"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Login {...props} />
-        </div>
-      )}
-    />
-    <Route
-      path="/Register"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Register />
-        </div>
-      )}
-    />
-    <Route
-      path="/Profile"
-      render={props => (
-        <div>
-          <Navigationbar show={true} {...props} />
-          <Profile />
-        </div>
-      )}
-    />
-    <Route
-      path="/DetailProduct/:id"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <DetailProduct show={false} {...props} />
-        </div>
-      )}
-    />
-    <Route
-      path="/Buy/:id"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Buy {...props} />
-        </div>
-      )}
-    />
-
-    <Route
-      path="/Order/:id"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <Order {...props} />
-        </div>
-      )}
-    />
-
-    <Route
-      path="/BuyComplete/:id"
-      render={props => (
-        <div>
-          <Navigationbar show={false} {...props} />
-          <BuyComplete {...props} />
-        </div>
-      )}
-    />
+    <Route path="/BuyComplete" render={props => <BuyComplete {...props} />} />
+    <Route path="/BuyCancel" render={props => <BuyCancel {...props} />} />
+    <Route path="/ReadSheet/:id" render={props => <ReadSheet {...props} />} />
     <Route path="/Admin" render={props => <Admin {...props} />} />
   </Switch>
 );

@@ -1,10 +1,15 @@
 import React, { Component } from "react";
-import { Grid, Row, Col, Pagination } from "react-bootstrap";
 import CardView from "../Components/CardView";
 import { connect } from "react-redux";
-import { getAllProduct } from "../Actions/StockActions";
+import {
+  resetImage,
+  findSheetDataWithPagination,
+  findSheetDataWithPaginationFromSearch
+} from "../Actions/StockActions";
 import { isLoggedIn } from "../Actions/UserActions";
 import Navigationbar from "../Components/Navigationbar";
+import SearchForm from "../Components/SearchForm";
+import Pagination from "react-js-pagination";
 
 const mapStatetoProps = state => {
   return {
@@ -14,23 +19,49 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  getAllProduct: () => {
-    dispatch(getAllProduct());
-  },
   isLoggedIn: () => {
     dispatch(isLoggedIn());
+  },
+  findSheetDataWithPagination: (currentPage, limitPage) => {
+    dispatch(findSheetDataWithPagination(currentPage, limitPage));
+  },
+  findSheetDataWithPaginationFromSearch: (currentPage, limitPage, input) => {
+    dispatch(findSheetDataWithPaginationFromSearch(currentPage, limitPage, input));
+  },
+  resetImage: () => {
+    dispatch(resetImage());
   }
 });
 
 class Shop extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activePage: 1,
+      limitPage: 5
+    };
+  }
+  componentWillMount() {
     this.props.isLoggedIn();
-    this.props.getAllProduct();
-    this.interval = setInterval(() => this.props.getAllProduct(), 20000);
+    this.props.findSheetDataWithPagination(
+      this.state.activePage,
+      this.state.limitPage
+    );
   }
+
   componentWillUnmount() {
-    clearInterval(this.interval);
+    this.props.resetImage();
   }
+
+  handlePaginationChange(currentPage, limitPage, input) {
+    this.setState({ activePage: currentPage });
+    if (this.props.stock.isTyping === 0) {
+      this.props.findSheetDataWithPagination(currentPage, limitPage);
+    } else {
+      this.props.findSheetDataWithPaginationFromSearch(currentPage, limitPage, input);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -42,8 +73,52 @@ class Shop extends Component {
         <br />
         <br />
         <br />
+        <p>{this.props.stock.message}</p>
+        <SearchForm />
         <br />
-        <CardView list={this.props.stock} />
+        <CardView sheetList={this.props.stock.data} />
+
+        {this.props.stock.isTyping === 0 ? (
+          <div>
+            <Pagination
+              prevPageText="prev"
+              nextPageText="next"
+              firstPageText="first"
+              lastPageText="last"
+              activePage={this.state.activePage}
+              itemsCountPerPage={this.state.limitPage}
+              totalItemsCount={this.props.stock.pageNumber}
+              pageRangeDisplayed={5}
+              onChange={currentPage => {
+                this.handlePaginationChange(
+                  currentPage,
+                  this.state.limitPage,
+                  this.props.stock.input
+                );
+              }}
+            />
+          </div>
+        ) : (
+          <div>
+            <Pagination
+              prevPageText="prev"
+              nextPageText="next"
+              firstPageText="first"
+              lastPageText="last"
+              activePage={this.state.activePage}
+              itemsCountPerPage={this.state.limitPage}
+              totalItemsCount={this.props.stock.pageNumber}
+              pageRangeDisplayed={5}
+              onChange={currentPage => {
+                this.handlePaginationChange(
+                  currentPage,
+                  this.state.limitPage,
+                  this.props.stock.input
+                );
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   }

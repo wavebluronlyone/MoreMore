@@ -3,33 +3,20 @@ import Navbar from "react-bootstrap/lib/Navbar";
 import Nav from "react-bootstrap/lib/Nav";
 import NavItem from "react-bootstrap/lib/NavItem";
 import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
-import "../Styles/Navigationbar.css";
 import { connect } from "react-redux";
-import { signOut, isLoggedIn } from "../Actions/UserActions";
-import { resetStock } from "../Actions/StockActions";
-import { Redirect } from "react-router-dom";
+import { signOut } from "../Actions/UserActions";
 
 const mapStatetoProps = state => {
   return {
-    user: state.user,
-    stock: state.stock
+    user: state.user
   };
 };
 
 const mapDispatchtoProps = dispatch => ({
   signOut: () => {
     dispatch(signOut());
-  },
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
-  resetStock: () => {
-    dispatch(resetStock());
   }
 });
-
-const { from } = { from: { pathname: "/Login" } };
 
 const Item = (label, link, key) => (
   <NavItem className="nav-item" eventKey={key}>
@@ -55,27 +42,16 @@ const Navigationbar = props => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav className="nav">
-        {!props.show ? (
-          <div>
-            <div className="menu-item">{Item("Home", "/", 1)}</div>
-            <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
-            <div className="menu-item">{Item("About", "/About", 3)}</div>
-            <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 4)}</div>
+        <div>
+          <div className="menu-item">{Item("Home", "/", 1)}</div>
+          <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
+          <div className="menu-item">{Item("About", "/About", 3)}</div>
+          <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 4)}</div>
+
+          {props.show === true ? (
             <div className="right">
-              <div className="right-sub">{Item("Login", "/Login", 6)}</div>
-              <div className="left-sub">{Item("Register", "/Register", 7)}</div>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className="menu-item">{Item("Home", "/", 1)}</div>
-            <div className="menu-item">{Item("Shop", "/Shop", 2)}</div>
-            <div className="menu-item">{Item("About", "/About", 3)}</div>
-            <div className="menu-item">{Item("รูปตระกร้า", "/Cart", 4)}</div>
-            <div className="right">
-              <div className="right-sub">{Item("Profile", "/Profile", 6)}</div>
+              <div className="right-sub">{Item("Profile", "/Profile", 5)}</div>
               <div className="left-sub">
-                {!props.user.isLoggedIn ? <Redirect to={from} /> : null}
                 <NavItem className="nav-item" eventKey={7}>
                   <a
                     className="linker"
@@ -88,13 +64,18 @@ const Navigationbar = props => (
                     }}
                     activeClassName="selected"
                   >
-                    {"Logout"}
+                    <p className="bar">Logout</p>
                   </a>
                 </NavItem>
               </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="right">
+              <div className="right-sub">{Item("Login", "/Login", 5)}</div>
+              <div>{Item("Register", "/Register", 6)}</div>
+            </div>
+          )}
+        </div>
       </Nav>
     </Navbar.Collapse>
   </Navbar>
