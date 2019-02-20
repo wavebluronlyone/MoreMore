@@ -1,15 +1,11 @@
 import {
   SIGN_IN_WITH_EMAIL_FOR_ADMIN,
-  ADMIN_LOGOUT,
   CREATE_PDF,
   IS_EDIT,
-  GET_ALL_ORDER_FROM_PROFILE,
-  SHOW_IMAGE,
-  SHOW_SUB_IMAGE,
-  REMOVE_SUB_IMAGE,
   RESET_ORDER,
-  DELETE_PRODUCT,
-  RESET_MESSAGE_ADD_PRODUCT
+  GET_ALL_ORDER_FROM_PROFILE,
+  ADMIN_LOGOUT,
+  DELETE_SHEET_NAME
 } from "../Actions/type";
 
 const initialState = {
@@ -49,25 +45,7 @@ export default function(state = initialState, action) {
         pdf: action.pdfFile,
         messageAddProduct: action.text
       };
-    case SHOW_IMAGE:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        image: action.image
-      };
-    case SHOW_SUB_IMAGE:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        subImage: action.subImage
-      };
-    case REMOVE_SUB_IMAGE:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        subImage: []
-      };
-    case DELETE_PRODUCT:
+    case DELETE_SHEET_NAME:
       console.log("dispatching", action);
       return {
         ...state,
@@ -79,11 +57,6 @@ export default function(state = initialState, action) {
         ...state,
         isEdit: action.isEdit,
         name: action.name
-      };
-    case RESET_MESSAGE_ADD_PRODUCT:
-      console.log("dispatching", action);
-      return {
-        messageAddProduct: ""
       };
     case RESET_ORDER:
       return {

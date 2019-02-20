@@ -1,16 +1,13 @@
 import {
   GET_BEST_SELLER,
-  FIND_DATA_WITH_NAME,
-  FIND_PDF_WITH_NAME,
-  GET_ALL_PRODUCT,
+  FIND_SHEET_DATA_WITH_SHEET_NAME,
   IS_PAID,
-  ADD_PRODUCT_TO_CART,
+  ADD_SHEET_TO_CART,
   CREATE_SLIDE_IMAGE,
   RESET_IMAGE,
   CREATE_LINE_PAYMENT,
-  GET_TOTAL_PRODUCT,
-  INPUT_CHANGE,
-  RESET_STOCK
+  GET_TOTAL_SHEET,
+  GET_ALL_SHEET
 } from "../Actions/type";
 
 const initialState = {
@@ -40,18 +37,13 @@ export default function(state = initialState, action) {
         ...state,
         bestSeller: action.product
       };
-    case INPUT_CHANGE:
-      return {
-        ...state,
-        input: action.input
-      };
-    case GET_ALL_PRODUCT:
+    case GET_ALL_SHEET:
       console.log("dispatching", action);
       return {
         ...state,
         data: action.product
       };
-    case GET_TOTAL_PRODUCT:
+    case GET_TOTAL_SHEET:
       return {
         ...state,
         pageNumber: action.pageNumber,
@@ -63,7 +55,7 @@ export default function(state = initialState, action) {
         ...state,
         subImg: action.subImage
       };
-    case FIND_DATA_WITH_NAME:
+    case FIND_SHEET_DATA_WITH_SHEET_NAME:
       console.log("dispatching", action);
       return {
         ...state,
@@ -71,19 +63,13 @@ export default function(state = initialState, action) {
         longDetail: action.longDetail,
         img: action.img
       };
-    case ADD_PRODUCT_TO_CART:
+    case ADD_SHEET_TO_CART:
       console.log("dispatching", action);
       return {
         ...state,
         addCart: action.product,
         totalPrices: action.total,
         message: action.message
-      };
-    case FIND_PDF_WITH_NAME:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        pdf: action.pdfFile
       };
     case RESET_IMAGE:
       return {
@@ -100,12 +86,6 @@ export default function(state = initialState, action) {
         url: action.url,
         price: action.price,
         message: action.message
-      };
-    case RESET_STOCK:
-      console.log("dispatching", action);
-      return {
-        ...state,
-        data: []
       };
     case IS_PAID:
       console.log("dispatching", action);

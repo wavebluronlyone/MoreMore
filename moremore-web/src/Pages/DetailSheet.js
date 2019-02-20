@@ -4,7 +4,7 @@ import SheetDescription from "../Components/SheetDescription";
 import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import {
-  findSheetDataWithNameOfProduct,
+  findSheetDataWithSheetName,
   addSheetToCart,
   createSlideImage,
   resetImage
@@ -23,8 +23,8 @@ const mapDispatchtoProps = dispatch => ({
   isLoggedIn: () => {
     dispatch(isLoggedIn());
   },
-  findSheetDataWithNameOfProduct: sheetName => {
-    dispatch(findSheetDataWithNameOfProduct(sheetName));
+  findSheetDataWithSheetName: sheetName => {
+    dispatch(findSheetDataWithSheetName(sheetName));
   },
   addSheetToCart: (sheetName, sheetPrice, sheetAddCart) => {
     dispatch(addSheetToCart(sheetName, sheetPrice, sheetAddCart));
@@ -40,7 +40,7 @@ const mapDispatchtoProps = dispatch => ({
 class DetailSheet extends Component {
   componentWillMount() {
     this.props.isLoggedIn();
-    this.props.findSheetDataWithNameOfProduct(this.props.match.params.id);
+    this.props.findSheetDataWithSheetName(this.props.match.params.id);
     this.props.createSlideImage(this.props.match.params.id);
   }
   componentWillUnmount() {

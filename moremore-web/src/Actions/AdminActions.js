@@ -5,10 +5,10 @@ import {
   IS_EDIT,
   GET_ALL_ORDER_FROM_PROFILE,
   CREATE_PDF,
-  DELETE_PRODUCT,
+  DELETE_SHEET_NAME,
   RESET_ORDER,
-  GET_ALL_PRODUCT,
-  RESET_MESSAGE
+  RESET_MESSAGE,
+  GET_ALL_SHEET
 } from "./type";
 
 export function signInWithEmail(email, password) {
@@ -325,11 +325,11 @@ export function deleteProduct(sheetName, sheetData) {
         console.error("Error removing document: ", error);
       });
     dispatch({
-      type: GET_ALL_PRODUCT,
+      type: GET_ALL_SHEET,
       product: data
     });
     dispatch({
-      type: DELETE_PRODUCT,
+      type: DELETE_SHEET_NAME,
       text: "ลบ " + sheetName + " เสร็จสิ้น"
     });
   };

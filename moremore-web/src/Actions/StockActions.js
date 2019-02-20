@@ -2,15 +2,14 @@ import { database } from "../firebase";
 import axios from "axios";
 import {
   GET_BEST_SELLER,
-  FIND_DATA_WITH_NAME,
-  GET_ALL_PRODUCT,
-  RESET_STOCK,
+  FIND_SHEET_DATA_WITH_SHEET_NAME,
+  GET_ALL_SHEET,
   IS_PAID,
-  ADD_PRODUCT_TO_CART,
+  ADD_SHEET_TO_CART,
   CREATE_SLIDE_IMAGE,
   RESET_IMAGE,
   CREATE_LINE_PAYMENT,
-  GET_TOTAL_PRODUCT
+  GET_TOTAL_SHEET
 } from "./type";
 
 export function getBestSeller() {
@@ -80,7 +79,7 @@ export function findSheetDataWithPagination(currentPage, limitPage) {
       imageRef.get().then(image => {
         for (let i = startPage; i < endPage; i++) {
           dispatch({
-            type: GET_TOTAL_PRODUCT,
+            type: GET_TOTAL_SHEET,
             isTyping: 0,
             pageNumber: sheet.docs.length
           });
@@ -93,7 +92,7 @@ export function findSheetDataWithPagination(currentPage, limitPage) {
           index++;
           if (index === limitPage || i === sheet.docs.length - 1) {
             dispatch({
-              type: GET_ALL_PRODUCT,
+              type: GET_ALL_SHEET,
               product: sheetData
             });
           }
@@ -131,7 +130,7 @@ export function findSheetDataWithPaginationFromSearch(
             index++;
             if (i === sheet.docs.length - 1) {
               dispatch({
-                type: GET_TOTAL_PRODUCT,
+                type: GET_TOTAL_SHEET,
                 isTyping: 1,
                 pageNumber: queryCount
               });
@@ -139,7 +138,7 @@ export function findSheetDataWithPaginationFromSearch(
           } else {
             if (i === sheet.docs.length - 1) {
               dispatch({
-                type: GET_TOTAL_PRODUCT,
+                type: GET_TOTAL_SHEET,
                 isTyping: 1,
                 pageNumber: queryCount
               });
@@ -161,14 +160,14 @@ export function findSheetDataWithPaginationFromSearch(
           };
           if (index === query.length - 1) {
             dispatch({
-              type: GET_ALL_PRODUCT,
+              type: GET_ALL_SHEET,
               product: sheetData
             });
           }
           index++;
         }
         dispatch({
-          type: GET_ALL_PRODUCT,
+          type: GET_ALL_SHEET,
           product: sheetData
         });
       });
@@ -176,14 +175,14 @@ export function findSheetDataWithPaginationFromSearch(
   };
 }
 
-export function findSheetDataWithNameOfProduct(sheetName) {
+export function findSheetDataWithSheetName(sheetName) {
   return dispatch => {
     const sheetRef = database.collection("product").doc(sheetName);
     const imageRef = database.collection("image").doc(sheetName);
     sheetRef.get().then(sheet => {
       imageRef.get().then(image => {
         dispatch({
-          type: FIND_DATA_WITH_NAME,
+          type: FIND_SHEET_DATA_WITH_SHEET_NAME,
           price: sheet.data().price,
           longDetail: sheet.data().longDetail,
           img: image.data().image
@@ -205,14 +204,6 @@ export function createSlideImage(sheetName) {
           subImage: multipleImage.data().subImage
         });
       });
-    });
-  };
-}
-
-export function resetStock() {
-  return dispatch => {
-    dispatch({
-      type: RESET_STOCK
     });
   };
 }
@@ -286,7 +277,7 @@ export function addSheetToCart(sheetName, sheetPrice, sheetAddCart) {
         });
       }
       dispatch({
-        type: ADD_PRODUCT_TO_CART,
+        type: ADD_SHEET_TO_CART,
         product: sheetData,
         total: totalSheetPrices,
         message: "เพิ่ม " + sheetName + " ลงในตะกร้าสำเร็จ"
@@ -312,7 +303,7 @@ export function removeSheetCart(sheetName, sheetAddCart) {
       i++;
     });
     dispatch({
-      type: ADD_PRODUCT_TO_CART,
+      type: ADD_SHEET_TO_CART,
       product: sheetData,
       total: totalSheetPrices
     });

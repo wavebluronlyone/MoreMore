@@ -4,7 +4,7 @@ import {
   FIND_PDF_WITH_EMAIL,
   LOGOUT,
   RESET_USER,
-  FIND_PDF_WITH_SHEETNAME,
+  FIND_PDF_WITH_SHEET_NAME,
   RESET_SHEET_PDF,
   RESET_MESSAGE,
   GET_SHEET_GROUP,
@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
         ...state,
         data: action.product
       };
-    case FIND_PDF_WITH_SHEETNAME:
+    case FIND_PDF_WITH_SHEET_NAME:
       return {
         ...state,
         pdf: action.product

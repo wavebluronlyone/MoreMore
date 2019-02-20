@@ -7,7 +7,7 @@ import {
   RESET_USER,
   GET_SHEET_GROUP,
   GET_TOTAL_PAYMENT,
-  FIND_PDF_WITH_SHEETNAME,
+  FIND_PDF_WITH_SHEET_NAME,
   RESET_SHEET_PDF,
   RESET_MESSAGE,
   LOGOUT
@@ -244,7 +244,7 @@ export function findPdfWithSheetName(sheetName, email) {
     paymentRef.get().then(paymentData => {
       paymentData.docs.forEach(payment => {
         dispatch({
-          type: FIND_PDF_WITH_SHEETNAME,
+          type: FIND_PDF_WITH_SHEET_NAME,
           product: payment.data().pdf
         });
       });
