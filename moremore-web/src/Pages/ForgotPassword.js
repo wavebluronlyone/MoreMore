@@ -3,6 +3,7 @@ import ForgotPasswordForm from "../Components/ForgotPasswordForm";
 import { sendEmailToResetPassword, resetMessage } from "../Actions/UserActions";
 import "../Styles/App.css";
 import { connect } from "react-redux";
+import { Segment } from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -28,13 +29,17 @@ class ForgotPassword extends Component {
   };
   render() {
     return (
-      <div>
+      <Segment
+        style={{
+          minHeight: "38em"
+        }}
+      >
         <br />
         <br />
         <br />
         <ForgotPasswordForm onSubmit={this.submit} />
         <p>{this.props.user.message}</p>
-      </div>
+      </Segment>
     );
   }
 }

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Navigationbar from "../Components/Navigationbar";
 import { createSheetforUser, resetPayment } from "../Actions/StockActions";
 import { isLoggedIn, getSheetDataFromAddCart } from "../Actions/UserActions";
+import Login from "./Login";
 
 const mapStatetoProps = state => {
   return {
@@ -18,28 +18,31 @@ const mapDispatchtoProps = dispatch => ({
   getSheetDataFromAddCart: (email, transactionId) => {
     dispatch(getSheetDataFromAddCart(email, transactionId));
   },
+  createSheetforUser: (email, sheetName) => {
+    dispatch(createSheetforUser(email, sheetName));
+  },
   resetPayment: () => {
     dispatch(resetPayment());
   }
 });
 
 class BuyComplete extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.isLoggedIn();
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.user.email !== nextProps.user.email) {
+  componentDidUpdate(prevProps) {
+    if (this.props.user.email !== prevProps.user.email) {
       this.props.getSheetDataFromAddCart(
-        nextProps.user.email,
+        this.props.user.email,
         this.props.location.search
       );
     }
-    if (this.props.user.addCart.length < nextProps.user.addCart.length) {
-      let sheetDataAddCartSize = nextProps.user.addCart.length;
+    if (this.props.user.addCart.length > prevProps.user.addCart.length) {
+      let sheetDataAddCartSize = this.props.user.addCart.length;
       for (let i = 0; i < sheetDataAddCartSize; i++) {
-        createSheetforUser(
-          nextProps.user.email,
-          nextProps.user.addCart[i].name
+        this.props.createSheetforUser(
+          this.props.user.email,
+          this.props.user.addCart[i].name
         );
       }
     }
@@ -50,14 +53,29 @@ class BuyComplete extends Component {
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
+        {Boolean(localStorage.getItem("isloggedIn")) === true ? (
           <div>
-            <Navigationbar show={true} />
             <br />
             <br />
-            <p>การซื้อสินค้าเสร็จสิ้น กรุณาตรวจสอบได้ที่ profile</p>
+            {this.props.stock.message !== "" ? (
+              <p
+                align="center"
+                style={{ fontFamily: "Prompt", fontSize: "1.5em" }}
+              >
+                {this.props.stock.message}
+              </p>
+            ) : (
+              <p
+                align="center"
+                style={{ fontFamily: "Prompt", fontSize: "1.5em" }}
+              >
+                กรุณารอสักครู่...
+              </p>
+            )}
           </div>
-        ) : null}
+        ) : (
+          <Login />
+        )}
       </div>
     );
   }

@@ -11,18 +11,16 @@ import {
   findSheetDataWithPagination,
   findSheetDataWithPaginationFromSearch
 } from "../Actions/StockActions";
-import AdminNavigationbar from "../AdminComponents/AdminNavigationbar";
 import ShowAllProduct from "../AdminComponents/ShowAllProduct";
 import EditProductForm from "../AdminComponents/EditProductForm";
 import SearchForm from "../Components/SearchForm";
-import { Col, Row, Tabs, Tab, Button } from "react-bootstrap";
 import Pagination from "react-js-pagination";
 import DateTime from "react-datetime";
 import { AdminLogin } from "../AdminPages";
 import { CSVLink } from "react-csv";
-import FaFacebook from "react-icons/lib/fa/facebook";
 import "react-datetime/css/react-datetime.css";
 import AddProduct from "../AdminComponents/AddProduct";
+import { Segment, Tab, Container, Message, Progress } from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -39,7 +37,9 @@ const mapDispatchtoProps = dispatch => ({
     dispatch(findSheetDataWithPagination(currentPage, limitPage));
   },
   findSheetDataWithPaginationFromSearch: (currentPage, limitPage, input) => {
-    dispatch(findSheetDataWithPaginationFromSearch(currentPage, limitPage, input));
+    dispatch(
+      findSheetDataWithPaginationFromSearch(currentPage, limitPage, input)
+    );
   },
   isEdit: (boolean, name) => {
     dispatch(isEdit(boolean, name));
@@ -69,7 +69,7 @@ class Admin extends Component {
       year: ""
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.isAdminLoggedIn();
     this.props.findSheetDataWithPagination(
       this.state.activePage,
@@ -79,8 +79,8 @@ class Admin extends Component {
   componentWillUnmount() {
     this.props.resetMessage();
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.admin.email !== nextProps.admin.email) {
+  componentDidUpdate(prevProps) {
+    if (this.props.admin.email !== prevProps.admin.email) {
       this.props.findSheetDataWithPagination(
         this.state.activePage,
         this.state.limitPage
@@ -107,7 +107,11 @@ class Admin extends Component {
     if (this.props.stock.isTyping === 0) {
       this.props.findSheetDataWithPagination(currentPage, limitPage);
     } else {
-      this.props.findSheetDataWithPaginationFromSearch(currentPage, limitPage, input);
+      this.props.findSheetDataWithPaginationFromSearch(
+        currentPage,
+        limitPage,
+        input
+      );
     }
   }
 
@@ -119,131 +123,140 @@ class Admin extends Component {
 
   render() {
     return (
-      <div>
+      <Segment
+        style={{
+          minHeight: "38em"
+        }}
+      >
         {this.props.admin.isLoggedIn === true ? (
-          <div>
-            <AdminNavigationbar />
+          <Container style={{ fontFamily: "Prompt" }}>
             <br />
-            <br />
-            <p>{this.props.admin.messageAddProduct}</p>
-            <Tabs
-              defaultActiveKey={1}
-              animation={false}
-              id="noanim-tab-example"
-            >
-              <Tab eventKey={1} title="เพิ่มชีท">
-                <Row>
-                  <Col sm={2} />
-                  <Col>
-                    <AddProduct />
-                  </Col>
-                </Row>
-              </Tab>
-              <Tab eventKey={2} title="ดูชีท">
-                <Row>
-                  <Col sm={2} />
-                  <Col>
-                    {this.props.admin.isEdit === true ? (
-                      <EditProductForm
-                        name={this.props.admin.name}
-                        onSubmit={this.submit}
+            {this.props.admin.uploadPdf > 0 ? (
+              <div style={{ fontFamily: "Prompt" }}>
+                <p>กำลังอัพโหลด PDF</p>
+                <Progress percent={this.props.admin.uploadPdf} color="green" />
+              </div>
+            ) : null}
+            {this.props.admin.uploadImage > 0 ? (
+              <div style={{ fontFamily: "Prompt" }}>
+                <p>กำลังอัพโหลดรูปภาพหน้าปก</p>
+                <Progress
+                  percent={this.props.admin.uploadImage}
+                  color="green"
+                />
+              </div>
+            ) : null}
+            {this.props.admin.messageAddProduct !== "" ? (
+              <Message positive>
+                <p style={{ fontFamily: "Prompt" }}>
+                  {this.props.admin.messageAddProduct}
+                </p>
+              </Message>
+            ) : null}
+            <Tab
+              panes={[
+                {
+                  menuItem: "เพิ่มชีท",
+                  render: () => (
+                    <Tab.Pane>
+                      <AddProduct />
+                    </Tab.Pane>
+                  )
+                },
+                {
+                  menuItem: "ดูชีท",
+                  render: () => (
+                    <Tab.Pane>
+                      {this.props.admin.isEdit === true ? (
+                        <EditProductForm
+                          name={this.props.admin.name}
+                          onSubmit={this.submit}
+                        />
+                      ) : (
+                        <div align="center">
+                          <br />
+                          <SearchForm />
+                          <br />
+                          <ShowAllProduct sheetList={this.props.stock} />
+                          {this.props.stock.isTyping === 0 ? (
+                            <div align="center">
+                              <Pagination
+                                prevPageText="prev"
+                                nextPageText="next"
+                                firstPageText="first"
+                                lastPageText="last"
+                                activePage={this.state.activePage}
+                                itemsCountPerPage={this.state.limitPage}
+                                totalItemsCount={this.props.stock.pageNumber}
+                                pageRangeDisplayed={5}
+                                onChange={currentPage => {
+                                  this.handlePaginationChange(
+                                    currentPage,
+                                    this.state.limitPage,
+                                    this.props.stock.input
+                                  );
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              <Pagination
+                                prevPageText="prev"
+                                nextPageText="next"
+                                firstPageText="first"
+                                lastPageText="last"
+                                activePage={this.state.activePage}
+                                itemsCountPerPage={this.state.limitPage}
+                                totalItemsCount={this.props.stock.pageNumber}
+                                pageRangeDisplayed={5}
+                                onChange={currentPage => {
+                                  this.handlePaginationChange(
+                                    currentPage,
+                                    this.state.limitPage,
+                                    this.props.stock.input
+                                  );
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </Tab.Pane>
+                  )
+                },
+                {
+                  menuItem: "ประวัติการสั่งซื้อ",
+                  render: () => (
+                    <Tab.Pane>
+                      <DateTime
+                        inputProps={{ placeholder: "Enter your date" }}
+                        onChange={date => {
+                          this.handleDateChange(date);
+                        }}
                       />
-                    ) : (
-                      <div>
-                        <SearchForm />
-                        <br />
-                        <ShowAllProduct sheetList={this.props.stock} />
-                        {this.props.stock.isTyping === 0 ? (
-                          <div>
-                            <Pagination
-                              prevPageText="prev"
-                              nextPageText="next"
-                              firstPageText="first"
-                              lastPageText="last"
-                              activePage={this.state.activePage}
-                              itemsCountPerPage={this.state.limitPage}
-                              totalItemsCount={this.props.stock.pageNumber}
-                              pageRangeDisplayed={5}
-                              onChange={currentPage => {
-                                this.handlePaginationChange(
-                                  currentPage,
-                                  this.state.limitPage,
-                                  this.props.stock.input
-                                );
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div>
-                            <Pagination
-                              prevPageText="prev"
-                              nextPageText="next"
-                              firstPageText="first"
-                              lastPageText="last"
-                              activePage={this.state.activePage}
-                              itemsCountPerPage={this.state.limitPage}
-                              totalItemsCount={this.props.stock.pageNumber}
-                              pageRangeDisplayed={5}
-                              onChange={currentPage => {
-                                this.handlePaginationChange(
-                                  currentPage,
-                                  this.state.limitPage,
-                                  this.props.stock.input
-                                );
-                              }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </Col>
-                </Row>
-              </Tab>
-              <Tab eventKey={3} title="ประวัติการสั่งซื้อ">
-                <Col sm={4} />
-                <Col sm={3}>
-                  <DateTime
-                    inputProps={{ placeholder: "Enter your date" }}
-                    onChange={date => {
-                      this.handleDateChange(date);
-                    }}
-                  />
-                </Col>
-                <br />
-                <br />
-                <Row>
-                  <Col sm={4} />
-                  <Col sm={3}>
-                    <CSVLink
-                      data={this.props.admin.data}
-                      headers={headers}
-                      filename={
-                        this.state.month + "-" + this.state.year + ".csv"
-                      }
-                    >
-                      ดาวน์โหลดประวัติการสั่งซื้อของ {this.state.month}{" "}
-                      {this.state.year}
-                    </CSVLink>
-                  </Col>
-                </Row>
-              </Tab>
-            </Tabs>
-          </div>
+                      <br />
+                      <CSVLink
+                        data={this.props.admin.data}
+                        headers={headers}
+                        filename={
+                          this.state.month + "-" + this.state.year + ".csv"
+                        }
+                      >
+                        ดาวน์โหลดประวัติการสั่งซื้อของ {this.state.month}{" "}
+                        {this.state.year}
+                      </CSVLink>
+                    </Tab.Pane>
+                  )
+                }
+              ]}
+            />
+          </Container>
         ) : (
           <div>
-            <br />
-            <br />
-            <br />
-            <p align="center">ลงชื่อเข้าสู่ระบบ</p>
-            <Button bsStyle="primary">
-              <FaFacebook /> &nbsp;login with facebook
-            </Button>
-            <br />
-            <br />
             <AdminLogin />
           </div>
         )}
-      </div>
+      </Segment>
     );
   }
 }

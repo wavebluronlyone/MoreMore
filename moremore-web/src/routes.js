@@ -6,6 +6,7 @@ import {
   About,
   Login,
   Register,
+  Sheeter,
   Profile,
   BuyComplete,
   DetailSheet,
@@ -23,11 +24,12 @@ const Routes = () => (
     <Route path="/Cart" render={props => <Cart {...props} />} />
     <Route path="/About" render={props => <About />} />
     <Route path="/Login" render={props => <Login {...props} />} />
+    <Route path="/Sheeter" render={props => <Sheeter {...props} />} />
     <Route
       path="/ForgotPassword"
       render={props => <ForgotPassword {...props} />}
     />
-    <Route path="/Register" render={props => <Register />} />
+    <Route path="/Register" render={props => <Register {...props} />} />
     <Route path="/Profile" render={props => <Profile {...props} />} />
     <Route
       path="/DetailSheet/:id"

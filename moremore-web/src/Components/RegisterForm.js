@@ -1,116 +1,186 @@
 import React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  ControlLabel,
-  FormControl
-} from "react-bootstrap";
 import { Field, reduxForm } from "redux-form";
+import {
+  Form,
+  Input,
+  Button,
+  Grid,
+  Responsive,
+  GridColumn
+} from "semantic-ui-react";
 
-const FieldInput = ({ type, placeholder, input }) => {
+const FieldInput = ({ type, placeholder, input, label }) => {
   return (
-    <FormControl
-      type={type}
-      placeholder={placeholder}
-      value={input.value}
-      onChange={input.onChange}
-    />
+    <div>
+      <Form.Field>
+        <label>{label}</label>
+        <Input
+          style={{
+            width: "22em",
+            borderColor: "#ffc900"
+          }}
+          type={type}
+          placeholder={placeholder}
+          value={input.value}
+          onChange={input.onChange}
+        />
+      </Form.Field>
+    </div>
   );
 };
 
 let RegisterForm = props => {
   const { handleSubmit } = props;
   return (
-    <div>
-      <br />
-      <br />
-      <Col sm={5} />
-      <Col sm={2}>
-        <p align="left">สมัครสมาชิก | Register</p>
-      </Col>
-      <br />
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Col sm={4} />
-          <Col componentClass={ControlLabel} sm={1}>
-            <p align="right">Username:</p>
-          </Col>
-          <Col sm={3}>
-            <Field
-              name="user"
-              type="text"
-              component={FieldInput}
-              placeholder="enter user"
-            />
-          </Col>
-        </FormGroup>
-
+    <div style={{ fontFamily: "Prompt" }}>
+      <Responsive maxWidth={800}>
         <br />
+        <h1 style={{ fontFamily: "Prompt" }} align="center">
+          สมัครสมาชิก | Register
+        </h1>
         <br />
+        <Form onSubmit={handleSubmit}>
+          <Grid stackable>
+            <GridColumn mobile={1} tablet={4} />
+            <Grid.Column>
+              <Form.Group>
+                <Field
+                  label="Username"
+                  name="user"
+                  type="text"
+                  component={FieldInput}
+                  placeholder="enter user"
+                />
+              </Form.Group>
+              <br />
+              <Form.Group>
+                <Field
+                  label="Password"
+                  name="password"
+                  type="password"
+                  component={FieldInput}
+                  placeholder="enter password"
+                />
+              </Form.Group>
+              <br />
+              <Form.Group>
+                <Field
+                  label="Password"
+                  name="password"
+                  type="password"
+                  component={FieldInput}
+                  placeholder="enter password"
+                />
+              </Form.Group>
+              <br />
+              <Form.Group>
+                <Field
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  component={FieldInput}
+                  placeholder="enter confirm password"
+                />
+              </Form.Group>
+              <br />
+              <Form.Group>
+                <Field
+                  label="Email"
+                  name="email"
+                  type="email"
+                  component={FieldInput}
+                  placeholder="enter email"
+                />
+              </Form.Group>
+            </Grid.Column>
+          </Grid>
+          <br />
+          <div align="center">
+            <Button
+              type="submit"
+              style={{
+                backgroundColor: "#feb955",
+                color: "white"
+              }}
+            >
+              Sign up
+            </Button>
+          </div>
+        </Form>
+      </Responsive>
 
-        <FormGroup>
-          <Col sm={4} />
-          <Col componentClass={ControlLabel} sm={1}>
-            <p align="right">Password:</p>
-          </Col>
-          <Col sm={3}>
-            <Field
-              name="password"
-              type="password"
-              component={FieldInput}
-              placeholder="enter password"
-            />
-          </Col>
-        </FormGroup>
-
+      <Responsive minWidth={801}>
+        <h1 style={{ fontFamily: "Prompt" }} align="center">
+          สมัครสมาชิก | Register
+        </h1>
         <br />
-        <br />
-
-        <FormGroup>
-          <Col sm={3} />
-          <Col componentClass={ControlLabel} sm={2}>
-            <p align="right">Confirm Password:</p>
-          </Col>
-          <Col sm={3}>
-            <Field
-              name="confirmPassword"
-              type="password"
-              component={FieldInput}
-              placeholder="enter confirm password"
-            />
-          </Col>
-        </FormGroup>
-
-        <br />
-        <br />
-
-        <FormGroup>
-          <Col sm={4} />
-          <Col componentClass={ControlLabel} sm={1}>
-            <p align="right">Email:</p>
-          </Col>
-          <Col sm={3}>
-            <Field
-              name="email"
-              type="email"
-              component={FieldInput}
-              placeholder="enter email"
-            />
-          </Col>
-        </FormGroup>
-
-        <br />
-
-        <FormGroup>
-          <Col sm={4} />
-          <Col sm={4}>
-            <br />
-            <Button type="submit">Sign up</Button>
-          </Col>
-        </FormGroup>
-      </Form>
+        <Form onSubmit={handleSubmit}>
+          <Grid stackable>
+            <Grid.Row>
+              <Grid.Column width={6} />
+              <Grid.Column width={9}>
+                <Form.Group>
+                  <Field
+                    label="Username"
+                    name="user"
+                    type="text"
+                    component={FieldInput}
+                    placeholder="enter user"
+                  />
+                </Form.Group>
+              </Grid.Column>
+              <Grid.Column width={6} />
+              <Grid.Column width={9}>
+                <Form.Group>
+                  <Field
+                    label="Password"
+                    name="password"
+                    type="password"
+                    component={FieldInput}
+                    placeholder="enter password"
+                  />
+                </Form.Group>
+              </Grid.Column>
+              <Grid.Column width={6} />
+              <Grid.Column width={9}>
+                <Form.Group>
+                  <Field
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    type="password"
+                    component={FieldInput}
+                    placeholder="enter confirm password"
+                  />
+                </Form.Group>
+              </Grid.Column>
+              <Grid.Column width={6} />
+              <Grid.Column width={9}>
+                <Form.Group>
+                  <Field
+                    label="Email"
+                    name="email"
+                    type="email"
+                    component={FieldInput}
+                    placeholder="enter email"
+                  />
+                </Form.Group>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <br />
+          <div align="center">
+            <Button
+              type="submit"
+              style={{
+                backgroundColor: "#feb955",
+                color: "white"
+              }}
+            >
+              Sign up
+            </Button>
+          </div>
+        </Form>
+      </Responsive>
     </div>
   );
 };

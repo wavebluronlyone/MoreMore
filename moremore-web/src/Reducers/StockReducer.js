@@ -7,12 +7,18 @@ import {
   RESET_IMAGE,
   CREATE_LINE_PAYMENT,
   GET_TOTAL_SHEET,
-  GET_ALL_SHEET
+  GET_ALL_SHEET,
+  GET_NEW_ARRIVAL,
+  GET_TOTAL_USER_PAYMENT,
+  BUY_COMPLETE,
+  FIND_SHEET_DATA_WITH_PROFILE
 } from "../Actions/type";
 
 const initialState = {
   data: [],
   bestSeller: [],
+  newArrival: [],
+  sheetDataProfile: [],
   addCart: [],
   subImg: [],
   totalPrices: 0,
@@ -20,10 +26,12 @@ const initialState = {
   longDetail: "",
   pdf: "",
   img: "",
+  profile: "",
   transactionId: "",
   orderId: "",
   url: "",
   message: "",
+  totalUser: 0,
   isPaid: false,
   pageNumber: 0,
   isTyping: 0
@@ -37,11 +45,22 @@ export default function(state = initialState, action) {
         ...state,
         bestSeller: action.product
       };
+    case GET_NEW_ARRIVAL:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        newArrival: action.product
+      };
     case GET_ALL_SHEET:
       console.log("dispatching", action);
       return {
         ...state,
         data: action.product
+      };
+    case GET_TOTAL_USER_PAYMENT:
+      return {
+        ...state,
+        totalUser: action.total
       };
     case GET_TOTAL_SHEET:
       return {
@@ -55,13 +74,20 @@ export default function(state = initialState, action) {
         ...state,
         subImg: action.subImage
       };
+    case FIND_SHEET_DATA_WITH_PROFILE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        sheetDataProfile: action.product
+      };
     case FIND_SHEET_DATA_WITH_SHEET_NAME:
       console.log("dispatching", action);
       return {
         ...state,
         price: action.price,
         longDetail: action.longDetail,
-        img: action.img
+        img: action.img,
+        profile: action.profile
       };
     case ADD_SHEET_TO_CART:
       console.log("dispatching", action);
@@ -76,6 +102,8 @@ export default function(state = initialState, action) {
         ...state,
         subImg: [],
         message: "",
+        sheetDataProfile: [],
+        profile: "",
         price: 0
       };
     case CREATE_LINE_PAYMENT:
@@ -87,11 +115,16 @@ export default function(state = initialState, action) {
         price: action.price,
         message: action.message
       };
+    case BUY_COMPLETE:
+      return {
+        ...state,
+        message: action.message
+      };
     case IS_PAID:
       console.log("dispatching", action);
       return {
         ...state,
-        isPaid: action.isPaid
+        message: ""
       };
     default:
       return state;

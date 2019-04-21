@@ -6,10 +6,9 @@ import {
   findSheetDataWithPagination,
   findSheetDataWithPaginationFromSearch
 } from "../Actions/StockActions";
-import { isLoggedIn } from "../Actions/UserActions";
-import Navigationbar from "../Components/Navigationbar";
 import SearchForm from "../Components/SearchForm";
 import Pagination from "react-js-pagination";
+import { Segment, Message, Container, Responsive } from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -19,17 +18,13 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
   findSheetDataWithPagination: (currentPage, limitPage) => {
     dispatch(findSheetDataWithPagination(currentPage, limitPage));
   },
   findSheetDataWithPaginationFromSearch: (currentPage, limitPage, input) => {
-    dispatch(findSheetDataWithPaginationFromSearch(currentPage, limitPage, input));
-  },
-  resetImage: () => {
-    dispatch(resetImage());
+    dispatch(
+      findSheetDataWithPaginationFromSearch(currentPage, limitPage, input)
+    );
   }
 });
 
@@ -41,16 +36,11 @@ class Shop extends Component {
       limitPage: 5
     };
   }
-  componentWillMount() {
-    this.props.isLoggedIn();
+  componentDidMount() {
     this.props.findSheetDataWithPagination(
       this.state.activePage,
       this.state.limitPage
     );
-  }
-
-  componentWillUnmount() {
-    this.props.resetImage();
   }
 
   handlePaginationChange(currentPage, limitPage, input) {
@@ -58,67 +48,106 @@ class Shop extends Component {
     if (this.props.stock.isTyping === 0) {
       this.props.findSheetDataWithPagination(currentPage, limitPage);
     } else {
-      this.props.findSheetDataWithPaginationFromSearch(currentPage, limitPage, input);
+      this.props.findSheetDataWithPaginationFromSearch(
+        currentPage,
+        limitPage,
+        input
+      );
     }
   }
 
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
-          <Navigationbar show={true} />
-        ) : (
-          <Navigationbar show={false} />
-        )}
-        <br />
-        <br />
-        <br />
-        <p>{this.props.stock.message}</p>
-        <SearchForm />
-        <br />
-        <CardView sheetList={this.props.stock.data} />
+        <Responsive maxWidth={800}>
+          {this.props.stock.message !== "" ? (
+            <div>
+              {this.props.stock.message !== undefined ? (
+                <div align="center">
+                  <Message
+                    style={{ position: "fixed", zIndex: 100, width: "100%" }}
+                    positive
+                  >
+                    <p style={{ fontFamily: "Prompt" }}>
+                      {this.props.stock.message}
+                    </p>
+                  </Message>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </Responsive>
 
-        {this.props.stock.isTyping === 0 ? (
-          <div>
-            <Pagination
-              prevPageText="prev"
-              nextPageText="next"
-              firstPageText="first"
-              lastPageText="last"
-              activePage={this.state.activePage}
-              itemsCountPerPage={this.state.limitPage}
-              totalItemsCount={this.props.stock.pageNumber}
-              pageRangeDisplayed={5}
-              onChange={currentPage => {
-                this.handlePaginationChange(
-                  currentPage,
-                  this.state.limitPage,
-                  this.props.stock.input
-                );
-              }}
-            />
-          </div>
-        ) : (
-          <div>
-            <Pagination
-              prevPageText="prev"
-              nextPageText="next"
-              firstPageText="first"
-              lastPageText="last"
-              activePage={this.state.activePage}
-              itemsCountPerPage={this.state.limitPage}
-              totalItemsCount={this.props.stock.pageNumber}
-              pageRangeDisplayed={5}
-              onChange={currentPage => {
-                this.handlePaginationChange(
-                  currentPage,
-                  this.state.limitPage,
-                  this.props.stock.input
-                );
-              }}
-            />
-          </div>
-        )}
+        <Responsive minWidth={801}>
+          {this.props.stock.message !== "" ? (
+            <Container>
+              <br />
+              {this.props.stock.message !== undefined ? (
+                <Message positive>
+                  <p style={{ fontFamily: "Prompt" }}>
+                    {this.props.stock.message}
+                  </p>
+                </Message>
+              ) : null}
+            </Container>
+          ) : null}
+        </Responsive>
+        
+        <Segment
+          style={{
+            minHeight: "38em",
+            backgroundColor: "#ebebeb"
+          }}
+        >
+          <br />
+          <br />
+          <SearchForm />
+          <br />
+          <br />
+          <CardView sheetList={this.props.stock.data} center={true} />
+
+          {this.props.stock.isTyping === 0 ? (
+            <div align="center">
+              <Pagination
+                prevPageText="prev"
+                nextPageText="next"
+                firstPageText="first"
+                lastPageText="last"
+                activePage={this.state.activePage}
+                itemsCountPerPage={this.state.limitPage}
+                totalItemsCount={this.props.stock.pageNumber}
+                pageRangeDisplayed={5}
+                onChange={currentPage => {
+                  this.handlePaginationChange(
+                    currentPage,
+                    this.state.limitPage,
+                    this.props.stock.input
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <div align="center">
+              <Pagination
+                prevPageText="prev"
+                nextPageText="next"
+                firstPageText="first"
+                lastPageText="last"
+                activePage={this.state.activePage}
+                itemsCountPerPage={this.state.limitPage}
+                totalItemsCount={this.props.stock.pageNumber}
+                pageRangeDisplayed={5}
+                onChange={currentPage => {
+                  this.handlePaginationChange(
+                    currentPage,
+                    this.state.limitPage,
+                    this.props.stock.input
+                  );
+                }}
+              />
+            </div>
+          )}
+        </Segment>
       </div>
     );
   }

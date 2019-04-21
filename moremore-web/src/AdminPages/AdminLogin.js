@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import LoginForm from "../Components/LoginForm";
 import { isAdminLoggedIn, signInWithEmail } from "../Actions/AdminActions";
 import { connect } from "react-redux";
+import { Container, Message, Button } from "semantic-ui-react";
+import FaFacebook from "react-icons/lib/fa/facebook";
 
 const mapStatetoProps = state => {
   return {
@@ -25,8 +27,28 @@ class AdminLogin extends Component {
   render() {
     return (
       <div>
+        {this.props.admin.message !== "" ? (
+          <Container>
+            {this.props.admin.message !== undefined ? (
+              <Message negative>
+                <Message.Header>Error</Message.Header>
+                <p>{this.props.admin.message}</p>
+              </Message>
+            ) : null}
+          </Container>
+        ) : null}
+        <br />
+        <br />
+        <br />
+        <p align="center">ลงชื่อเข้าสู่ระบบ</p>
+        <div align="center">
+          <Button primary>
+            <FaFacebook /> &nbsp;login with facebook
+          </Button>
+        </div>
+        <br />
+        <br />
         <LoginForm onSubmit={this.submit} />
-        <p>{this.props.admin.message}</p>
       </div>
     );
   }

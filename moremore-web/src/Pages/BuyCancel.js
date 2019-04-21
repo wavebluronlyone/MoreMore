@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Navigationbar from "../Components/Navigationbar";
 import { isLoggedIn } from "../Actions/UserActions";
 
 const mapStatetoProps = state => {
@@ -17,14 +16,6 @@ const mapDispatchtoProps = dispatch => ({
 });
 
 class BuyCancel extends Component {
-  //   componentWillMount() {
-  //     this.props.isLoggedIn();
-  //     let arrSize = this.props.stock.addCart.length;
-  //     for (let i = 0; i < arrSize; i++) {
-  //       createSheetforUser(this.props.user.email, this.props.stock.addCart[i]);
-  //     }
-  //   }
-
   componentWillUnmount() {
     this.props.resetPayment();
   }
@@ -32,12 +23,16 @@ class BuyCancel extends Component {
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
+        {Boolean(localStorage.getItem("isloggedIn")) === true ? (
           <div>
-            <Navigationbar show={true} />
             <br />
             <br />
-            <p>การซื้อสินค้าไม่สำเร็จ</p>
+            <p
+              align="center"
+              style={{ fontFamily: "Prompt", fontSize: "1.5em" }}
+            >
+              การซื้อสินค้าไม่สำเร็จ
+            </p>
           </div>
         ) : null}
       </div>

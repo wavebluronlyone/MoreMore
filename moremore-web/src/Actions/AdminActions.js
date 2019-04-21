@@ -5,6 +5,7 @@ import {
   IS_EDIT,
   GET_ALL_ORDER_FROM_PROFILE,
   CREATE_PDF,
+  UPLOAD_IMAGE,
   DELETE_SHEET_NAME,
   RESET_ORDER,
   RESET_MESSAGE,
@@ -55,7 +56,11 @@ export function createPdf(sheetPdf, sheetName) {
       "state_changed",
       function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload Pdf is " + progress + "% done");
+        dispatch({
+          type: CREATE_PDF,
+          uploadPdf: progress,
+          text: ""
+        });
       },
       function(error) {
         // Handle unsuccessful uploads
@@ -69,6 +74,7 @@ export function createPdf(sheetPdf, sheetName) {
             .then(function() {
               dispatch({
                 type: CREATE_PDF,
+                uploadPdf: 0,
                 text: "เพิ่มสินค้า " + sheetName + " เสร็จสิ้น"
               });
             })
@@ -82,34 +88,43 @@ export function createPdf(sheetPdf, sheetName) {
 }
 
 export function createImage(image, sheetName) {
-  const imageStorage = storage.ref("image/" + sheetName + "/" + image.name);
-  const task = imageStorage.put(image);
-  const imageRef = database.collection("image").doc(sheetName);
-
-  task.on(
-    "state_changed",
-    function(snapshot) {
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload Image is " + progress + "% done");
-    },
-    function(error) {
-      // Handle unsuccessful uploads
-    },
-    function() {
-      task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        imageRef
-          .set({
-            image: downloadURL
-          })
-          .then(function() {
-            console.log("Document successfully written Image " + image.name);
-          })
-          .catch(function(error) {
-            console.error("Error writing document: ", error);
-          });
-      });
-    }
-  );
+  return dispatch => {
+    const imageStorage = storage.ref("image/" + sheetName + "/" + image.name);
+    const task = imageStorage.put(image);
+    const imageRef = database.collection("image").doc(sheetName);
+    task.on(
+      "state_changed",
+      function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload Image is " + progress + "% done");
+        dispatch({
+          type: UPLOAD_IMAGE,
+          uploadImage: progress
+        });
+      },
+      function(error) {
+        // Handle unsuccessful uploads
+      },
+      function() {
+        task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          imageRef
+            .set({
+              image: downloadURL
+            })
+            .then(function() {
+              console.log("Document successfully written Image " + image.name);
+              dispatch({
+                type: UPLOAD_IMAGE,
+                uploadImage: 0
+              });
+            })
+            .catch(function(error) {
+              console.error("Error writing document: ", error);
+            });
+        });
+      }
+    );
+  };
 }
 
 export function createSubImage(arrImage, sheetName) {
@@ -172,7 +187,8 @@ export function createProductText(
       price: sheetPrice,
       hiLight: sheetHiLight,
       longDetail: sheetProductDescription,
-      profile: profile
+      profile: profile,
+      createAt: new Date()
     })
     .then(function() {
       console.log("Document successfully written Text");

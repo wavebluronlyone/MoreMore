@@ -1,13 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Navigationbar from "../Components/Navigationbar";
 import {
   findPdfWithSheetName,
   isLoggedIn,
   resetSheetPdf
 } from "../Actions/UserActions";
 import { Document, Page } from "react-pdf";
-import { Grid, Col, Row } from "react-bootstrap";
+import {
+  Segment,
+  Responsive,
+  Grid,
+  Breadcrumb,
+  Container
+} from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import Login from "./Login";
 
 const mapStatetoProps = state => {
   return {
@@ -17,9 +24,6 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
   findPdfWithSheetName: (sheetName, email) => {
     dispatch(findPdfWithSheetName(sheetName, email));
   },
@@ -34,22 +38,21 @@ class ReadSheet extends Component {
     this.state = { numPages: null, pageNumber: 1, arrPage: [1] };
   }
 
-  componentWillMount() {
-    this.props.isLoggedIn();
+  componentDidMount() {
     this.props.findPdfWithSheetName(
       this.props.match.params.id,
       this.props.user.email
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.user.email !== nextProps.user.email) {
+  componentDidUpdate(prevProps) {
+    if (this.props.user.email !== prevProps.user.email) {
       this.props.findPdfWithSheetName(
         this.props.match.params.id,
-        nextProps.user.email
+        this.props.user.email
       );
     }
-    if (nextProps.user.isLoggedIn === false) {
+    if (this.props.user.isLoggedIn === false) {
       this.props.history.push("/Login");
     }
   }
@@ -69,39 +72,100 @@ class ReadSheet extends Component {
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
+        {Boolean(localStorage.getItem("isloggedIn")) === true ? (
           <div>
-            <Navigationbar show={true} />
-            <div>
-              <br />
-              <br />
-              {this.props.user.pdf !== "" ? (
-                <Document
-                  file={
-                    "https://cors-anywhere.herokuapp.com/" + this.props.user.pdf
-                  }
-                  onLoadSuccess={this.onDocumentLoadSuccess}
-                >
-                  <Grid>
-                    <Row>
-                      {this.state.arrPage.map(index => {
-                        return (
-                          <div>
-                            <Col sm={2} />
-                            <Col>
-                              <Page pageNumber={index} width={800} />
-                            </Col>
-                          </div>
-                        );
-                      })}
-                    </Row>
-                  </Grid>
-                </Document>
-              ) : null}
-            </div>
+            <Responsive maxWidth={800}>
+              <Segment
+                style={{
+                  minHeight: "38em"
+                }}
+              >
+                <div>
+                  <br />
+                  <br />
+                  <Container>
+                    <Breadcrumb>
+                      <Breadcrumb.Section as={Link} to="/Profile">
+                        Profile
+                      </Breadcrumb.Section>
+                      <Breadcrumb.Divider icon="right angle" />
+                      <Breadcrumb.Section>
+                        {this.props.match.params.id}
+                      </Breadcrumb.Section>
+                    </Breadcrumb>
+                  </Container>
+                  <br />
+                  {this.props.user.pdf !== "" ? (
+                    <Document
+                      file={
+                        "https://cors-anywhere.herokuapp.com/" +
+                        this.props.user.pdf
+                      }
+                      onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                      <Grid stackable>
+                        <Grid.Row centered>
+                          {this.state.arrPage.map(index => {
+                            return <Page pageNumber={index} width={350} />;
+                          })}
+                        </Grid.Row>
+                      </Grid>
+                    </Document>
+                  ) : null}
+                </div>
+              </Segment>
+            </Responsive>
+
+            <Responsive minWidth={801}>
+              <Segment
+                style={{
+                  minHeight: "38em"
+                }}
+              >
+                <div>
+                  <br />
+                  <br />
+                  <Container>
+                    <Breadcrumb>
+                      <Breadcrumb.Section as={Link} to="/Profile">
+                        Profile
+                      </Breadcrumb.Section>
+                      <Breadcrumb.Divider icon="right angle" />
+                      <Breadcrumb.Section>
+                        {this.props.match.params.id}
+                      </Breadcrumb.Section>
+                    </Breadcrumb>
+                  </Container>
+                  {this.props.user.pdf !== "" ? (
+                    <Document
+                      file={
+                        "https://cors-anywhere.herokuapp.com/" +
+                        this.props.user.pdf
+                      }
+                      onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                      <Grid>
+                        <Grid.Row centered>
+                          {this.state.arrPage.map(index => {
+                            return (
+                              <div>
+                                <Grid.Column />
+                                <Grid.Column>
+                                  <Page pageNumber={index} width={800} />
+                                </Grid.Column>
+                              </div>
+                            );
+                          })}
+                        </Grid.Row>
+                      </Grid>
+                    </Document>
+                  ) : null}
+                </div>
+              </Segment>
+            </Responsive>
           </div>
         ) : (
-          <Navigationbar show={false} />
+          <Login />
         )}
       </div>
     );

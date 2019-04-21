@@ -1,26 +1,23 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const TableView = props => (
   <div className="container">
-    <Table responsive>
-      <thead />
-      <tbody>
+    <Table style={{ fontFamily: "Prompt" }}>
+      <Table.Body>
         {props.sheetPdfList.data.map((sheet, index) => {
           return (
-            <tr>
-              <td width="5%">{index + 1}</td>
-              <td width="30%" align="left">
-                {sheet.name}
-              </td>
-              <td width="5%">
+            <Table.Row>
+              <Table.Cell>{index + 1}</Table.Cell>
+              <Table.Cell align="left">{sheet.name}</Table.Cell>
+              <Table.Cell>
                 <Link to={"/ReadSheet/" + sheet.name}>อ่าน</Link>
-              </td>
-            </tr>
+              </Table.Cell>
+            </Table.Row>
           );
         })}
-      </tbody>
+      </Table.Body>
     </Table>
   </div>
 );

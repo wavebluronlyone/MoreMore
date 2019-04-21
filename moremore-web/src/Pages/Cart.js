@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Navigationbar from "../Components/Navigationbar";
 import {
   removeSheetCart,
   createLinePayment,
   linkPayment
 } from "../Actions/StockActions";
-import { isLoggedIn } from "../Actions/UserActions";
-import { Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import {
+  Segment,
+  Button,
+  Item,
+  Container,
+  Message,
+  Icon,
+  Image,
+  Responsive,
+  Grid
+} from "semantic-ui-react";
+import linepay from "../Image/linepay_logo.png";
 
 const mapStatetoProps = state => {
   return {
@@ -18,9 +27,6 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
   removeSheetCart: (sheetName, sheetAddCart) => {
     dispatch(removeSheetCart(sheetName, sheetAddCart));
   },
@@ -30,17 +36,14 @@ const mapDispatchtoProps = dispatch => ({
 });
 
 class Cart extends Component {
-  componentWillMount() {
-    this.props.isLoggedIn();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.stock.transactionId !== nextProps.stock.transactionId) {
+  componentDidUpdate(prevProps) {
+    if (this.props.stock.transactionId !== prevProps.stock.transactionId) {
       linkPayment(
         this.props.stock.addCart,
-        nextProps.stock.url,
-        nextProps.stock.transactionId,
-        nextProps.stock.orderId,
-        nextProps.stock.price,
+        this.props.stock.url,
+        this.props.stock.transactionId,
+        this.props.stock.orderId,
+        this.props.stock.price,
         this.props.user.email
       );
     }
@@ -48,66 +51,163 @@ class Cart extends Component {
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
-          <Navigationbar show={true} />
-        ) : (
-          <Navigationbar show={false} />
-        )}
-        <br />
-        {this.props.stock.totalPrices === 0 ? (
-          <p>{"คุณยังไม่ได้เลือกสินค้า"}</p>
-        ) : (
-          <div>
-            <Row>
-              <Col sm={2} />
-              <Col sm={4}>
-                <p align="left">Order Summary</p>
-                {this.props.stock.addCart.map(sheet => {
-                  return (
-                    <p align="left">
-                      {" " + sheet.name + " " + sheet.price + " บาท "}
-                      <a
-                        onClick={() => {
-                          this.props.removeSheetCart(
-                            sheet,
-                            this.props.stock.addCart,
-                            this.props.stock.arrPrices
-                          );
-                        }}
-                      >
-                        ลบ
-                      </a>
+        <Responsive maxWidth={800}>
+          {this.props.stock.message ===
+          "กรุณารอสักครู่ระบบกำลังเข้าสู่ line pay" ? (
+            <div>
+              {this.props.stock.message !== undefined ? (
+                <div align="center">
+                  <br />
+                  <Message
+                    style={{ position: "fixed", zIndex: 1, width: "100%" }}
+                    icon
+                  >
+                    <Icon name="circle notched" loading />
+                    <Message.Content>
+                      <Message.Header>Loading</Message.Header>
+                      <p style={{ fontFamily: "Prompt" }}>
+                        {this.props.stock.message}
+                      </p>
+                    </Message.Content>
+                  </Message>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </Responsive>
+
+        <Responsive minWidth={801}>
+          {this.props.stock.message ===
+          "กรุณารอสักครู่ระบบกำลังเข้าสู่ line pay" ? (
+            <Container>
+              {this.props.stock.message !== undefined ? (
+                <Message icon>
+                  <Icon name="circle notched" loading />
+                  <Message.Content>
+                    <Message.Header>Loading</Message.Header>
+                    <p style={{ fontFamily: "Prompt" }}>
+                      {this.props.stock.message}
                     </p>
-                  );
-                })}
-                <p align="left"> ค่าธรรมเนียม &nbsp;&nbsp;&nbsp; 5 บาท</p>
-                <p align="left">
+                  </Message.Content>
+                </Message>
+              ) : null}
+            </Container>
+          ) : null}
+        </Responsive>
+        <Segment
+          style={{
+            minHeight: "38em"
+          }}
+        >
+          {this.props.stock.totalPrices === 0 ? (
+            <div>
+              <br />
+              <br />
+              <p>{"คุณยังไม่ได้เลือกสินค้า"}</p>
+            </div>
+          ) : (
+            <div>
+              <br />
+              <h1 style={{ fontFamily: "Prompt" }} align="center">
+                Order Summary
+              </h1>
+              <br />
+              <br />
+              <Container style={{ fontFamily: "Prompt" }}>
+                <Item.Group divided unstackable>
+                  {this.props.stock.addCart.map(sheet => {
+                    return (
+                      <Item>
+                        <Item.Image
+                          style={{ width: "100px", height: "100px" }}
+                          src={sheet.img}
+                        />
+                        <Item.Content>
+                          <Item.Header>{sheet.name}</Item.Header>
+                          <Item.Description>
+                            <span className="price">
+                              {sheet.price + " บาท"}
+                            </span>
+                            <br />
+                            <br />
+                            <Button
+                              onClick={() => {
+                                this.props.removeSheetCart(
+                                  sheet,
+                                  this.props.stock.addCart,
+                                  this.props.stock.arrPrices
+                                );
+                              }}
+                            >
+                              ลบ
+                            </Button>
+                          </Item.Description>
+                        </Item.Content>
+                      </Item>
+                    );
+                  })}
+                </Item.Group>
+                <hr />
+                <h1 align="right" style={{ fontFamily: "Prompt" }}>
                   {" "}
-                  รวม &nbsp;&nbsp;&nbsp; {this.props.stock.totalPrices + 5} บาท
-                </p>
+                  รวม &nbsp; {this.props.stock.totalPrices} บาท
+                </h1>
                 <br />
-                <br />
-                <p align="left">เลือกการชำระเงิน</p>
-                <p align="left">Line Pay</p>
                 <br />
                 {this.props.user.isLoggedIn === true ? (
-                  <Button
-                    onClick={() => {
-                      this.props.createLinePayment(
-                        this.props.stock.totalPrices + 5
-                      );
-                    }}
-                  >
-                    ยืนยัน
-                  </Button>
+                  <div>
+                    <Button
+                      style={{
+                        fontFamily: "Prompt",
+                        fontSize: "0.9em",
+                        backgroundColor: "#fbb900",
+                        color: "#000000"
+                      }}
+                      attached="bottom"
+                      onClick={() => {
+                        this.props.createLinePayment(
+                          this.props.stock.totalPrices
+                        );
+                      }}
+                    >
+                      <h2 style={{ fontFamily: "Prompt" }}>
+                        คลิกเพื่อชำระเงินผ่าน{" "}
+                        <Image
+                          centered
+                          width="150em"
+                          height="50em"
+                          src={linepay}
+                        />{" "}
+                      </h2>
+                    </Button>
+                  </div>
                 ) : (
-                  <Link to="/Login">ยืนยัน</Link>
+                  <Button
+                    style={{
+                      fontFamily: "Prompt",
+                      fontSize: "0.9em",
+                      backgroundColor: "#fbb900",
+                      color: "#000000"
+                    }}
+                    attached="bottom"
+                    as={Link}
+                    to="/Login"
+                  >
+                    <h2 style={{ fontFamily: "Prompt" }}>
+                      คลิกเพื่อชำระเงินผ่าน{" "}
+                      <Image
+                        centered
+                        width="150em"
+                        height="50em"
+                        src={linepay}
+                      />{" "}
+                    </h2>
+                  </Button>
                 )}
-              </Col>
-            </Row>
-          </div>
-        )}
-        <p>{this.props.stock.message}</p>
+              </Container>
+            </div>
+          )}
+        </Segment>
       </div>
     );
   }

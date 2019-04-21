@@ -5,7 +5,8 @@ import {
   RESET_ORDER,
   GET_ALL_ORDER_FROM_PROFILE,
   ADMIN_LOGOUT,
-  DELETE_SHEET_NAME
+  DELETE_SHEET_NAME,
+  UPLOAD_IMAGE
 } from "../Actions/type";
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   messageAddProduct: "",
   isLoggedIn: false,
   email: "",
-  pdf: "",
+  uploadPdf: 0,
+  uploadImage: 0,
   image: "",
   subImage: [],
   create: true,
@@ -42,8 +44,14 @@ export default function(state = initialState, action) {
       console.log("dispatching", action);
       return {
         ...state,
-        pdf: action.pdfFile,
+        uploadPdf: action.uploadPdf,
         messageAddProduct: action.text
+      };
+    case UPLOAD_IMAGE:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        uploadImage: action.uploadImage
       };
     case DELETE_SHEET_NAME:
       console.log("dispatching", action);

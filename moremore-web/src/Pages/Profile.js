@@ -4,11 +4,12 @@ import TableView from "../Components/TableView";
 import { connect } from "react-redux";
 import {
   findProfileWithEmail,
-  findPdfWithEmailFromPagination,
-  isLoggedIn
+  findPdfWithEmailFromPagination
 } from "../Actions/UserActions";
-import Navigationbar from "../Components/Navigationbar";
+import Login from "./Login";
 import Pagination from "react-js-pagination";
+import { Segment } from "semantic-ui-react";
+import profile from "../Image/profile.png";
 
 const mapStatetoProps = state => {
   return {
@@ -17,9 +18,6 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
   findProfileWithEmail: email => {
     dispatch(findProfileWithEmail(email));
   },
@@ -40,8 +38,7 @@ class Profile extends Component {
     this.setState({ activePage: currentPage });
     this.props.findPdfWithEmailFromPagination(currentPage, limitPage, email);
   }
-  componentWillMount() {
-    this.props.isLoggedIn();
+  componentDidMount() {
     this.props.findProfileWithEmail(this.props.user.email);
     this.props.findPdfWithEmailFromPagination(
       this.state.activePage,
@@ -49,40 +46,46 @@ class Profile extends Component {
       this.props.user.email
     );
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.user.email !== nextProps.user.email) {
-      this.props.findProfileWithEmail(nextProps.user.email);
+  componentDidUpdate(prevProps) {
+    if (this.props.user.email !== prevProps.user.email) {
+      this.props.findProfileWithEmail(this.props.user.email);
       this.props.findPdfWithEmailFromPagination(
         this.state.activePage,
         this.state.limitPage,
-        nextProps.user.email
+        this.props.user.email
       );
     }
-    if (nextProps.user.isLoggedIn === false) {
+    if (this.props.user.isLoggedIn === false) {
       this.props.history.push("/Login");
     }
   }
   render() {
     return (
-      <div className="container">
-        {this.props.user.isLoggedIn === true ? (
-          <div>
-            <Navigationbar show={true} />
+      <div>
+        {Boolean(localStorage.getItem("isloggedIn")) === true ? (
+          <Segment
+            style={{
+              minHeight: "38em"
+            }}
+          >
             <br />
             <br />
             <br />
-            <h1 align="left"> My Profile</h1>
             <br />
             <Grid>
+              <h1 align="left" style={{ fontFamily: "Prompt" }}>
+                {" "}
+                My Profile
+              </h1>
               <Row>
                 {this.props.user.image !== "" ? (
                   <div>
-                    <Col sm={6}>
+                    <Col sm={2}>
                       {this.props.user.image === undefined ? (
                         <Image
                           width="150px"
                           height="150px"
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb0aOnZ2nFpJXZoH3-EPTHLUWhielLC6RHkJpTkdIBJW0B-8iX"
+                          src={profile}
                           circle
                         />
                       ) : (
@@ -97,9 +100,14 @@ class Profile extends Component {
                       <br />
                       {/* <p align="center">แก้ไขข้อมูล</p> */}
                     </Col>
-                    <Col sm={4}>
-                      <p align="left">Hello,</p>
-                      <h1 align="left">{this.props.user.username}</h1>
+                    <Col sm={5}>
+                      <br />
+                      <p align="left" style={{ fontFamily: "Prompt" }}>
+                        Hello,
+                      </p>
+                      <h1 align="left" style={{ fontFamily: "Prompt" }}>
+                        {this.props.user.username}
+                      </h1>
                       {/* <p align="left"> จำนวน coin ที่คงเหลือ </p>
               <h1 align="left"> 200 Baht </h1>
               <br />
@@ -110,27 +118,32 @@ class Profile extends Component {
               </Row>
               <br />
               <hr />
-              <h1 align="left"> My library </h1>
+              <h1 align="left" style={{ fontFamily: "Prompt" }}>
+                {" "}
+                My Library{" "}
+              </h1>
               <br />
               <TableView sheetPdfList={this.props.user} />
-              <Pagination
-                hideFirstLastPages
-                activePage={this.state.activePage}
-                itemsCountPerPage={this.state.limitPage}
-                totalItemsCount={this.props.user.pageNumber}
-                pageRangeDisplayed={5}
-                onChange={currentPage => {
-                  this.handlePaginationChange(
-                    currentPage,
-                    this.state.limitPage,
-                    this.props.user.email
-                  );
-                }}
-              />
+              <div align="center">
+                <Pagination
+                  hideFirstLastPages
+                  activePage={this.state.activePage}
+                  itemsCountPerPage={this.state.limitPage}
+                  totalItemsCount={this.props.user.pageNumber}
+                  pageRangeDisplayed={5}
+                  onChange={currentPage => {
+                    this.handlePaginationChange(
+                      currentPage,
+                      this.state.limitPage,
+                      this.props.user.email
+                    );
+                  }}
+                />
+              </div>
             </Grid>
-          </div>
+          </Segment>
         ) : (
-          <Navigationbar show={false} />
+          <Login />
         )}
       </div>
     );

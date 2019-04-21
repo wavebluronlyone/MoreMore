@@ -3,6 +3,7 @@ export { default as Shop } from "./Shop";
 export { default as About } from "./About";
 export { default as Login } from "./Login";
 export { default as ForgotPassword } from "./ForgotPassword";
+export { default as Sheeter } from "./Sheeter";
 export { default as Register } from "./Register";
 export { default as Profile } from "./Profile";
 export { default as DetailSheet } from "./DetailSheet";

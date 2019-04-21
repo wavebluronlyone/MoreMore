@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import {
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  ControlLabel,
-  Image,
-  FormControl
-} from "react-bootstrap";
-import {
   createPdf,
   createImage,
   createProductText,
   createSubImage
 } from "../Actions/AdminActions";
 import { connect } from "react-redux";
+import {
+  Form,
+  TextArea,
+  Input,
+  Container,
+  Image,
+  Button
+} from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -25,6 +24,9 @@ const mapStatetoProps = state => {
 const mapDispatchtoProps = dispatch => ({
   createPdf: (pdf, sheetName) => {
     dispatch(createPdf(pdf, sheetName));
+  },
+  createImage: (sheetImage, sheetName) => {
+    dispatch(createImage(sheetImage, sheetName));
   }
 });
 
@@ -91,7 +93,7 @@ class AddProduct extends Component {
     this.setState({ profile: event.target.value });
   }
   addProduct() {
-    createImage(this.state.sheetImage[0], this.state.sheetName);
+    this.props.createImage(this.state.sheetImage[0], this.state.sheetName);
     createSubImage(this.state.sheetSubImage, this.state.sheetName);
     this.props.createPdf(this.state.sheetPdf[0], this.state.sheetName);
     createProductText(
@@ -118,176 +120,135 @@ class AddProduct extends Component {
   }
   render() {
     return (
-      <div>
+      <Container style={{ fontFamily: "Prompt" }}>
+        <br />
         <Form>
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">ชื่อสินค้า:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                type="text"
-                placeholder="กรุณากรอกชื่อสินค้า"
-                onChange={this.handleSheetNameOnchange}
-              />
-            </Col>
-          </FormGroup>
-
-          <br />
-          <br />
-
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">ไฟล์:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                accept=".pdf"
-                type="file"
-                onChange={this.handleSheetPdfOnchange}
-              />
-            </Col>
-          </FormGroup>
-
-          <br />
-
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">รูปภาพหน้าปก:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                accept=".jpg"
-                type="file"
-                onChange={this.handleSheetImageOnchange}
-              />
-            </Col>
+          <Form.Field>
+            <label>ชื่อสินค้า</label>
+            <Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              type="text"
+              placeholder="กรุณากรอกชื่อสินค้า"
+              onChange={this.handleSheetNameOnchange}
+            />
             <br />
+          </Form.Field>
+
+          <Form.Field>
+            <label>ไฟล์</label>
+            <Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              accept=".pdf"
+              type="file"
+              onChange={this.handleSheetPdfOnchange}
+            />
             <br />
-            <Col sm={5}>
-              {this.state.urlImage !== "" ? (
-                <Image width="100px" height="100px" src={this.state.urlImage} />
-              ) : null}
-            </Col>
-          </FormGroup>
+          </Form.Field>
 
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <Form.Field>
+            <label>รูปภาพหน้าปก</label>
+            <Form.Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              accept=".jpg"
+              type="file"
+              onChange={this.handleSheetImageOnchange}
+            />
+            {this.state.urlImage !== "" ? (
+              <Image width="100px" height="100px" src={this.state.urlImage} />
+            ) : null}
+          </Form.Field>
 
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">รูปภาพประกอบ:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                accept=".jpg"
-                type="file"
-                onChange={this.handleSheetSubImageOnchange}
-                multiple
-              />
-              {this.state.urlSubImage.length > 0
-                ? this.state.urlSubImage.map(res => {
-                    return (
-                      <Col sm={2}>
-                        <Image width="100px" height="100px" src={res.image} />
-                      </Col>
-                    );
-                  })
-                : null}
-            </Col>
-          </FormGroup>
+          <Form.Field>
+            <label>รูปภาพประกอบ</label>
+            <Form.Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              accept=".jpg"
+              type="file"
+              onChange={this.handleSheetSubImageOnchange}
+              multiple
+            />
+            {this.state.urlSubImage.length > 0
+              ? this.state.urlSubImage.map(res => {
+                  return <Image width="100px" height="100px" src={res.image} />;
+                })
+              : null}
+          </Form.Field>
 
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <Form.Field>
+            <label>ราคา</label>
+            <Form.Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              type="text"
+              placeholder="กรุณากรอกราคา"
+              onChange={this.handlePriceOnchange}
+            />
+          </Form.Field>
 
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">ราคา:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                type="text"
-                placeholder="กรุณากรอกราคา"
-                onChange={this.handlePriceOnchange}
-              />
-            </Col>
-          </FormGroup>
+          <Form.Field>
+            <label>รายละเอียดสินค้าโดยย่อ</label>
+            <TextArea
+              placeholder="กรุณากรอกรายละเอียดสินค้าโดยย่อ"
+              onChange={this.handleSheetHiLightOnchange}
+              style={{
+                width: "40em",
+                height: "10em"
+              }}
+            />
+          </Form.Field>
 
-          <br />
-          <br />
+          <Form.Field>
+            <label>รายละเอียดสินค้าโดยละเอียด</label>
+            <TextArea
+              placeholder="กรุณากรอกรายละเอียดสินค้า"
+              onChange={this.handleSheetProductDescriptionOnchange}
+              style={{
+                width: "40em",
+                height: "10em"
+              }}
+            />
+          </Form.Field>
 
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">รายละเอียดสินค้าโดยย่อ:</p>
-            </Col>
-            <Col sm={5}>
-              <textarea
-                placeholder="กรุณากรอกรายละเอียดสินค้าโดยย่อ"
-                onChange={this.handleSheetHiLightOnchange}
-                cols={80}
-                rows={3}
-              />
-            </Col>
-          </FormGroup>
+          <Form.Field>
+            <label>ผู้อัพโหลด</label>
+            <Form.Input
+              style={{
+                width: "25em",
+                borderColor: "#ffc900"
+              }}
+              type="text"
+              placeholder="กรุณากรอกผู้อัพโหลด"
+              onChange={this.handleProfileOnchange}
+            />
+          </Form.Field>
 
-          <br />
-          <br />
-          <br />
-          <br />
-
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">รายละเอียดสินค้าโดยละเอียด:</p>
-            </Col>
-            <Col sm={5}>
-              <textarea
-                placeholder="กรุณากรอกรายละเอียดสินค้า"
-                onChange={this.handleSheetProductDescriptionOnchange}
-                cols={80}
-                rows={3}
-              />
-            </Col>
-          </FormGroup>
-
-          <br />
-          <br />
-          <br />
-          <br />
-
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-              <p align="right">ผู้อัพโหลด:</p>
-            </Col>
-            <Col sm={5}>
-              <FormControl
-                type="text"
-                placeholder="กรุณากรอกผู้อัพโหลด"
-                onChange={this.handleProfileOnchange}
-              />
-            </Col>
-          </FormGroup>
-
-          <FormGroup>
-            <Col smOffset={2} sm={10}>
-              <br />
-              <Button
-                onClick={() => {
-                  this.addProduct();
-                }}
-              >
-                เพิ่ม
-              </Button>
-            </Col>
-          </FormGroup>
+          <Form.Field>
+            <Button
+              onClick={() => {
+                this.addProduct();
+              }}
+            >
+              เพิ่ม
+            </Button>
+          </Form.Field>
         </Form>
-      </div>
+        <br />
+        <br />
+      </Container>
     );
   }
 }

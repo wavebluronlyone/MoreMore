@@ -1,16 +1,35 @@
 import React, { Component } from "react";
-import { Col, Row, Button } from "react-bootstrap";
 import SheetDescription from "../Components/SheetDescription";
-import Navigationbar from "../Components/Navigationbar";
 import { connect } from "react-redux";
 import {
   findSheetDataWithSheetName,
   addSheetToCart,
   createSlideImage,
+  findSheetDataWithProfile,
   resetImage
 } from "../Actions/StockActions";
-import { isLoggedIn } from "../Actions/UserActions";
+import {
+  findProfileWithEmail,
+  addComment,
+  getComment,
+  resetComment
+} from "../Actions/UserActions";
 import Slide from "../Components/Slide";
+import { Link } from "react-router-dom";
+import {
+  Segment,
+  Message,
+  Grid,
+  Button,
+  Container,
+  Responsive,
+  Comment,
+  Header,
+  Form,
+  Breadcrumb
+} from "semantic-ui-react";
+import CardView from "../Components/CardView";
+import ReviewComment from "../Components/ReviewComment";
 
 const mapStatetoProps = state => {
   return {
@@ -20,75 +39,236 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  isLoggedIn: () => {
-    dispatch(isLoggedIn());
-  },
   findSheetDataWithSheetName: sheetName => {
     dispatch(findSheetDataWithSheetName(sheetName));
   },
-  addSheetToCart: (sheetName, sheetPrice, sheetAddCart) => {
-    dispatch(addSheetToCart(sheetName, sheetPrice, sheetAddCart));
+  findSheetDataWithProfile: (profile, sheetName) => {
+    dispatch(findSheetDataWithProfile(profile, sheetName));
+  },
+  addSheetToCart: (sheetName, sheetPrice, sheetImage, sheetAddCart) => {
+    dispatch(addSheetToCart(sheetName, sheetPrice, sheetImage, sheetAddCart));
   },
   createSlideImage: sheetName => {
     dispatch(createSlideImage(sheetName));
   },
+  findProfileWithEmail: email => {
+    dispatch(findProfileWithEmail(email));
+  },
+  addComment: (comment, user, sheetName) => {
+    dispatch(addComment(comment, user, sheetName));
+  },
+  getComment: sheetName => {
+    dispatch(getComment(sheetName));
+  },
   resetImage: () => {
     dispatch(resetImage());
+  },
+  resetComment: () => {
+    dispatch(resetComment());
   }
 });
 
 class DetailSheet extends Component {
-  componentWillMount() {
-    this.props.isLoggedIn();
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: ""
+    };
+    this.handleCommentOnChange = this.handleCommentOnChange.bind(this);
+  }
+  componentDidMount() {
+    this.props.getComment(this.props.match.params.id);
+    this.props.findProfileWithEmail(this.props.user.email);
     this.props.findSheetDataWithSheetName(this.props.match.params.id);
     this.props.createSlideImage(this.props.match.params.id);
   }
+  componentDidUpdate(prevProps) {
+    if (this.props.stock.profile !== prevProps.stock.profile) {
+      this.props.findSheetDataWithProfile(
+        this.props.stock.profile,
+        this.props.match.params.id
+      );
+    }
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.resetComment();
+      this.props.findSheetDataWithSheetName(this.props.match.params.id);
+      this.props.createSlideImage(this.props.match.params.id);
+      this.props.getComment(this.props.match.params.id);
+    }
+    if (this.props.user.email !== prevProps.user.email) {
+      this.props.findProfileWithEmail(this.props.user.email);
+    }
+    if (
+      this.props.user.commentArray.length > prevProps.user.commentArray.length
+    ) {
+      this.props.getComment(this.props.match.params.id);
+    }
+  }
   componentWillUnmount() {
     this.props.resetImage();
+    this.props.resetComment();
   }
+  handleCommentOnChange(event) {
+    this.setState({ comment: event.target.value });
+  }
+  handleSubmit(comment, username, sheetName) {
+    this.props.addComment(comment, username, sheetName);
+    this.setState({ comment: "" });
+  }
+
   render() {
     return (
       <div>
-        {this.props.user.isLoggedIn === true ? (
-          <Navigationbar show={true} />
-        ) : (
-          <Navigationbar show={false} />
-        )}
-        <br />
-        <br />
-        <br />
-        <p>{this.props.stock.message}</p>
-        {this.props.stock.price !== 0 ? (
-          <div>
-            <Row>
-              <Col sm={2} />
-              <Col sm={2}>
-                <p align="left">{this.props.match.params.id}</p>
-                <Slide multipleImageList={this.props.stock.subImg} />
-              </Col>
-              <Col sm={5}>
+        <Responsive maxWidth={800}>
+          {this.props.stock.message !== "" ? (
+            <div>
+              {this.props.stock.message !== undefined ? (
+                <div align="center">
+                  <Message style={{ width: "100%" }} positive>
+                    <br />
+                    <p style={{ fontFamily: "Prompt" }}>
+                      {this.props.stock.message}
+                    </p>
+                  </Message>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </Responsive>
+
+        <Responsive minWidth={801}>
+          {this.props.stock.message !== "" ? (
+            <Container>
+              <br />
+              {this.props.stock.message !== undefined ? (
+                <Message positive>
+                  <p style={{ fontFamily: "Prompt" }}>
+                    {this.props.stock.message}
+                  </p>
+                </Message>
+              ) : null}
+            </Container>
+          ) : null}
+        </Responsive>
+        <Segment
+          style={{
+            minHeight: "38em"
+          }}
+        >
+          <br />
+          {this.props.stock.price !== 0 ? (
+            <div>
+              <Container>
+                <Breadcrumb>
+                  <Breadcrumb.Section as={Link} to="/Shop">
+                    Shop
+                  </Breadcrumb.Section>
+                  <Breadcrumb.Divider icon="right angle" />
+                  <Breadcrumb.Section>
+                    {this.props.match.params.id}
+                  </Breadcrumb.Section>
+                </Breadcrumb>
                 <br />
                 <br />
-                <h2>{this.props.stock.price + " บาท"}</h2>
-                <Button
-                  onClick={() => {
-                    this.props.addSheetToCart(
-                      this.props.match.params.id,
-                      this.props.stock.price,
-                      this.props.stock.addCart
-                    );
-                  }}
-                >
-                  เพิ่มสินค้าลงในตะกร้า
-                </Button>
-              </Col>
-            </Row>
-            <br />
-            <SheetDescription sheetDetail={this.props.stock.longDetail} />
-          </div>
-        ) : (
-          <p>กรุณารอสักครู่...</p>
-        )}
+                <Grid stackable>
+                  <Grid.Row columns={2} centered>
+                    <Grid.Column width={4}>
+                      <Slide multipleImageList={this.props.stock.subImg} />
+                    </Grid.Column>
+                    <Grid.Column>
+                      <h2
+                        style={{
+                          fontFamily: "Prompt"
+                        }}
+                      >
+                        {this.props.match.params.id}
+                      </h2>
+                      <h2
+                        style={{
+                          fontFamily: "Prompt"
+                        }}
+                      >
+                        {this.props.stock.price + " บาท"}
+                      </h2>
+                      <SheetDescription
+                        sheetDetail={this.props.stock.longDetail}
+                      />
+                      <br />
+                      <Button
+                        style={{
+                          backgroundColor: "black",
+                          color: "white",
+                          fontFamily: "Prompt"
+                        }}
+                        onClick={() => {
+                          this.props.addSheetToCart(
+                            this.props.match.params.id,
+                            this.props.stock.price,
+                            this.props.stock.img,
+                            this.props.stock.addCart
+                          );
+                        }}
+                      >
+                        เพิ่มสินค้าลงในตะกร้า
+                      </Button>
+                      <br />
+                      <br />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+                <br />
+                {this.props.stock.sheetDataProfile.length > 0 ? (
+                  <div>
+                    <h1 style={{ fontFamily: "Prompt" }}>
+                      ชีทจากผู้เขียนคนนี้
+                    </h1>
+                    <CardView
+                      sheetList={this.props.stock.sheetDataProfile}
+                      centered={false}
+                    />
+                  </div>
+                ) : null}
+                <br />
+                <Comment.Group>
+                  <Header as="h1" style={{ fontFamily: "Prompt" }} dividing>
+                    รีวิวจากลูกค้า
+                  </Header>
+                  <ReviewComment commentList={this.props.user.commentArray} />
+                  {Boolean(localStorage.getItem("isloggedIn")) === true ? (
+                    <Form
+                      onSubmit={() => {
+                        this.handleSubmit(
+                          this.state.comment,
+                          this.props.user.username,
+                          this.props.match.params.id
+                        );
+                      }}
+                    >
+                      <Form.TextArea
+                        value={this.state.comment}
+                        onChange={this.handleCommentOnChange}
+                      />
+                      <Button
+                        style={{
+                          backgroundColor: "black",
+                          color: "white",
+                          fontFamily: "Prompt"
+                        }}
+                        content="เพิ่มรีวิวชีทสรุป"
+                        labelPosition="left"
+                        icon="edit"
+                      />
+                    </Form>
+                  ) : null}
+                </Comment.Group>
+              </Container>
+            </div>
+          ) : (
+            <div>
+              <p>กรุณารอสักครู่...</p>
+            </div>
+          )}
+        </Segment>
       </div>
     );
   }

@@ -1,13 +1,14 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
+import { Image } from "semantic-ui-react";
 
 const Slide = props => (
-  <div className="container">
+  <div>
     <Carousel>
       {props.multipleImageList.map(image => {
         return (
           <Carousel.Item>
-            <img width="300px" height="300px" alt="400x400" src={image} />
+            <Image width="100%" height="auto" src={image} />
             <Carousel.Caption />
           </Carousel.Item>
         );

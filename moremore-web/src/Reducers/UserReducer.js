@@ -8,6 +8,8 @@ import {
   RESET_SHEET_PDF,
   RESET_MESSAGE,
   GET_SHEET_GROUP,
+  GET_COMMENT,
+  RESET_COMMENT,
   GET_TOTAL_PAYMENT
 } from "../Actions/type";
 
@@ -15,11 +17,13 @@ const initialState = {
   data: [],
   addCart: [],
   message: "",
-  isloggedIn: false,
+  isloggedIn: Boolean(localStorage.getItem("isloggedIn")),
   email: "",
   username: "",
   pdf: "",
   image: "",
+  positive: "",
+  commentArray: [],
   pageNumber: 0
 };
 
@@ -31,6 +35,7 @@ export default function(state = initialState, action) {
         ...state,
         message: action.text,
         isLoggedIn: action.isloggedIn,
+        positive: action.positive,
         email: action.email
       };
     case FIND_PROFILE_WITH_EMAIL:
@@ -39,6 +44,18 @@ export default function(state = initialState, action) {
         ...state,
         username: action.myUser,
         image: action.image
+      };
+    case GET_COMMENT:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        commentArray: action.comment
+      };
+    case RESET_COMMENT:
+      console.log("dispatching", action);
+      return {
+        ...state,
+        commentArray: []
       };
     case FIND_PDF_WITH_EMAIL:
       console.log("dispatching", action);

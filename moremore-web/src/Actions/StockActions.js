@@ -9,7 +9,11 @@ import {
   CREATE_SLIDE_IMAGE,
   RESET_IMAGE,
   CREATE_LINE_PAYMENT,
-  GET_TOTAL_SHEET
+  GET_NEW_ARRIVAL,
+  GET_TOTAL_SHEET,
+  FIND_SHEET_DATA_WITH_PROFILE,
+  BUY_COMPLETE,
+  GET_TOTAL_USER_PAYMENT
 } from "./type";
 
 export function getBestSeller() {
@@ -62,6 +66,53 @@ export function getBestSeller() {
               }
             }
           });
+      });
+    });
+  };
+}
+
+export function getNewArrival() {
+  return dispatch => {
+    const sheetRef = database.collection("product");
+    const imageRef = database.collection("image");
+    const sheetArrivalArray = [];
+    const newArrivalData = [];
+    let index = 0;
+    let count = 3;
+    sheetRef.get().then(sheetData => {
+      sheetData.docs.forEach(sheet => {
+        sheetArrivalArray[index] = {
+          name: sheet.id,
+          createAt: sheet.data().createAt.seconds
+        };
+        index++;
+        if (index === sheetData.size) {
+          sheetArrivalArray.sort((min, max) => max.createAt - min.createAt);
+          for (let i = 0; i < count; i++) {
+            sheetRef
+              .doc(sheetArrivalArray[i].name)
+              .get()
+              .then(sheet => {
+                imageRef
+                  .doc(sheetArrivalArray[i].name)
+                  .get()
+                  .then(image => {
+                    newArrivalData[i] = {
+                      name: sheetArrivalArray[i].name,
+                      price: sheet.data().price,
+                      hiLight: sheet.data().hiLight,
+                      img: image.data().image
+                    };
+                    if (i === count - 1) {
+                      dispatch({
+                        type: GET_NEW_ARRIVAL,
+                        product: newArrivalData
+                      });
+                    }
+                  });
+              });
+          }
+        }
       });
     });
   };
@@ -175,6 +226,28 @@ export function findSheetDataWithPaginationFromSearch(
   };
 }
 
+export function getTotalUserPayment() {
+  return dispatch => {
+    const paymentRef = database.collection("payment");
+    const emailData = [];
+    let index = 0;
+    const distinct = (value, index, self) => {
+      return self.indexOf(value) === index;
+    };
+    paymentRef.get().then(paymentData => {
+      paymentData.docs.forEach(payment => {
+        emailData[index] = payment.data().email;
+        index++;
+      });
+      const uniqueEmailData = emailData.filter(distinct);
+      dispatch({
+        type: GET_TOTAL_USER_PAYMENT,
+        total: uniqueEmailData.length
+      });
+    });
+  };
+}
+
 export function findSheetDataWithSheetName(sheetName) {
   return dispatch => {
     const sheetRef = database.collection("product").doc(sheetName);
@@ -185,15 +258,61 @@ export function findSheetDataWithSheetName(sheetName) {
           type: FIND_SHEET_DATA_WITH_SHEET_NAME,
           price: sheet.data().price,
           longDetail: sheet.data().longDetail,
-          img: image.data().image
+          img: image.data().image,
+          profile: sheet.data().profile
         });
       });
     });
   };
 }
 
+export function findSheetDataWithProfile(profile, sheetName) {
+  return dispatch => {
+    const sheetRef = database.collection("product");
+    const imageRef = database.collection("image");
+    const sheetDataArray = [];
+    let index = 0;
+    let i = 0;
+    sheetRef
+      .where("profile", "==", profile)
+      .get()
+      .then(sheetData => {
+        sheetData.forEach(sheet => {
+          imageRef
+            .doc(sheet.id)
+            .get()
+            .then(image => {
+              if (sheet.id !== sheetName) {
+                sheetDataArray[index] = {
+                  name: sheet.id,
+                  price: sheet.data().price,
+                  hiLight: sheet.data().hiLight,
+                  img: image.data().image
+                };
+                index++;
+                i++;
+              } else {
+                i++;
+              }
+              if (i === sheetData.size) {
+                dispatch({
+                  type: FIND_SHEET_DATA_WITH_PROFILE,
+                  product: sheetDataArray
+                });
+              }
+            });
+        });
+      });
+  };
+}
+
 export function createSlideImage(sheetName) {
   return dispatch => {
+    dispatch({
+      type: RESET_IMAGE,
+      subImg: [],
+      message: ""
+    });
     const multipleImageRef = database
       .collection("subImage")
       .where("name", "==", sheetName);
@@ -211,49 +330,58 @@ export function createSlideImage(sheetName) {
 export function resetImage() {
   return dispatch => {
     dispatch({
-      type: RESET_IMAGE,
-      subImg: [],
-      message: ""
+      type: RESET_IMAGE
     });
   };
 }
 
 export function createSheetforUser(email, sheetName) {
-  const fileRef = database.collection("file").doc(sheetName);
-  const paymentRef = database.collection("payment").doc();
-  fileRef.get().then(file => {
-    paymentRef
-      .set({
-        date: new Date(),
-        email: email,
-        pdf: file.data().pdf,
-        name: sheetName
-      })
-      .then(function() {
-        console.log("Document successfully written!");
-      })
-      .catch(function(error) {
-        console.error("Error writing document: ", error);
-      });
-  });
+  return dispatch => {
+    const fileRef = database.collection("file").doc(sheetName);
+    const paymentRef = database.collection("payment").doc();
+    fileRef.get().then(file => {
+      paymentRef
+        .set({
+          date: new Date(),
+          email: email,
+          pdf: file.data().pdf,
+          name: sheetName
+        })
+        .then(function() {
+          dispatch({
+            type: BUY_COMPLETE,
+            message: "การสั่งซื้อสินค้าเสร็จสิ้น กรุณาตรวจสอบที่หน้า Profile"
+          });
+          console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+    });
+  };
 }
 
 export function resetPayment() {
   return dispatch => {
     dispatch({
       type: IS_PAID,
-      isPaid: false
+      message: ""
     });
   };
 }
 
-export function addSheetToCart(sheetName, sheetPrice, sheetAddCart) {
+export function addSheetToCart(
+  sheetName,
+  sheetPrice,
+  sheetImage,
+  sheetAddCart
+) {
   return dispatch => {
     const sheetData = [];
     const sheetNameArray = [];
     let totalSheetPrices = 0;
     sheetAddCart.map((sheet, index) => {
-      return sheetNameArray[index] = sheet.name;
+      return (sheetNameArray[index] = sheet.name);
     });
 
     if (sheetNameArray.indexOf(sheetName) >= 0) {
@@ -261,16 +389,17 @@ export function addSheetToCart(sheetName, sheetPrice, sheetAddCart) {
       return;
     } else {
       if (sheetAddCart.length === 0) {
-        sheetData[0] = { name: sheetName, price: sheetPrice };
+        sheetData[0] = { name: sheetName, price: sheetPrice, img: sheetImage };
         totalSheetPrices += sheetPrice;
       } else {
-        sheetData[0] = { name: sheetName, price: sheetPrice };
+        sheetData[0] = { name: sheetName, price: sheetPrice, img: sheetImage };
         totalSheetPrices += sheetPrice;
         let i = 0;
         sheetAddCart.forEach(sheet => {
           sheetData[i + 1] = {
             name: sheet.name,
-            price: sheet.price
+            price: sheet.price,
+            img: sheet.img
           };
           totalSheetPrices += sheetData[i + 1].price;
           i++;
@@ -294,13 +423,14 @@ export function removeSheetCart(sheetName, sheetAddCart) {
     let i = 0;
     sheetAddCart.forEach((sheet, index) => {
       if (index !== selectIndex) {
-        sheetData[i + 1] = {
+        sheetData[i] = {
           name: sheet.name,
-          price: sheet.price
+          price: sheet.price,
+          img: sheet.img
         };
-        totalSheetPrices += sheetData[i + 1].price;
+        totalSheetPrices += sheetData[i].price;
+        i++;
       }
-      i++;
     });
     dispatch({
       type: ADD_SHEET_TO_CART,
@@ -327,7 +457,7 @@ export function linkPayment(
       transactionId: transactionId,
       orderId: orderId
     })
-    .then(function() {
+    .then(() => {
       console.log("Document successfully written!");
       window.location.href = url;
     })
@@ -338,6 +468,14 @@ export function linkPayment(
 
 export function createLinePayment(totalSheetPrices) {
   return dispatch => {
+    dispatch({
+      type: CREATE_LINE_PAYMENT,
+      orderId: "",
+      transactionId: "",
+      price: 0,
+      url: "",
+      message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ line pay"
+    });
     var reservePayment = {
       prices: totalSheetPrices,
       date: Date.now()
@@ -345,6 +483,7 @@ export function createLinePayment(totalSheetPrices) {
     axios
       .post("https://phiyawat-comsci.herokuapp.com/linePay", reservePayment)
       .then(function(response) {
+        console.log(response);
         dispatch({
           type: CREATE_LINE_PAYMENT,
           orderId: reservePayment.date,

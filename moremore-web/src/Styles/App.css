@@ -1,5 +1,4 @@
-body {
-    margin-top: 0%;
-    padding: 0px;
-    text-align: center;
+.border {
+    border-width: 2px;
+    border-color: "#fbb900";
 }
