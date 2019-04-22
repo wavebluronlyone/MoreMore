@@ -6517,9 +6517,10 @@ react-pdf-js@^2.0.5:
     pdfjs-dist "^1.9.575"
     prop-types "^15.5.10"
 
-react-pdf@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-4.0.3.tgz#8cd4a898e23585c4ba3aff1ce389b292051072ea"
+react-pdf@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-4.0.5.tgz#4f5584005a504cb7941b01670b40355f4706b726"
+  integrity sha512-hoIL08qU5pU1fNEx6NnLl3omD08LAUc+UkmxGXEql/PXiNWjMZHWlu8MSVg9pwSTN6dXtfky0gehrisWvSOrCg==
   dependencies:
     "@babel/runtime" "^7.0.0"
     lodash.once "^4.1.1"

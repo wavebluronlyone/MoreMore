@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import FacebookLogin from "react-facebook-login";
 import "../Styles/App.css";
-import { Segment, Message, Container, Icon } from "semantic-ui-react";
+import { Segment, Message, Container, Icon, Button} from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -33,12 +33,21 @@ const mapDispatchtoProps = dispatch => ({
 });
 
 class Login extends Component {
-  responseFacebook = response => {
-    this.props.signInWithFacebook(
-      response.accessToken,
-      response.picture.data.url
-    );
-  };
+	
+  sdkClick = (event) => {
+	window.FB.login(function(responseToken) {
+		if (responseToken.authResponse) {
+		 window.FB.api("/me",{fields: "id, name, email, picture.type(large)"}, (responseInfo) => {
+		   this.props.signInWithFacebook(
+			  responseToken.accessToken,
+			  responseInfo.picture.data.url
+			);
+		 });
+		} else {
+
+		}
+	},{scope:"email,public_profile",info_fields:"name,email,picture.type(large)"}); 
+  }
 
   submit = values => {
     this.props.signInWithEmail(values.email, values.password);
@@ -93,14 +102,9 @@ class Login extends Component {
           ลงชื่อเข้าสู่ระบบ
         </h1>
         <div align="center">
-          <FacebookLogin
-            style={{ fontFamily: "Prompt" }}
-            appId="512026392655945"
-            fields="name,email,picture.type(large)"
-            size="small"
-            callback={this.responseFacebook}
-            icon="fa-facebook"
-          />
+          <Button color="facebook" onClick={this.sdkClick}>
+		    <Icon name='facebook' /> Login with Facebook
+		  </Button>
         </div>
         <hr />
         <LoginForm onSubmit={this.submit} />
