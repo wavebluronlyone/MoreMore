@@ -35,11 +35,11 @@ const mapDispatchtoProps = dispatch => ({
 class Login extends Component {
 	
   sdkClick = (event) => {
-	window.FB.login(function(responseToken) {
+	window.FB.login((responseToken) => {
 		if (responseToken.authResponse) {
 		 window.FB.api("/me",{fields: "id, name, email, picture.type(large)"}, (responseInfo) => {
 		   this.props.signInWithFacebook(
-			  responseToken.accessToken,
+			  responseToken.authResponse.accessToken,
 			  responseInfo.picture.data.url
 			);
 		 });
