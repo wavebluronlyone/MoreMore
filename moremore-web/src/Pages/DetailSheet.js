@@ -26,8 +26,11 @@ import {
   Comment,
   Header,
   Form,
-  Breadcrumb
+  Breadcrumb,
+  Image,
+  Icon
 } from "semantic-ui-react";
+import { Carousel } from "react-bootstrap";
 import CardView from "../Components/CardView";
 import ReviewComment from "../Components/ReviewComment";
 
@@ -72,7 +75,8 @@ class DetailSheet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: ""
+      comment: "",
+	  showExample:false
     };
     this.handleCommentOnChange = this.handleCommentOnChange.bind(this);
   }
@@ -117,6 +121,7 @@ class DetailSheet extends Component {
   }
 
   render() {
+	if(!this.state.showExample)
     return (
       <div>
         <Responsive maxWidth={800}>
@@ -172,8 +177,9 @@ class DetailSheet extends Component {
                 <br />
                 <Grid stackable>
                   <Grid.Row columns={2} centered>
-                    <Grid.Column width={4}>
+                    <Grid.Column width={4} onClick={()=>{this.setState({showExample:true});}} style={{cursor:"pointer"}}>
                       <Slide multipleImageList={this.props.stock.subImg} />
+					  คลิกที่ภาพเพื่อขยาย
                     </Grid.Column>
                     <Grid.Column>
                       <h2
@@ -271,6 +277,34 @@ class DetailSheet extends Component {
         </Segment>
       </div>
     );
+	else
+	return(<div style={{
+			width:"100vw",
+			height:"100vh",
+			backgroundColor:"black",
+			position:"fixed",
+			top:"0px",
+			zIndex:"1000",
+		}}>
+			<Button icon style={{marginTop:"20px",marginLeft:"auto",marginRight:"auto",display:"block"}} color="white" onClick={()=>{this.setState({showExample:false})}}>
+			  <Icon name='close icon'/>
+		    </Button>
+			<Carousel style={{
+				width:"100vw",
+				height:"90vh",
+				position:"absolute",
+				bottom:"0px",
+			}}>
+			  {this.props.stock.subImg.map(image => {
+				return (
+				  <Carousel.Item>
+					<Image src={image} style={{objectFit:"contain",marginLeft:"auto",marginRight:"auto"}} />
+					<Carousel.Caption />
+				  </Carousel.Item>
+				);
+			  })}
+			</Carousel>
+		</div>);
   }
 }
 

@@ -64,7 +64,7 @@ let LoginForm = props => {
             <Button
               type="submit"
               style={{
-                backgroundColor: "#feb955",
+                backgroundColor: "#fbb900",
                 color: "white"
               }}
             >
@@ -116,7 +116,7 @@ let LoginForm = props => {
             <Button
               type="submit"
               style={{
-                backgroundColor: "#feb955",
+                backgroundColor: "#fbb900",
                 color: "white"
               }}
             >
