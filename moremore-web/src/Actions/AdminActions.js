@@ -180,7 +180,7 @@ export function createProductText(
   if (sheetName === "") {
     return;
   }
-  sheetPrice = parseInt(sheetPrice);
+  sheetPrice = parseInt(sheetPrice,10);
   const sheetRef = database.collection("product").doc(sheetName);
   sheetRef
     .set({
@@ -265,7 +265,7 @@ export function editProduct(
   sheetProductDescription,
   profile
 ) {
-  sheetPrice = parseInt(sheetPrice);
+  sheetPrice = parseInt(sheetPrice,10);
   const sheetRef = database.collection("product").doc(sheetName);
   sheetRef
     .set({
@@ -296,6 +296,7 @@ export function deleteProduct(sheetName, sheetData) {
         };
         index++;
       }
+	  return null;
     });
     database
       .collection("product")

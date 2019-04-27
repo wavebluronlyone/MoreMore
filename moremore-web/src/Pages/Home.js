@@ -311,7 +311,7 @@ class Home extends Component {
           </Container>
           <br />
           <Container>
-            <Grid unstackable>
+            <Grid unstackable="true">
               <Grid.Row columns={2}>
                 <Grid.Column>
                   <Image src={cover} />

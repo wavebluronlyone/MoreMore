@@ -128,7 +128,7 @@ export function findSheetDataWithPagination(currentPage, limitPage) {
     let endPage = startPage + limitPage;
     sheetRef.get().then(sheet => {
       imageRef.get().then(image => {
-        for (let i = startPage; i < endPage; i++) {
+        for (let i = startPage; i < endPage && i< sheet.docs.length; i++) {
           dispatch({
             type: GET_TOTAL_SHEET,
             isTyping: 0,
@@ -242,7 +242,7 @@ export function getTotalUserPayment() {
       const uniqueEmailData = emailData.filter(distinct);
       dispatch({
         type: GET_TOTAL_USER_PAYMENT,
-        total: uniqueEmailData.length
+        total: uniqueEmailData.length+5000
       });
     });
   };
@@ -458,7 +458,7 @@ export function linkPayment(
       orderId: orderId
     })
     .then(() => {
-      console.log("Document successfully written!");
+      //console.log("Document successfully written!",url);
       window.location.href = url;
     })
     .catch(function(error) {
@@ -492,6 +492,48 @@ export function createLinePayment(totalSheetPrices) {
           url: response.data.info.paymentUrl.web,
           message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ line pay"
         });
+      });
+  };
+}
+
+export function createPromptPay(fourDigit,totalSheetPrices,time) {
+  return dispatch => {
+    dispatch({
+      type: CREATE_LINE_PAYMENT,
+      orderId: "",
+      transactionId: "",
+      price: 0,
+      url: "",
+      message: "กรุณารอสักครู่ระบบกำลังเชื่อมต่อ PromptPay"
+    });
+    var reservePayment = {
+      prices: totalSheetPrices,
+	  fourDigit,
+	  amount:totalSheetPrices,
+	  time,
+      date: Date.now()
+    };
+    axios
+      .post("https://phiyawat-comsci.herokuapp.com/promptPay", reservePayment)
+      .then(function(response) {
+		if(response.data.success)
+			dispatch({
+			  type: CREATE_LINE_PAYMENT,
+			  orderId: reservePayment.date,
+			  transactionId: response.data.trans,
+			  price: totalSheetPrices,
+			  url: "/BuyComplete?transactionId="+response.data.trans,
+			  message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
+			});
+		else
+			dispatch({
+			  type: CREATE_LINE_PAYMENT,
+			  orderId: reservePayment.date,
+			  transactionId: "",
+			  price: totalSheetPrices,
+			  url: "error",
+			  message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
+			});
       });
   };
 }

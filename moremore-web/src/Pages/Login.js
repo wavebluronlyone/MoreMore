@@ -7,7 +7,6 @@ import {
   resetMessage
 } from "../Actions/UserActions";
 import { connect } from "react-redux";
-import FacebookLogin from "react-facebook-login";
 import "../Styles/App.css";
 import { Segment, Message, Container, Icon, Button} from "semantic-ui-react";
 

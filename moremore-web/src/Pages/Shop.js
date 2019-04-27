@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import CardView from "../Components/CardView";
 import { connect } from "react-redux";
 import {
-  resetImage,
   findSheetDataWithPagination,
   findSheetDataWithPaginationFromSearch
 } from "../Actions/StockActions";

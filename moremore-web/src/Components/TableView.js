@@ -8,7 +8,7 @@ const TableView = props => (
       <Table.Body>
         {props.sheetPdfList.data.map((sheet, index) => {
           return (
-            <Table.Row>
+            <Table.Row key={"table"+index}>
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell align="left">{sheet.name}</Table.Cell>
               <Table.Cell>
