@@ -320,9 +320,26 @@ export function getSheetDataFromAddCart(email, transactionId) {
               confirmTransactionData
             )
             .then(function(response) {
+			  if(!response.data.hasOwnProperty("info"))
+				return;
               if (
                 response.data.info.transactionId ===
                 transaction.data().transactionId
+              ) {
+                dispatch({
+                  type: GET_SHEET_GROUP,
+                  product: transaction.data().data
+                });
+              }
+            });
+		  axios
+            .post(
+              "https://phiyawat-comsci.herokuapp.com/confirmPrompt",
+              confirmTransactionData
+            )
+            .then(function(response) {
+              if (
+                response.data.success===true
               ) {
                 dispatch({
                   type: GET_SHEET_GROUP,
@@ -389,7 +406,7 @@ export function findPdfWithEmailFromPagination(currentPage, limitPage, email) {
       let startPage = currentPage * limitPage - limitPage;
       let endPage = startPage + limitPage;
       paymentRef.get().then(payment => {
-        for (let i = startPage; i < endPage; i++) {
+        for (let i = startPage; i < endPage && i < payment.docs.length ; i++) {
           dispatch({
             type: GET_TOTAL_PAYMENT,
             pageNumber: payment.docs.length

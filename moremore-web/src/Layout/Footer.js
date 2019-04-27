@@ -87,7 +87,7 @@ const Footer = () => (
               </Grid.Column>
               <Grid.Column style={{ left: "55%" }} width={7}>
                 <div
-                  class="fb-page"
+                  className="fb-page"
                   data-href="https://web.facebook.com/tumoresheet/"
                   data-width="340"
                   data-hide-cover="false"

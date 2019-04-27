@@ -71,7 +71,7 @@ let SearchForm = () => {
 
       <Responsive minWidth={801}>
         <Container>
-          <Grid unstackable>
+          <Grid unstackable="true">
             <Grid.Row>
               <Grid.Column width={3} />
               <Grid.Column>

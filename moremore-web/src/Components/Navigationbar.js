@@ -9,8 +9,7 @@ import {
   Container,
   Label,
   Responsive,
-  Sidebar,
-  Icon
+  Sidebar
 } from "semantic-ui-react";
 import image from "../Image/shop.png";
 import logo from "../Image/logobold.png";
@@ -215,7 +214,7 @@ class Navigationbar extends Component {
                           }}
                           as="a"
                           name="Logout"
-                          color="#43464b"
+                          color="black"
                           active={activeItem === "Log out"}
                           onClick={() => {
                             this.props.signOut();
@@ -273,7 +272,7 @@ class Navigationbar extends Component {
                   <Menu.Item
                     as="a"
                     name="Logout"
-                    color="#43464b"
+                    color="black"
                     style={{
                       bottom: "20%",
                       fontFamily: "Prompt"
@@ -391,7 +390,7 @@ class Navigationbar extends Component {
                         as={Link}
                         to="/Profile"
                         name="Profile"
-                        color="#43464b"
+                        color="black"
                         active={activeItem === "Profile"}
                         onClick={this.handleItemClick}
                       />
@@ -402,7 +401,7 @@ class Navigationbar extends Component {
                         }}
                         as="a"
                         name="Logout"
-                        color="#43464b"
+                        color="black"
                         active={activeItem === "Log out"}
                         onClick={() => {
                           this.props.signOut();
