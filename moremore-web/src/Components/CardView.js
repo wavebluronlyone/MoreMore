@@ -22,7 +22,7 @@ const CardView = props => (
       <Item.Group divided unstackable>
         {props.sheetList.map(sheet => {
           return (
-            <Item>
+            <Item key={sheet.name}>
               <Item.Image src={sheet.img} />
               <Item.Content>
                 <Item.Header
@@ -74,7 +74,7 @@ const CardView = props => (
         <Grid.Row centered={props.center} columns={6}>
           {props.sheetList.map(sheet => {
             return (
-              <Grid.Column>
+              <Grid.Column key={sheet.name}>
                 <Card>
                   <Image src={sheet.img} />
                   <Card.Content style={{ height: "120px" }}>

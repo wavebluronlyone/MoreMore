@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   findPdfWithSheetName,
-  isLoggedIn,
   resetSheetPdf
 } from "../Actions/UserActions";
 import { Document, Page } from "react-pdf";
