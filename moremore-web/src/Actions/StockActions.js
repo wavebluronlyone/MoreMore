@@ -460,6 +460,7 @@ export function linkPayment(
     .then(() => {
       //console.log("Document successfully written!",url);
       window.location.href = url;
+	  return false;
     })
     .catch(function(error) {
       console.error("Error writing document: ", error);
@@ -503,7 +504,7 @@ export function createPromptPay(fourDigit,totalSheetPrices,time) {
       orderId: "",
       transactionId: "",
       price: 0,
-      url: "",
+      url: "loading",
       message: "กรุณารอสักครู่ระบบกำลังเชื่อมต่อ PromptPay"
     });
     var reservePayment = {

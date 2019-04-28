@@ -39,11 +39,25 @@ class ReadSheet extends Component {
     this.state = { numPages: null, pageNumber: 1, fullWidth: 500, mobileWidth: 250};
   }
 
+  _handleKeyDown = (event) => {
+  	switch( event.keyCode ) {
+		case 37:
+			this.goToPrevPage();
+			break;
+		case 39:
+			this.goToNextPage();
+			break;
+		default: 
+			break;
+	}
+  }
+
   componentDidMount() {
     this.props.findPdfWithSheetName(
       this.props.match.params.id,
       this.props.user.email
     );
+	document.addEventListener("keydown", this._handleKeyDown);
   }
 
   componentDidUpdate(prevProps) {
@@ -61,6 +75,7 @@ class ReadSheet extends Component {
   componentWillUnmount() {
     this.setState({ numPages: null, pageNumber: 0});
     this.props.resetSheetPdf();
+	document.removeEventListener("keydown", this._handleKeyDown);
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -164,6 +179,9 @@ class ReadSheet extends Component {
 						  </div>
                     </Grid.Row>
 					<Grid.Row centered>
+						(สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard เพื่อเปลี่ยนหน้าได้)
+					</Grid.Row>
+					<Grid.Row centered>
 						Page {this.state.pageNumber} of {this.state.numPages}
 					</Grid.Row>
                   </Grid>
@@ -232,6 +250,9 @@ class ReadSheet extends Component {
 							</Button>
 						  </div>
                     </Grid.Row>
+					<Grid.Row centered>
+						(สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard เพื่อเปลี่ยนหน้าได้)
+					</Grid.Row>
 					<Grid.Row centered>
 						Page {this.state.pageNumber} of {this.state.numPages}
 					</Grid.Row>	  
