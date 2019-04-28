@@ -72,7 +72,7 @@ class Cart extends Component {
   }
 	
   componentDidUpdate(prevProps) {
-    if (this.props.stock.transactionId !== prevProps.stock.transactionId&& this.props.stock.url!=="error") {
+    if (this.props.stock.transactionId !== prevProps.stock.transactionId&& this.props.stock.url!=="error"&& this.props.stock.url!=="loading") {
       linkPayment(
         this.props.stock.addCart,
         this.props.stock.url,
@@ -270,7 +270,7 @@ class Cart extends Component {
 									  </p>
 									</Message.Content>
 								  </Message>):null}
-								<p>1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code จำนวน <b>{this.props.stock.totalPrices}.00 บาท</b></p>
+								<p>1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code(แสกนผ่าน Application ของธนาคาร) จำนวน <b>{this.props.stock.totalPrices}.00 บาท</b></p>
 								<p>2.รออย่างน้อย 1 นาที แล้วกรอกฟอร์มด้านล่างเพื่อตรวจสอบรายการโอนเงิน</p>
 								<h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
 								<p><b>1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567</b></p>
@@ -281,7 +281,11 @@ class Cart extends Component {
 								  input={false}
 								  onChange={this.handleDateChange}
 								/>
-								<Button onClick={this.createPromptPay} style={{marginTop:"20px"}} positive>Check</Button>
+								{
+									(this.props.stock.url==="loading"||this.props.stock.transactionId!=="")?
+										(<Button positive loading style={{marginTop:"20px"}}>Loading</Button>)
+										:(<Button onClick={this.createPromptPay} style={{marginTop:"20px"}} positive>Check</Button>)
+								}
 							  </Modal.Description>
 							</Modal.Content>
 						  </Modal>
