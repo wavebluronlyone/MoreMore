@@ -71,10 +71,7 @@ class Cart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.stock.transactionId !== prevProps.stock.transactionId &&
-      this.props.stock.url !== "error"
-    ) {
+    if (this.props.stock.transactionId !== prevProps.stock.transactionId&& this.props.stock.url!=="error"&& this.props.stock.url!=="loading") {
       linkPayment(
         this.props.stock.addCart,
         this.props.stock.url,
@@ -247,82 +244,55 @@ class Cart extends Component {
                           width="150em"
                           height="50em"
                           src={linepay}
-                          onClick={() => {
-                            this.props.createLinePayment(
-                              this.props.stock.totalPrices
-                            );
-                          }}
+						  onClick={() => {
+							this.props.createLinePayment(
+							  this.props.stock.totalPrices
+							);
+						  }}
                         />{" "} */}
-                        <Modal
-                          closeIcon
-                          style={{ overflow: "auto" }}
-                          open={this.state.showModal}
-                          onClose={this.closeModal}
-                          trigger={
-                            <Image
-                              style={{ cursor: "pointer" }}
-                              centered
-                              width="150em"
-                              height="50em"
-                              src={promptpay}
-                              onClick={this.openModal}
-                            />
-                          }
-                          className="scrolling"
-                        >
-                          <Modal.Header>Promptpay</Modal.Header>
-                          <Modal.Content image>
-                            <Image wrapped size="medium" src={qr} />
-                            <Modal.Description>
-                              <Header>ขั้นตอนการชำระเงินด้วย Promptpay</Header>
-                              {this.props.stock.url === "error" ? (
-                                <Message negative style={{ width: "100%" }}>
-                                  <Message.Content>
-                                    <Message.Header>Error</Message.Header>
-                                    <p style={{ fontFamily: "Prompt" }}>
-                                      ไม่พบรายการโอนเงินดังกล่าว
-                                    </p>
-                                  </Message.Content>
-                                </Message>
-                              ) : null}
-                              <p>
-                                1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code จำนวน{" "}
-                                <b>{this.props.stock.totalPrices}.00 บาท</b>
-                              </p>
-                              <p>
-                                2.รออย่างน้อย 1 นาที
-                                แล้วกรอกฟอร์มด้านล่างเพื่อตรวจสอบรายการโอนเงิน
-                              </p>
-                              <h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
-                              <p>
-                                <b>
-                                  1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย
-                                  (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567
-                                </b>
-                              </p>
-                              <Input
-                                focus
-                                placeholder="XXXX"
-                                onChange={this.handleNumChange}
-                              />
-                              <p style={{ marginTop: "20px" }}>
-                                <b>2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป)</b>
-                              </p>
-                              <DateTime
-                                style={{ border: "1px solid black" }}
-                                input={false}
-                                onChange={this.handleDateChange}
-                              />
-                              <Button
-                                onClick={this.createPromptPay}
-                                style={{ marginTop: "20px" }}
-                                positive
-                              >
-                                Check
-                              </Button>
-                            </Modal.Description>
-                          </Modal.Content>
-                        </Modal>
+						  <Modal closeIcon style={{overflow:"auto"}} open={this.state.showModal} onClose={this.closeModal} trigger={<Image
+							  style={{cursor:"pointer"}}
+							  centered
+							  width="150em"
+							  height="50em"
+							  src={promptpay}
+							  onClick={this.openModal}
+							/>
+						} className="scrolling">
+							<Modal.Header>Promptpay</Modal.Header>
+							<Modal.Content image>
+							  <Image wrapped size='medium' src={qr} />
+							  <Modal.Description>
+								<Header>ขั้นตอนการชำระเงินด้วย Promptpay</Header>
+								{this.props.stock.url==="error"?
+								(<Message negative
+									style={{width: "100%" }}>
+									<Message.Content>
+									  <Message.Header>Error</Message.Header>
+									  <p style={{ fontFamily: "Prompt" }}>
+										ไม่พบรายการโอนเงินดังกล่าว
+									  </p>
+									</Message.Content>
+								  </Message>):null}
+								<p>1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code(แสกนผ่าน Application ของธนาคาร) จำนวน <b>{this.props.stock.totalPrices}.00 บาท</b></p>
+								<p>2.รออย่างน้อย 1 นาที แล้วกรอกฟอร์มด้านล่างเพื่อตรวจสอบรายการโอนเงิน</p>
+								<h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
+								<p><b>1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567</b></p>
+								<Input focus placeholder='XXXX' onChange={this.handleNumChange}/>
+								<p style={{marginTop:"20px"}}><b>2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป)</b></p>
+								<DateTime
+								  style={{border:"1px solid black"}}
+								  input={false}
+								  onChange={this.handleDateChange}
+								/>
+								{
+									(this.props.stock.url==="loading"||this.props.stock.transactionId!=="")?
+										(<Button positive loading style={{marginTop:"20px"}}>Loading</Button>)
+										:(<Button onClick={this.createPromptPay} style={{marginTop:"20px"}} positive>Check</Button>)
+								}
+							  </Modal.Description>
+							</Modal.Content>
+						  </Modal>
                       </h2>
                     </Button>
                   </div>
@@ -340,12 +310,12 @@ class Cart extends Component {
                   >
                     <h2 style={{ fontFamily: "Prompt" }}>
                       ชำระเงินผ่าน{" "}
-                      <Image
+                      {/* <Image
                         centered
                         width="150em"
                         height="50em"
                         src={linepay}
-                      />{" "}
+                      />{" "} */}
                       <Image
                         centered
                         width="150em"
