@@ -202,7 +202,7 @@ export function findSheetDataWithPaginationFromSearch(
         } else {
           index = currentPage + (limitPage - currentPage);
         }
-        for (let i = 0; i < limitPage; i++) {
+        for (let i = 0; i < limitPage&&index<query.length; i++) {
           sheetData[i] = {
             name: sheet.docs[query[index]].id,
             price: sheet.docs[query[index]].data().price,
