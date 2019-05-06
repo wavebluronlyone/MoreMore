@@ -15,6 +15,7 @@ import {
   BUY_COMPLETE,
   GET_TOTAL_USER_PAYMENT
 } from "./type";
+var request = require("request");
 
 export function getBestSeller() {
   return dispatch => {
@@ -23,51 +24,38 @@ export function getBestSeller() {
     const imageRef = database.collection("image");
     const sheetArray = [];
     const bestSellerSheetData = [];
-    let index = 0;
-    let count = 3;
-    sheetRef.get().then(sheetData => {
-      sheetData.docs.forEach(sheet => {
-        paymentRef
-          .where("name", "==", sheet.id)
-          .get()
-          .then(payment => {
-            sheetArray[index] = {
-              name: sheet.id,
-              payment: payment.size
-            };
-            index++;
-            if (index === sheetData.size) {
-              sheetArray.sort(
-                (min, max) => parseFloat(max.payment) - parseFloat(min.payment)
-              );
-              for (let i = 0; i < count; i++) {
-                sheetRef
-                  .doc(sheetArray[i].name)
-                  .get()
-                  .then(sheet => {
-                    imageRef
-                      .doc(sheetArray[i].name)
-                      .get()
-                      .then(image => {
-                        bestSellerSheetData[i] = {
-                          name: sheetArray[i].name,
-                          price: sheet.data().price,
-                          hiLight: sheet.data().hiLight,
-                          img: image.data().image
-                        };
-                        if (i === count - 1) {
-                          dispatch({
-                            type: GET_BEST_SELLER,
-                            product: bestSellerSheetData
-                          });
-                        }
-                      });
-                  });
-              }
-            }
-          });
+	const count=3;
+	axios
+      .post("https://poomrokc.services:4242/best", {})
+      .then((response) => {
+		if(response.data.success) {
+			for(var i=0;i<response.data.info.length;i++) {
+				sheetRef
+					  .doc(response.data.info[i])
+					  .get()
+					  .then(sheet => {
+						imageRef
+						  .doc(sheet.id)
+						  .get()
+						  .then(image => {
+							var dat=sheet.data();
+							bestSellerSheetData.push({
+							  name: sheet.id,
+							  price: dat.price,
+							  hiLight: dat.hiLight,
+							  img: image.data().image
+							});
+							if (bestSellerSheetData.length === count) {
+							  dispatch({
+								type: GET_BEST_SELLER,
+								product: bestSellerSheetData
+							  });
+							}
+						  });
+					  });
+			}
+		}
       });
-    });
   };
 }
 
@@ -79,40 +67,26 @@ export function getNewArrival() {
     const newArrivalData = [];
     let index = 0;
     let count = 3;
-    sheetRef.get().then(sheetData => {
+    sheetRef.orderBy("createAt","desc").limit(3).get().then(sheetData => {
       sheetData.docs.forEach(sheet => {
-        sheetArrivalArray[index] = {
-          name: sheet.id,
-          createAt: sheet.data().createAt.seconds
-        };
-        index++;
-        if (index === sheetData.size) {
-          sheetArrivalArray.sort((min, max) => max.createAt - min.createAt);
-          for (let i = 0; i < count; i++) {
-            sheetRef
-              .doc(sheetArrivalArray[i].name)
-              .get()
-              .then(sheet => {
-                imageRef
-                  .doc(sheetArrivalArray[i].name)
-                  .get()
-                  .then(image => {
-                    newArrivalData[i] = {
-                      name: sheetArrivalArray[i].name,
-                      price: sheet.data().price,
-                      hiLight: sheet.data().hiLight,
-                      img: image.data().image
-                    };
-                    if (i === count - 1) {
-                      dispatch({
-                        type: GET_NEW_ARRIVAL,
-                        product: newArrivalData
-                      });
-                    }
+		  imageRef
+                .doc(sheet.id)
+                .get()
+                .then(image => {
+				  var dat=sheet.data();
+                  newArrivalData.push({
+                    name: sheet.id,
+                    price: dat.price,
+                    hiLight: dat.hiLight,
+                    img: image.data().image
                   });
-              });
-          }
-        }
+                  if (newArrivalData.length === count) {
+                    dispatch({
+                      type: GET_NEW_ARRIVAL,
+                      product: newArrivalData
+                    });
+                  }
+                });
       });
     });
   };
@@ -126,30 +100,57 @@ export function findSheetDataWithPagination(currentPage, limitPage) {
     let index = 0;
     let startPage = currentPage * limitPage - limitPage;
     let endPage = startPage + limitPage;
-    sheetRef.get().then(sheet => {
-      imageRef.get().then(image => {
-        for (let i = startPage; i < endPage && i< sheet.docs.length; i++) {
-          dispatch({
-            type: GET_TOTAL_SHEET,
-            isTyping: 0,
-            pageNumber: sheet.docs.length
-          });
-          sheetData[index] = {
-            name: sheet.docs[i].id,
-            price: sheet.docs[i].data().price,
-            hiLight: sheet.docs[i].data().hiLight,
-            img: image.docs[i].data().image
-          };
-          index++;
-          if (index === limitPage || i === sheet.docs.length - 1) {
-            dispatch({
-              type: GET_ALL_SHEET,
-              product: sheetData
-            });
-          }
-        }
+	let count=0;
+	axios
+      .post("https://poomrokc.services:4242/sheetlist", {})
+      .then((response) => {
+		if(response.data.success) {
+			var sheets=response.data.info;
+			var count = Math.max(Math.min(sheets.length-startPage,endPage-startPage),0);
+			for(var i=startPage;i<endPage&&i<sheets.length;i++)
+			{
+				dispatch({
+				  type: GET_TOTAL_SHEET,
+				  isTyping: 0,
+				  pageNumber: sheets.length
+				});
+				sheetRef
+					  .doc(sheets[i])
+					  .get()
+					  .then(sheet => {
+						imageRef
+							.doc(sheet.id)
+							.get()
+							.then(image => {
+							  var dat=sheet.data();
+							  if(dat===undefined)
+							  {
+								  count--;
+									  if(sheetData.length===count) {
+									  dispatch({
+										type: GET_ALL_SHEET,
+										product: sheetData
+									  });
+								  }
+								  return;
+							  }
+							  sheetData.push({
+								name: sheet.id,
+								price: dat.price,
+								hiLight: dat.hiLight,
+								img: image.data().image
+							  });
+							  if(sheetData.length===count) {
+								  dispatch({
+									type: GET_ALL_SHEET,
+								    product: sheetData
+								  });
+							  }
+							});
+					  });		
+			}
+		}
       });
-    });
   };
 }
 
@@ -163,88 +164,93 @@ export function findSheetDataWithPaginationFromSearch(
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
     const sheetData = [];
-    const query = [];
-    let queryCount = 0;
-    let index = 0;
-    sheetRef.get().then(sheet => {
-      imageRef.get().then(image => {
-        for (let i = 0; i < sheet.docs.length; i++) {
-          if (
-            sheet.docs[i].id.toUpperCase().indexOf(input) >= 0 ||
-            sheet.docs[i]
-              .data()
-              .profile.toUpperCase()
-              .indexOf(input) >= 0
-          ) {
-            queryCount++;
-            query[index] = i;
-            index++;
-            if (i === sheet.docs.length - 1) {
-              dispatch({
-                type: GET_TOTAL_SHEET,
-                isTyping: 1,
-                pageNumber: queryCount
-              });
-            }
-          } else {
-            if (i === sheet.docs.length - 1) {
-              dispatch({
-                type: GET_TOTAL_SHEET,
-                isTyping: 1,
-                pageNumber: queryCount
-              });
-            }
-          }
-        }
-        index = 0;
-        if (currentPage === 1) {
-          index = 0;
-        } else {
-          index = currentPage + (limitPage - currentPage);
-        }
-        for (let i = 0; i < limitPage&&index<query.length; i++) {
-          sheetData[i] = {
-            name: sheet.docs[query[index]].id,
-            price: sheet.docs[query[index]].data().price,
-            hiLight: sheet.docs[query[index]].data().hiLight,
-            img: image.docs[query[index]].data().image
-          };
-          if (index === query.length - 1) {
-            dispatch({
-              type: GET_ALL_SHEET,
-              product: sheetData
-            });
-          }
-          index++;
-        }
-        dispatch({
-          type: GET_ALL_SHEET,
-          product: sheetData
-        });
+	let count=0;
+	let startPage = currentPage * limitPage - limitPage;
+    let endPage = startPage + limitPage;
+	axios
+      .post("https://poomrokc.services:4242/sheetlist", {})
+      .then((response) => {
+		if(response.data.success) {
+			var sheetprev=response.data.info;
+			var sheets=[];
+			for(var i=0;i<sheetprev.length;i++)
+				if(sheetprev[i].toUpperCase().indexOf(input)>=0)
+					sheets.push(sheetprev[i]);
+			var count = Math.max(Math.min(sheets.length-startPage,endPage-startPage),0);
+			if(count===0)
+			{
+				dispatch({
+				  type: GET_TOTAL_SHEET,
+				  isTyping: 1,
+				  pageNumber: sheets.length
+				});
+				dispatch({
+					type: GET_ALL_SHEET,
+					product: sheetData,
+					input
+				});
+				return;
+			}
+			for(var i=startPage;i<endPage&&i<sheets.length;i++)
+			{
+				dispatch({
+				  type: GET_TOTAL_SHEET,
+				  isTyping: 1,
+				  pageNumber: sheets.length
+				});
+				sheetRef
+					  .doc(sheets[i])
+					  .get()
+					  .then(sheet => {
+						imageRef
+							.doc(sheet.id)
+							.get()
+							.then(image => {
+							  var dat=sheet.data();
+							  if(dat===undefined)
+							  {
+								  count--;
+									  if(sheetData.length===count) {
+									  dispatch({
+										type: GET_ALL_SHEET,
+										product: sheetData
+									  });
+								  }
+								  return;
+							  }
+							  sheetData.push({
+								name: sheet.id,
+								price: dat.price,
+								hiLight: dat.hiLight,
+								img: image.data().image
+							  });
+							  if(sheetData.length===count) {
+								  dispatch({
+									type: GET_ALL_SHEET,
+								    product: sheetData,
+									input
+								  });
+							  }
+							});
+					  });		
+			}
+		}
       });
-    });
   };
 }
 
 export function getTotalUserPayment() {
   return dispatch => {
-    const paymentRef = database.collection("payment");
-    const emailData = [];
-    let index = 0;
-    const distinct = (value, index, self) => {
-      return self.indexOf(value) === index;
-    };
-    paymentRef.get().then(paymentData => {
-      paymentData.docs.forEach(payment => {
-        emailData[index] = payment.data().email;
-        index++;
+	axios
+      .post("https://poomrokc.services:4242/num", {})
+      .then((response) => {
+		if(response.data.success) {
+			dispatch({
+				type: GET_TOTAL_USER_PAYMENT,
+				total: response.data.info
+			  });
+		}
       });
-      const uniqueEmailData = emailData.filter(distinct);
-      dispatch({
-        type: GET_TOTAL_USER_PAYMENT,
-        total: uniqueEmailData.length+5000
-      });
-    });
   };
 }
 
@@ -358,6 +364,19 @@ export function createSheetforUser(email, sheetName) {
           console.error("Error writing document: ", error);
         });
     });
+	var headers = {
+		"Content-Type": "application/x-www-form-urlencoded",
+	};
+	var dataString = {
+		ID: "5cc770ee2df95d22dfdcdcc0",
+		sheets: JSON.stringify([sheetName]),
+	  };
+	request({
+		url:"https://poomrokc.services:4242/ac",
+		method:"POST",
+		headers: headers,
+		form: dataString
+	});
   };
 }
 

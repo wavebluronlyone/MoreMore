@@ -11,6 +11,7 @@ import {
   RESET_MESSAGE,
   GET_ALL_SHEET
 } from "./type";
+var request = require("request");
 
 export function signInWithEmail(email, password) {
   return dispatch => {
@@ -190,8 +191,21 @@ export function createProductText(
       profile: profile,
       createAt: new Date()
     })
-    .then(function() {
+    .then(() =>{
       console.log("Document successfully written Text");
+	  var headers = {
+		"Content-Type": "application/x-www-form-urlencoded",
+	  };
+	  var dataString = {
+		ID: "5cc770ee2df95d22dfdcdcc0",
+		sheets: JSON.stringify([sheetName]),
+	  };
+	  request({
+		  url:"https://poomrokc.services:4242/ac",
+		  method:"POST",
+		  headers: headers,
+		  form: dataString
+		});
     })
     .catch(function(error) {
       console.error("Error writing document: ", error);

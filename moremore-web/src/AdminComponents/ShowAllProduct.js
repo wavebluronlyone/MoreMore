@@ -40,7 +40,7 @@ const ShowAllProduct = props => (
                       fontFamily: "Prompt"
                     }}
                   >
-                    {sheet.hiLight}
+				    {sheet.name}
                   </Card.Header>
                 </Card.Content>
                 <Grid>
