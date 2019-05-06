@@ -1,13 +1,7 @@
 import React from "react";
 import { deleteProduct, isEdit } from "../Actions/AdminActions";
 import { connect } from "react-redux";
-import {
-  Button,
-  Card,
-  Grid,
-  Image,
-  Container
-} from "semantic-ui-react";
+import { Button, Card, Grid, Image, Container } from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
@@ -43,73 +37,27 @@ const ShowAllProduct = props => (
                     {sheet.hiLight}
                   </Card.Header>
                 </Card.Content>
-                <Grid>
-                  <Grid.Row columns={2}>
-                    <Grid.Column width={1} />
-                    <Grid.Column width={3}>
-                      <Button
-                        onClick={() => {
-                          props.deleteProduct(sheet.name, props.sheetList.data);
-                        }}
-                      >
-                        ลบ
-                      </Button>
-                    </Grid.Column>
-                    <Grid.Column width={3} />
-                    <Grid.Column width={3}>
-                      <Button
-                        onClick={() => {
-                          props.isEdit(true, sheet.name);
-                        }}
-                      >
-                        แก้ไข
-                      </Button>
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
+                <Button
+                  onClick={() => {
+                    props.deleteProduct(sheet.name, props.sheetList.data);
+                  }}
+                >
+                  ลบ
+                </Button>
+                <div style={{ marginBottom: "1em" }} />
+                <Button
+                  onClick={() => {
+                    props.isEdit(true, sheet.name);
+                  }}
+                >
+                  แก้ไข
+                </Button>
               </Card>
             </Grid.Column>
           );
         })}
       </Grid.Row>
     </Grid>
-    {/* <Grid>
-      <Row>
-        {props.sheetList.data.map(sheet => {
-          return (
-            <div>
-              <Col sm={2}>
-                <Card>
-                  <CardImg width="100%" src={sheet.img} />
-                  <CardBody>
-                    <CardTitle align="left">{sheet.hiLight}</CardTitle>
-                    <CardText align="left">
-                      <Button
-                        onClick={() => {
-                          props.deleteProduct(sheet.name, props.sheetList.data);
-                        }}
-                      >
-                        {" "}
-                        {"ลบ"}
-                      </Button>
-                      &nbsp;&nbsp;&nbsp;
-                      <Button
-                        onClick={() => {
-                          props.isEdit(true, sheet.name);
-                        }}
-                      >
-                        {" "}
-                        {"แก้ไข"}
-                      </Button>
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-            </div>
-          );
-        })}
-      </Row>
-    </Grid> */}
   </Container>
 );
 

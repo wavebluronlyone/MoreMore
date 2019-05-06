@@ -40,19 +40,19 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_BEST_SELLER:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         bestSeller: action.product
       };
     case GET_NEW_ARRIVAL:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         newArrival: action.product
       };
     case GET_ALL_SHEET:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         data: action.product
@@ -69,19 +69,19 @@ export default function(state = initialState, action) {
         isTyping: action.isTyping
       };
     case CREATE_SLIDE_IMAGE:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         subImg: action.subImage
       };
     case FIND_SHEET_DATA_WITH_PROFILE:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         sheetDataProfile: action.product
       };
     case FIND_SHEET_DATA_WITH_SHEET_NAME:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         price: action.price,
@@ -90,7 +90,7 @@ export default function(state = initialState, action) {
         profile: action.profile
       };
     case ADD_SHEET_TO_CART:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         addCart: action.product,
@@ -121,7 +121,7 @@ export default function(state = initialState, action) {
         message: action.message
       };
     case IS_PAID:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         message: ""

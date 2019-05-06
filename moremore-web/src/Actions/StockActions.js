@@ -242,7 +242,7 @@ export function getTotalUserPayment() {
       const uniqueEmailData = emailData.filter(distinct);
       dispatch({
         type: GET_TOTAL_USER_PAYMENT,
-        total: uniqueEmailData.length+5000
+        total: uniqueEmailData.length
       });
     });
   };
