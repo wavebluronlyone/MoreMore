@@ -113,7 +113,6 @@ class Home extends Component {
                   <Button
                     as={Link}
                     to="/Sheeter"
-                    type="submit"
                     style={{
                       fontFamily: "Prompt",
                       fontSize: "0.9em",
@@ -158,9 +157,8 @@ class Home extends Component {
           </Container>
           <br />
           <Container>
-            <Image src={cover} />
-            <br />
-            <Image src={cover2} />
+		    <Image src={cover2} style={{marginTop:"10px"}}/>
+            <Image src={cover} href="/sheeter" style={{marginTop:"10px"}}/>
             {this.props.stock.newArrival.length > 0 ? (
               <div>
                 <br />
@@ -314,10 +312,10 @@ class Home extends Component {
             <Grid unstackable="true">
               <Grid.Row columns={2}>
                 <Grid.Column>
-                  <Image src={cover} />
+                  <Image src={cover} href="/sheeter" style={{marginTop:"10px"}}/>
                 </Grid.Column>
                 <Grid.Column>
-                  <Image src={cover2} />
+                  <Image src={cover2} style={{marginTop:"10px"}}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
