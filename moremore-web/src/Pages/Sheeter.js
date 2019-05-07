@@ -28,7 +28,7 @@ const Sheeter = () => (
                 </a>
               </li>
               <li>
-                <a href="https://drive.google.com/file/d/1gra6-0GOb4S-Sbybjegle1F7-aJgRZDf/view">
+                <a href="https://drive.google.com/file/d/1gra6-0GOb4S-Sbybjegle1F7-aJgRZDf/view?usp=sharing">
                   การส่งชีท
                 </a>
               </li>

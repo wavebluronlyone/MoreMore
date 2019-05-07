@@ -34,7 +34,8 @@ const initialState = {
   totalUser: 0,
   isPaid: false,
   pageNumber: 0,
-  isTyping: 0
+  isTyping: 0,
+  input:""
 };
 
 export default function(state = initialState, action) {
@@ -55,7 +56,8 @@ export default function(state = initialState, action) {
       // console.log("dispatching", action);
       return {
         ...state,
-        data: action.product
+        data: action.product,
+		input:action.input
       };
     case GET_TOTAL_USER_PAYMENT:
       return {
