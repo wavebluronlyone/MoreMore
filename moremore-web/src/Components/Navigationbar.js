@@ -119,7 +119,7 @@ class Navigationbar extends Component {
                   as={Link}
                   to="/Sheeter"
                 >
-                  นักทำชีทสรุป
+                  สมัครนักทำชีทสรุป
                 </Menu.Item>
               </Sidebar>
 
@@ -349,8 +349,8 @@ class Navigationbar extends Component {
                     }}
                     as={Link}
                     to="/Sheeter"
-                    name="นักทำชีทสรุป"
-                    active={activeItem === "นักทำชีทสรุป"}
+                    name="สมัครนักทำชีทสรุป"
+                    active={activeItem === "สมัครนักทำชีทสรุป"}
                     onClick={this.handleItemClick}
                   />
                   {Boolean(localStorage.getItem("isloggedIn")) === true ? (
