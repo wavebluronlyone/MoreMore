@@ -208,8 +208,7 @@ class Cart extends Component {
 							this.props.createLinePayment(
 							  this.props.stock.totalPrices
 							);
-						  }}
-                        />{" "} */}
+						  }}                         />{" "} */}
                         <Modal
                           closeIcon
                           style={{ overflow: "auto" }}
@@ -227,27 +226,11 @@ class Cart extends Component {
                           }
                           className="scrolling"
                         >
-                          <Modal.Header
-                            style={{
-                              fontFamily: "Prompt",
-                              fontWeight: "Bold",
-                              fontSize: "1.5em"
-                            }}
-                          >
-                            Promptpay
-                          </Modal.Header>
+                          <Modal.Header>Promptpay</Modal.Header>
                           <Modal.Content image>
                             <Image wrapped size="medium" src={qr} />
                             <Modal.Description>
-                              <Header
-                                style={{
-                                  fontFamily: "Prompt",
-                                  fontWeight: "Bold",
-                                  fontSize: "1.5em"
-                                }}
-                              >
-                                ขั้นตอนการชำระเงินด้วย Promptpay
-                              </Header>
+                              <Header>ขั้นตอนการชำระเงินด้วย Promptpay</Header>
                               {this.props.stock.url === "error" ? (
                                 <Message negative style={{ width: "100%" }}>
                                   <Message.Content>
@@ -258,51 +241,20 @@ class Cart extends Component {
                                   </Message.Content>
                                 </Message>
                               ) : null}
-                              <p
-                                style={{
-                                  fontFamily: "Prompt",
-                                  fontSize: "0.9em",
-                                  color: "#000000"
-                                }}
-                              >
+                              <p>
                                 1.โอนเงิน Promptpay เข้าบัญชีตาม QR
-                                Code(สแกนผ่าน Application ของธนาคาร) จำนวน{" "}
-                                <b
-                                  style={{
-                                    fontFamily: "Prompt",
-                                    fontSize: "0.9em",
-                                    color: "#000000"
-                                  }}
-                                >
-                                  {this.props.stock.totalPrices}.00 บาท
-                                </b>
+                                Code(แสกนผ่าน Application ของธนาคาร) จำนวน
                               </p>
-                              <p
-                                style={{
-                                  fontFamily: "Prompt",
-                                  fontSize: "0.9em",
-                                  color: "#000000"
-                                }}
-                              >
+                              <h3 style={{ textAlign: "center" }}>
+                                <b>{this.props.stock.totalPrices}.00 บาท</b>
+                              </h3>
+                              <br />
+                              <p>
                                 2.รออย่างน้อย 1 นาที
                                 แล้วกรอกฟอร์มด้านล่างเพื่อตรวจสอบรายการโอนเงิน
                               </p>
-                              <h3
-                                style={{
-                                  fontFamily: "Prompt",
-                                  fontWeight: "Bold",
-                                  fontSize: "1.5em"
-                                }}
-                              >
-                                ตรวจสอบรายการโอนเงินและรับชีททันที
-                              </h3>
-                              <p
-                                style={{
-                                  fontFamily: "Prompt",
-                                  fontSize: "0.9em",
-                                  color: "#000000"
-                                }}
-                              >
+                              <h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
+                              <p>
                                 <b>
                                   1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย
                                   (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567
@@ -313,14 +265,7 @@ class Cart extends Component {
                                 placeholder="XXXX"
                                 onChange={this.handleNumChange}
                               />
-                              <p
-                                style={{
-                                  marginTop: "20px",
-                                  fontFamily: "Prompt",
-                                  fontSize: "0.9em",
-                                  color: "#000000"
-                                }}
-                              >
+                              <p style={{ marginTop: "20px" }}>
                                 <b>2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป)</b>
                               </p>
                               <DateTime
