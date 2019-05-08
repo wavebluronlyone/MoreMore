@@ -19,6 +19,7 @@ import {
 import cover from "../Image/cvphoto.jpg";
 import cover2 from "../Image/cover2.jpg";
 import Background from "../Image/coverweb.jpg";
+import Howto from "../Image/howto.jpg";
 
 const mapStatetoProps = state => {
   return {
@@ -157,8 +158,7 @@ class Home extends Component {
           </Container>
           <br />
           <Container>
-		    <Image src={cover2} style={{marginTop:"10px"}}/>
-            <Image src={cover} href="/sheeter" style={{marginTop:"10px"}}/>
+		    <Image src={Howto} style={{marginTop:"10px",width:"100%",maxWidth:"400px",marginLeft:"auto",marginRight:"auto"}}/>
             {this.props.stock.newArrival.length > 0 ? (
               <div>
                 <br />
@@ -309,16 +309,7 @@ class Home extends Component {
           </Container>
           <br />
           <Container>
-            <Grid columns={2}>
-              <Grid.Row>
-                <Grid.Column>
-                  <Image src={cover} href="/sheeter" style={{marginTop:"10px"}}/>
-                </Grid.Column>
-                <Grid.Column>
-                  <Image src={cover2} style={{marginTop:"10px"}}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            <Image src={Howto} style={{marginTop:"10px",width:"400px",marginLeft:"auto",marginRight:"auto"}}/>
             {this.props.stock.newArrival.length > 0 ? (
               <div>
                 <br />
