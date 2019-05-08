@@ -270,7 +270,8 @@ class Cart extends Component {
 									  </p>
 									</Message.Content>
 								  </Message>):null}
-								<p>1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code(แสกนผ่าน Application ของธนาคาร) จำนวน <b>{this.props.stock.totalPrices}.00 บาท</b></p>
+								<p>1.โอนเงิน Promptpay เข้าบัญชีตาม QR Code(แสกนผ่าน Application ของธนาคาร) จำนวน</p>
+								<h3 style={{textAlign:"center"}}><b>{this.props.stock.totalPrices}.00 บาท</b></h3><br />
 								<p>2.รออย่างน้อย 1 นาที แล้วกรอกฟอร์มด้านล่างเพื่อตรวจสอบรายการโอนเงิน</p>
 								<h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
 								<p><b>1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567</b></p>
