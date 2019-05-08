@@ -207,8 +207,7 @@ class Cart extends Component {
 						  onClick={() => {
 							this.props.createLinePayment(
 							  this.props.stock.totalPrices
-							);
-						  }}                         />{" "} */}
+              ); /> */}
                         <Modal
                           closeIcon
                           style={{ overflow: "auto" }}
@@ -243,7 +242,12 @@ class Cart extends Component {
                               ) : null}
                               <p>
                                 1.โอนเงิน Promptpay เข้าบัญชีตาม QR
-                                Code(แสกนผ่าน Application ของธนาคาร) จำนวน
+                                Code(แสกนผ่าน Application ของธนาคาร){" "}
+                                <b>
+                                  โดยบัญชีที่ใช้โอนไม่จำเป็นต้องผ่านการสมัคร
+                                  Promptpay ก็ได้
+                                </b>{" "}
+                                จำนวน
                               </p>
                               <h3 style={{ textAlign: "center" }}>
                                 <b>{this.props.stock.totalPrices}.00 บาท</b>
