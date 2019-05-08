@@ -117,7 +117,7 @@ class Home extends Component {
                       fontFamily: "Prompt",
                       fontSize: "0.9em",
                       backgroundColor: "#fbb900",
-                      color: "#000000"
+                      color: "#000000",
                     }}
                   >
                     สมัครเป็นนักทำชีทสรุป คลิก!
@@ -130,7 +130,7 @@ class Home extends Component {
                       fontFamily: "Prompt",
                       fontSize: "0.9em",
                       backgroundColor: "#fbb900",
-                      color: "#000000"
+                      color: "#000000",
                     }}
                   >
                     เข้าสู่หน้าร้านค้า
@@ -149,9 +149,9 @@ class Home extends Component {
                 fontSize: "1.5em"
               }}
             >
-              More sheet: You life saver
+              more sheet: Your life saver
               {this.props.stock.totalUser > 0 ? (
-                <p>จำนวนคนซื้อ:{" " + this.props.stock.totalUser}</p>
+                <p>Lives Saved:{" " + this.props.stock.totalUser}</p>
               ) : null}
             </p>
           </Container>
@@ -299,18 +299,18 @@ class Home extends Component {
           <br />
           <Container>
             <h1 align="center" style={{ fontFamily: "Prompt" }}>
-              More sheet: You life saver
+              more sheet: Your life saver
             </h1>
             {this.props.stock.totalUser > 0 ? (
               <h1 align="center" style={{ fontFamily: "Prompt" }}>
-                จำนวนคนซื้อ:{" " + this.props.stock.totalUser}
+                Lives Saved:{" " + this.props.stock.totalUser}
               </h1>
             ) : null}
           </Container>
           <br />
           <Container>
-            <Grid unstackable="true">
-              <Grid.Row columns={2}>
+            <Grid columns={2}>
+              <Grid.Row>
                 <Grid.Column>
                   <Image src={cover} href="/sheeter" style={{marginTop:"10px"}}/>
                 </Grid.Column>
