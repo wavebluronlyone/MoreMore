@@ -153,7 +153,9 @@ class Cart extends Component {
                           src={sheet.img}
                         />
                         <Item.Content>
-                          <Item.Header>{sheet.name}</Item.Header>
+                          <Item.Header style={{ fontFamily: "Prompt" }}>
+                            {sheet.name}
+                          </Item.Header>
                           <Item.Description>
                             <span className="price">
                               {sheet.price + " บาท"}
@@ -198,62 +200,105 @@ class Cart extends Component {
                     >
                       <h2 style={{ fontFamily: "Prompt" }}>
                         ชำระเงินผ่าน{" "}
-                        {/* <Image
-                          style={{ cursor: "pointer" }}
-                          centered
-                          width="150em"
-                          height="50em"
-                          src={linepay}
-						  onClick={() => {
-							this.props.createLinePayment(
-							  this.props.stock.totalPrices
-							);
-						  }}
-                        />{" "}
-						  <Modal closeIcon style={{overflow:"auto"}} open={this.state.showModal} onClose={this.closeModal} trigger={<Image
-							  style={{cursor:"pointer"}}
-							  centered
-							  width="150em"
-							  height="50em"
-							  src={promptpay}
-							  onClick={this.openModal}
-							/>
-						} className="scrolling">
-							<Modal.Header>ชำระเงินและยืนยันหลักฐานการโอน</Modal.Header>
-							<Modal.Content image>
-							  <Image wrapped size='medium' src={qr} />
-							  <Modal.Description>
-								<Header style={{marginTop:"-10px"}}>ชำระเงินเพียง 2 ขั้นตอน (หากทำไม่ครบ ระบบจะไม่สามารถยืนยันได้)</Header>
-								{this.props.stock.url==="error"?
-								(<Message negative
-									style={{width: "100%" }}>
-									<Message.Content>
-									  <Message.Header>Error</Message.Header>
-									  <p style={{ fontFamily: "Prompt" }}>
-										ไม่พบรายการโอนเงินดังกล่าว
-									  </p>
-									</Message.Content>
-								  </Message>):null}
-								<p>1.<b>โอนเงิน</b> ผ่านปุ่ม Promptpay หรือแสน QR Code ผ่านแอพธนาคาร <b>**บัญชีที่ใช้โอนไม่จำเป็นต้องผ่านการสมัคร Promptpay ก็ได้</b> จำนวนเงิน</p>
-								<h3 style={{textAlign:"center"}}><b>{this.props.stock.totalPrices}.00 บาท</b></h3><br />
-								<p>2.รออย่างน้อย 1 นาที แล้วกรอกฟอร์มตรวจสอบด้านล่าง<b>ให้ถูกต้อง</b></p>
-								<h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
-								<p><b>1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567</b></p>
-								<Input focus placeholder='XXXX' onChange={this.handleNumChange}/>
-								<p style={{marginTop:"20px"}}><b>2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป เวลาให้ปัดลงหากมีหน่วยวินาทีในสลิป เช่น 16.49.50 ให้กรอก 16.49)</b></p>
-								<DateTime
-								  style={{border:"1px solid black"}}
-								  input={false}
-								  onChange={this.handleDateChange}
-								/>
-								{
-									(this.props.stock.url==="loading"||this.props.stock.transactionId!=="")?
-										(<Button positive loading style={{marginTop:"20px"}}>Loading</Button>)
-										:(<Button onClick={this.createPromptPay} style={{marginTop:"20px"}} positive>กดรับชีทได้ทันที</Button>)
-								}
-							  </Modal.Description>
-							</Modal.Content>
-						  </Modal>
+                        <Modal
+                          closeIcon
+                          style={{ overflow: "auto" }}
+                          open={this.state.showModal}
+                          onClose={this.closeModal}
+                          trigger={
+                            <Image
+                              style={{ cursor: "pointer" }}
+                              centered
+                              width="150em"
+                              height="50em"
+                              src={promptpay}
+                              onClick={this.openModal}
+                            />
+                          }
+                          className="scrolling"
+                        >
+                          <Modal.Header>
+                            ชำระเงินและยืนยันหลักฐานการโอน
+                          </Modal.Header>
+                          <Modal.Content image>
+                            <Image wrapped size="medium" src={qr} />
+                            <Modal.Description>
+                              <Header style={{ marginTop: "-10px" }}>
+                                ชำระเงินเพียง 2 ขั้นตอน (หากทำไม่ครบ
+                                ระบบจะไม่สามารถยืนยันได้)
+                              </Header>
+                              {this.props.stock.url === "error" ? (
+                                <Message negative style={{ width: "100%" }}>
+                                  <Message.Content>
+                                    <Message.Header>Error</Message.Header>
+                                    <p style={{ fontFamily: "Prompt" }}>
+                                      ไม่พบรายการโอนเงินดังกล่าว
+                                    </p>
+                                  </Message.Content>
+                                </Message>
+                              ) : null}
+                              <p>
+                                1.<b>โอนเงิน</b> ผ่านปุ่ม Promptpay หรือแสน QR
+                                Code ผ่านแอพธนาคาร{" "}
+                                <b>
+                                  **บัญชีที่ใช้โอนไม่จำเป็นต้องผ่านการสมัคร
+                                  Promptpay ก็ได้
+                                </b>{" "}
+                                จำนวนเงิน
+                              </p>
+                              <h3 style={{ textAlign: "center" }}>
+                                <b>{this.props.stock.totalPrices}.00 บาท</b>
+                              </h3>
+                              <br />
+                              <p>
+                                2.รออย่างน้อย 1 นาที
+                                แล้วกรอกฟอร์มตรวจสอบด้านล่าง<b>ให้ถูกต้อง</b>
+                              </p>
+                              <h3>ตรวจสอบรายการโอนเงินและรับชีททันที</h3>
+                              <p>
+                                <b>
+                                  1.เลขบัญชีที่ใช้โอน 4 หลักสุดท้าย
+                                  (ดูจากสลิปหรือแอปที่ใช้โอน) เช่น 4567
+                                </b>
+                              </p>
+                              <Input
+                                focus
+                                placeholder="XXXX"
+                                onChange={this.handleNumChange}
+                              />
+                              <p style={{ marginTop: "20px" }}>
+                                <b>
+                                  2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป
+                                  เวลาให้ปัดลงหากมีหน่วยวินาทีในสลิป เช่น
+                                  16.49.50 ให้กรอก 16.49)
+                                </b>
+                              </p>
+                              <DateTime
+                                style={{ border: "1px solid black" }}
+                                input={false}
+                                onChange={this.handleDateChange}
+                              />
+                              {this.props.stock.url === "loading" ||
+                              this.props.stock.transactionId !== "" ? (
+                                <Button
+                                  positive
+                                  loading
+                                  style={{ marginTop: "20px" }}
+                                >
+                                  Loading
+                                </Button>
+                              ) : (
+                                <Button
+                                  onClick={this.createPromptPay}
+                                  style={{ marginTop: "20px" }}
+                                  positive
+                                >
+                                  กดรับชีทได้ทันที
+                                </Button>
+                              )}
+                            </Modal.Description>
+                          </Modal.Content>
+                        </Modal>
                       </h2>
                     </Button>
                   </div>
@@ -271,12 +316,6 @@ class Cart extends Component {
                   >
                     <h2 style={{ fontFamily: "Prompt" }}>
                       ชำระเงินผ่าน{" "}
-                      {/* <Image
-                        centered
-                        width="150em"
-                        height="50em"
-                        src={linepay}
-                      />{" "} */}
                       <Image
                         centered
                         width="150em"
