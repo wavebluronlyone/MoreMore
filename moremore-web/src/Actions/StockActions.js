@@ -20,42 +20,38 @@ var request = require("request");
 export function getBestSeller() {
   return dispatch => {
     const sheetRef = database.collection("product");
-    const paymentRef = database.collection("payment");
     const imageRef = database.collection("image");
-    const sheetArray = [];
     const bestSellerSheetData = [];
-	const count=3;
-	axios
-      .post("https://poomrokc.services:4242/best", {})
-      .then((response) => {
-		if(response.data.success) {
-			for(var i=0;i<response.data.info.length;i++) {
-				sheetRef
-					  .doc(response.data.info[i])
-					  .get()
-					  .then(sheet => {
-						imageRef
-						  .doc(sheet.id)
-						  .get()
-						  .then(image => {
-							var dat=sheet.data();
-							bestSellerSheetData.push({
-							  name: sheet.id,
-							  price: dat.price,
-							  hiLight: dat.hiLight,
-							  img: image.data().image
-							});
-							if (bestSellerSheetData.length === count) {
-							  dispatch({
-								type: GET_BEST_SELLER,
-								product: bestSellerSheetData
-							  });
-							}
-						  });
-					  });
-			}
-		}
-      });
+    const count = 5;
+    axios.post("https://poomrokc.services:4242/best", {}).then(response => {
+      if (response.data.success) {
+        for (let i = 0; i < response.data.info.length; i++) {
+          sheetRef
+            .doc(response.data.info[i])
+            .get()
+            .then(sheet => {
+              imageRef
+                .doc(sheet.id)
+                .get()
+                .then(image => {
+                  const dat = sheet.data();
+                  bestSellerSheetData.push({
+                    name: sheet.id,
+                    price: dat.price,
+                    hiLight: dat.hiLight,
+                    img: image.data().image
+                  });
+                  if (bestSellerSheetData.length === count) {
+                    dispatch({
+                      type: GET_BEST_SELLER,
+                      product: bestSellerSheetData
+                    });
+                  }
+                });
+            });
+        }
+      }
+    });
   };
 }
 
@@ -63,32 +59,34 @@ export function getNewArrival() {
   return dispatch => {
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
-    const sheetArrivalArray = [];
     const newArrivalData = [];
-    let index = 0;
-    let count = 3;
-    sheetRef.orderBy("createAt","desc").limit(3).get().then(sheetData => {
-      sheetData.docs.forEach(sheet => {
-		  imageRef
-                .doc(sheet.id)
-                .get()
-                .then(image => {
-				  var dat=sheet.data();
-                  newArrivalData.push({
-                    name: sheet.id,
-                    price: dat.price,
-                    hiLight: dat.hiLight,
-                    img: image.data().image
-                  });
-                  if (newArrivalData.length === count) {
-                    dispatch({
-                      type: GET_NEW_ARRIVAL,
-                      product: newArrivalData
-                    });
-                  }
+    let count = 5;
+    sheetRef
+      .orderBy("createAt", "desc")
+      .limit(count)
+      .get()
+      .then(sheetData => {
+        sheetData.docs.forEach(sheet => {
+          imageRef
+            .doc(sheet.id)
+            .get()
+            .then(image => {
+              const dat = sheet.data();
+              newArrivalData.push({
+                name: sheet.id,
+                price: dat.price,
+                hiLight: dat.hiLight,
+                img: image.data().image
+              });
+              if (newArrivalData.length === count) {
+                dispatch({
+                  type: GET_NEW_ARRIVAL,
+                  product: newArrivalData
                 });
+              }
+            });
+        });
       });
-    });
   };
 }
 
@@ -100,56 +98,57 @@ export function findSheetDataWithPagination(currentPage, limitPage) {
     let index = 0;
     let startPage = currentPage * limitPage - limitPage;
     let endPage = startPage + limitPage;
-	let count=0;
-	axios
+    let count = 0;
+    axios
       .post("https://poomrokc.services:4242/sheetlist", {})
-      .then((response) => {
-		if(response.data.success) {
-			var sheets=response.data.info;
-			var count = Math.max(Math.min(sheets.length-startPage,endPage-startPage),0);
-			for(var i=startPage;i<endPage&&i<sheets.length;i++)
-			{
-				dispatch({
-				  type: GET_TOTAL_SHEET,
-				  isTyping: 0,
-				  pageNumber: sheets.length
-				});
-				sheetRef
-					  .doc(sheets[i])
-					  .get()
-					  .then(sheet => {
-						imageRef
-							.doc(sheet.id)
-							.get()
-							.then(image => {
-							  var dat=sheet.data();
-							  if(dat===undefined)
-							  {
-								  count--;
-									  if(sheetData.length===count) {
-									  dispatch({
-										type: GET_ALL_SHEET,
-										product: sheetData
-									  });
-								  }
-								  return;
-							  }
-							  sheetData.push({
-								name: sheet.id,
-								price: dat.price,
-								hiLight: dat.hiLight,
-								img: image.data().image
-							  });
-							  if(sheetData.length===count) {
-								  dispatch({
-									type: GET_ALL_SHEET,
-								    product: sheetData
-								  });
-							  }
-							});
-					  });		
-			}
-		}
+      .then(response => {
+        if (response.data.success) {
+          var sheets = response.data.info;
+          var count = Math.max(
+            Math.min(sheets.length - startPage, endPage - startPage),
+            0
+          );
+          for (var i = startPage; i < endPage && i < sheets.length; i++) {
+            dispatch({
+              type: GET_TOTAL_SHEET,
+              isTyping: 0,
+              pageNumber: sheets.length
+            });
+            sheetRef
+              .doc(sheets[i])
+              .get()
+              .then(sheet => {
+                imageRef
+                  .doc(sheet.id)
+                  .get()
+                  .then(image => {
+                    var dat = sheet.data();
+                    if (dat === undefined) {
+                      count--;
+                      if (sheetData.length === count) {
+                        dispatch({
+                          type: GET_ALL_SHEET,
+                          product: sheetData
+                        });
+                      }
+                      return;
+                    }
+                    sheetData.push({
+                      name: sheet.id,
+                      price: dat.price,
+                      hiLight: dat.hiLight,
+                      img: image.data().image
+                    });
+                    if (sheetData.length === count) {
+                      dispatch({
+                        type: GET_ALL_SHEET,
+                        product: sheetData
+                      });
+                    }
+                  });
+              });
+          }
+        }
       });
   };
 }
@@ -164,93 +163,91 @@ export function findSheetDataWithPaginationFromSearch(
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
     const sheetData = [];
-	let count=0;
-	let startPage = currentPage * limitPage - limitPage;
+    let count = 0;
+    let startPage = currentPage * limitPage - limitPage;
     let endPage = startPage + limitPage;
-	axios
+    axios
       .post("https://poomrokc.services:4242/sheetlist", {})
-      .then((response) => {
-		if(response.data.success) {
-			var sheetprev=response.data.info;
-			var sheets=[];
-			for(var i=0;i<sheetprev.length;i++)
-				if(sheetprev[i].toUpperCase().indexOf(input)>=0)
-					sheets.push(sheetprev[i]);
-			var count = Math.max(Math.min(sheets.length-startPage,endPage-startPage),0);
-			if(count===0)
-			{
-				dispatch({
-				  type: GET_TOTAL_SHEET,
-				  isTyping: 1,
-				  pageNumber: sheets.length
-				});
-				dispatch({
-					type: GET_ALL_SHEET,
-					product: sheetData,
-					input
-				});
-				return;
-			}
-			for(var i=startPage;i<endPage&&i<sheets.length;i++)
-			{
-				dispatch({
-				  type: GET_TOTAL_SHEET,
-				  isTyping: 1,
-				  pageNumber: sheets.length
-				});
-				sheetRef
-					  .doc(sheets[i])
-					  .get()
-					  .then(sheet => {
-						imageRef
-							.doc(sheet.id)
-							.get()
-							.then(image => {
-							  var dat=sheet.data();
-							  if(dat===undefined)
-							  {
-								  count--;
-									  if(sheetData.length===count) {
-									  dispatch({
-										type: GET_ALL_SHEET,
-										product: sheetData
-									  });
-								  }
-								  return;
-							  }
-							  sheetData.push({
-								name: sheet.id,
-								price: dat.price,
-								hiLight: dat.hiLight,
-								img: image.data().image
-							  });
-							  if(sheetData.length===count) {
-								  dispatch({
-									type: GET_ALL_SHEET,
-								    product: sheetData,
-									input
-								  });
-							  }
-							});
-					  });		
-			}
-		}
+      .then(response => {
+        if (response.data.success) {
+          var sheetprev = response.data.info;
+          var sheets = [];
+          for (var i = 0; i < sheetprev.length; i++)
+            if (sheetprev[i].toUpperCase().indexOf(input) >= 0)
+              sheets.push(sheetprev[i]);
+          var count = Math.max(
+            Math.min(sheets.length - startPage, endPage - startPage),
+            0
+          );
+          if (count === 0) {
+            dispatch({
+              type: GET_TOTAL_SHEET,
+              isTyping: 1,
+              pageNumber: sheets.length
+            });
+            dispatch({
+              type: GET_ALL_SHEET,
+              product: sheetData,
+              input
+            });
+            return;
+          }
+          for (var i = startPage; i < endPage && i < sheets.length; i++) {
+            dispatch({
+              type: GET_TOTAL_SHEET,
+              isTyping: 1,
+              pageNumber: sheets.length
+            });
+            sheetRef
+              .doc(sheets[i])
+              .get()
+              .then(sheet => {
+                imageRef
+                  .doc(sheet.id)
+                  .get()
+                  .then(image => {
+                    var dat = sheet.data();
+                    if (dat === undefined) {
+                      count--;
+                      if (sheetData.length === count) {
+                        dispatch({
+                          type: GET_ALL_SHEET,
+                          product: sheetData
+                        });
+                      }
+                      return;
+                    }
+                    sheetData.push({
+                      name: sheet.id,
+                      price: dat.price,
+                      hiLight: dat.hiLight,
+                      img: image.data().image
+                    });
+                    if (sheetData.length === count) {
+                      dispatch({
+                        type: GET_ALL_SHEET,
+                        product: sheetData,
+                        input
+                      });
+                    }
+                  });
+              });
+          }
+        }
       });
   };
 }
 
 export function getTotalUserPayment() {
   return dispatch => {
-	axios
-      .post("https://poomrokc.services:4242/num", {})
-      .then((response) => {
-		if(response.data.success) {
-			dispatch({
-				type: GET_TOTAL_USER_PAYMENT,
-				total: response.data.info
-			  });
-		}
-      });
+    axios.post("https://poomrokc.services:4242/num", {}).then(response => {
+      if (response.data.success) {
+        dispatch({
+          type: GET_TOTAL_USER_PAYMENT,
+          total: response.data.info
+        });
+      }
+    });
   };
 }
 
@@ -364,19 +361,19 @@ export function createSheetforUser(email, sheetName) {
           console.error("Error writing document: ", error);
         });
     });
-	var headers = {
-		"Content-Type": "application/x-www-form-urlencoded",
-	};
-	var dataString = {
-		ID: "5cc770ee2df95d22dfdcdcc0",
-		sheets: JSON.stringify([sheetName]),
-	  };
-	request({
-		url:"https://poomrokc.services:4242/ac",
-		method:"POST",
-		headers: headers,
-		form: dataString
-	});
+    var headers = {
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+    var dataString = {
+      ID: "5cc770ee2df95d22dfdcdcc0",
+      sheets: JSON.stringify([sheetName])
+    };
+    request({
+      url: "https://poomrokc.services:4242/ac",
+      method: "POST",
+      headers: headers,
+      form: dataString
+    });
   };
 }
 
@@ -479,7 +476,7 @@ export function linkPayment(
     .then(() => {
       //console.log("Document successfully written!",url);
       window.location.href = url;
-	  return false;
+      return false;
     })
     .catch(function(error) {
       console.error("Error writing document: ", error);
@@ -516,7 +513,7 @@ export function createLinePayment(totalSheetPrices) {
   };
 }
 
-export function createPromptPay(fourDigit,totalSheetPrices,time) {
+export function createPromptPay(fourDigit, totalSheetPrices, time) {
   return dispatch => {
     dispatch({
       type: CREATE_LINE_PAYMENT,
@@ -528,32 +525,32 @@ export function createPromptPay(fourDigit,totalSheetPrices,time) {
     });
     var reservePayment = {
       prices: totalSheetPrices,
-	  fourDigit,
-	  amount:totalSheetPrices,
-	  time,
+      fourDigit,
+      amount: totalSheetPrices,
+      time,
       date: Date.now()
     };
     axios
       .post("https://phiyawat-comsci.herokuapp.com/promptPay", reservePayment)
       .then(function(response) {
-		if(response.data.success)
-			dispatch({
-			  type: CREATE_LINE_PAYMENT,
-			  orderId: reservePayment.date,
-			  transactionId: response.data.trans,
-			  price: totalSheetPrices,
-			  url: "/BuyComplete?transactionId="+response.data.trans,
-			  message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
-			});
-		else
-			dispatch({
-			  type: CREATE_LINE_PAYMENT,
-			  orderId: reservePayment.date,
-			  transactionId: "",
-			  price: totalSheetPrices,
-			  url: "error",
-			  message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
-			});
+        if (response.data.success)
+          dispatch({
+            type: CREATE_LINE_PAYMENT,
+            orderId: reservePayment.date,
+            transactionId: response.data.trans,
+            price: totalSheetPrices,
+            url: "/BuyComplete?transactionId=" + response.data.trans,
+            message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
+          });
+        else
+          dispatch({
+            type: CREATE_LINE_PAYMENT,
+            orderId: reservePayment.date,
+            transactionId: "",
+            price: totalSheetPrices,
+            url: "error",
+            message: "กรุณารอสักครู่ระบบกำลังเข้าสู่ Promptpay"
+          });
       });
   };
 }

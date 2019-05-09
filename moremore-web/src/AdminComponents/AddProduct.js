@@ -224,14 +224,14 @@ class AddProduct extends Component {
           </Form.Field>
 
           <Form.Field>
-            <label>ผู้อัพโหลด</label>
+            <label>ชื่อผู้เขียนชีท</label>
             <Form.Input
               style={{
                 width: "25em",
                 borderColor: "#ffc900"
               }}
               type="text"
-              placeholder="กรุณากรอกผู้อัพโหลด"
+              placeholder="กรุณากรอกชื่อผู้เขียนชีท"
               onChange={this.handleProfileOnchange}
             />
           </Form.Field>

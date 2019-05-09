@@ -27,7 +27,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN_WITH_EMAIL_FOR_ADMIN:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         message: action.text,
@@ -35,32 +35,32 @@ export default function(state = initialState, action) {
         email: action.email
       };
     case ADMIN_LOGOUT:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         isLoggedIn: action.isloggedIn
       };
     case CREATE_PDF:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         uploadPdf: action.uploadPdf,
         messageAddProduct: action.text
       };
     case UPLOAD_IMAGE:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         uploadImage: action.uploadImage
       };
     case DELETE_SHEET_NAME:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         messageAddProduct: action.text
       };
     case IS_EDIT:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         isEdit: action.isEdit,
@@ -72,7 +72,7 @@ export default function(state = initialState, action) {
         data: []
       };
     case GET_ALL_ORDER_FROM_PROFILE:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         data: [

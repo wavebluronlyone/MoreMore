@@ -6,7 +6,15 @@ const SheetDescription = props => (
     panes={[
       {
         menuItem: "รายละเอียดของชีท",
-        render: () => <Tab.Pane>{props.sheetDetail}</Tab.Pane>
+        render: () => (
+          <Tab.Pane
+            style={{
+              fontFamily: "Prompt"
+            }}
+          >
+            {props.sheetDetail}
+          </Tab.Pane>
+        )
       }
     ]}
   />

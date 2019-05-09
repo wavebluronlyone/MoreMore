@@ -190,6 +190,7 @@ class Admin extends Component {
                           <ShowAllProduct sheetList={this.props.stock} />
                           {this.props.stock.isTyping === 0 ? (
                             <div align="center">
+                              <br />
                               <Pagination
                                 prevPageText="prev"
                                 nextPageText="next"
@@ -210,6 +211,7 @@ class Admin extends Component {
                             </div>
                           ) : (
                             <div>
+                              <br />
                               <Pagination
                                 prevPageText="prev"
                                 nextPageText="next"
