@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  findPdfWithSheetName,
-  resetSheetPdf
-} from "../Actions/UserActions";
+import { findPdfWithSheetName, resetSheetPdf } from "../Actions/UserActions";
 import { Document, Page } from "react-pdf";
 import {
   Segment,
@@ -40,25 +37,25 @@ class ReadSheet extends Component {
     this.state = { numPages: null, pageNumber: 1, fullWidth: 500, mobileWidth: 250,loaded:0,loadraw:0};
   }
 
-  _handleKeyDown = (event) => {
-  	switch( event.keyCode ) {
-		case 37:
-			this.goToPrevPage();
-			break;
-		case 39:
-			this.goToNextPage();
-			break;
-		default: 
-			break;
-	}
-  }
+  _handleKeyDown = event => {
+    switch (event.keyCode) {
+      case 37:
+        this.goToPrevPage();
+        break;
+      case 39:
+        this.goToNextPage();
+        break;
+      default:
+        break;
+    }
+  };
 
   componentDidMount() {
     this.props.findPdfWithSheetName(
       this.props.match.params.id,
       this.props.user.email
     );
-	document.addEventListener("keydown", this._handleKeyDown);
+    document.addEventListener("keydown", this._handleKeyDown);
   }
 
   componentDidUpdate(prevProps) {
@@ -74,41 +71,41 @@ class ReadSheet extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({ numPages: null, pageNumber: 0});
+    this.setState({ numPages: null, pageNumber: 0 });
     this.props.resetSheetPdf();
-	document.removeEventListener("keydown", this._handleKeyDown);
+    document.removeEventListener("keydown", this._handleKeyDown);
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages ,pageNumber:1});
+    this.setState({ numPages, pageNumber: 1 });
   };
-  
+
   goToPrevPage = () => {
-	if(this.state.pageNumber>1)
-		this.setState(state => ({ pageNumber: this.state.pageNumber - 1 }));
-  }
+    if (this.state.pageNumber > 1)
+      this.setState(state => ({ pageNumber: this.state.pageNumber - 1 }));
+  };
   goToNextPage = () => {
-	if(this.state.pageNumber<this.state.numPages)
-		this.setState(state => ({ pageNumber: this.state.pageNumber + 1 }));
-  }
-  
+    if (this.state.pageNumber < this.state.numPages)
+      this.setState(state => ({ pageNumber: this.state.pageNumber + 1 }));
+  };
+
   zoomInFull = () => {
-	if(this.state.fullWidth<=700)
-		this.setState(state => ({ fullWidth: this.state.fullWidth + 100 }));
-  }
+    if (this.state.fullWidth <= 700)
+      this.setState(state => ({ fullWidth: this.state.fullWidth + 100 }));
+  };
   zoomOutFull = () => {
-	if(this.state.fullWidth>=200)
-		this.setState(state => ({ fullWidth: this.state.fullWidth - 100 }));
-  }
-  
+    if (this.state.fullWidth >= 200)
+      this.setState(state => ({ fullWidth: this.state.fullWidth - 100 }));
+  };
+
   zoomOutMobile = () => {
-	if(this.state.mobileWidth>=100)
-		this.setState(state => ({ mobileWidth: this.state.mobileWidth - 50 }));
-  }
+    if (this.state.mobileWidth >= 100)
+      this.setState(state => ({ mobileWidth: this.state.mobileWidth - 50 }));
+  };
   zoomInMobile = () => {
-	if(this.state.mobileWidth<=350)
-		this.setState(state => ({ mobileWidth: this.state.mobileWidth + 50 }));
-  }
+    if (this.state.mobileWidth <= 350)
+      this.setState(state => ({ mobileWidth: this.state.mobileWidth + 50 }));
+  };
 
   download = () => {
 	this.setState({loadraw:0});
@@ -129,7 +126,6 @@ class ReadSheet extends Component {
 	  tempLink.click();
 	});
   }
-
 
   render() {
     return (
@@ -177,21 +173,32 @@ class ReadSheet extends Component {
 						  </div>
                     </Grid.Row>
                     <Grid.Row centered>
-                          <div>
-							<Button icon disabled={this.state.pageNumber<=1} onClick={this.goToPrevPage}>
-							  <Icon name='left arrow' />
-							</Button>
-							<Button icon disabled={this.state.pageNumber>=this.state.numPages} onClick={this.goToNextPage}>
-							  <Icon name='right arrow' />
-							</Button>
-						  </div>
+                      <div>
+                        <Button
+                          icon
+                          disabled={this.state.pageNumber <= 1}
+                          onClick={this.goToPrevPage}
+                        >
+                          <Icon name="left arrow" />
+                        </Button>
+                        <Button
+                          icon
+                          disabled={
+                            this.state.pageNumber >= this.state.numPages
+                          }
+                          onClick={this.goToNextPage}
+                        >
+                          <Icon name="right arrow" />
+                        </Button>
+                      </div>
                     </Grid.Row>
-					<Grid.Row centered>
-						(สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard เพื่อเปลี่ยนหน้าได้)
-					</Grid.Row>
-					<Grid.Row centered>
-						Page {this.state.pageNumber} of {this.state.numPages}
-					</Grid.Row>
+                    <Grid.Row centered>
+                      (สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard
+                      เพื่อเปลี่ยนหน้าได้)
+                    </Grid.Row>
+                    <Grid.Row centered>
+                      Page {this.state.pageNumber} of {this.state.numPages}
+                    </Grid.Row>
                   </Grid>
                   {this.props.user.pdf !== "" ? (
                       <Grid stackable>
@@ -256,21 +263,32 @@ class ReadSheet extends Component {
 						  </div>
                     </Grid.Row>
                     <Grid.Row centered>
-                          <div>
-							<Button icon disabled={this.state.pageNumber<=1} onClick={this.goToPrevPage}>
-							  <Icon name='left arrow' />
-							</Button>
-							<Button icon disabled={this.state.pageNumber>=this.state.numPages} onClick={this.goToNextPage}>
-							  <Icon name='right arrow' />
-							</Button>
-						  </div>
+                      <div>
+                        <Button
+                          icon
+                          disabled={this.state.pageNumber <= 1}
+                          onClick={this.goToPrevPage}
+                        >
+                          <Icon name="left arrow" />
+                        </Button>
+                        <Button
+                          icon
+                          disabled={
+                            this.state.pageNumber >= this.state.numPages
+                          }
+                          onClick={this.goToNextPage}
+                        >
+                          <Icon name="right arrow" />
+                        </Button>
+                      </div>
                     </Grid.Row>
-					<Grid.Row centered>
-						(สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard เพื่อเปลี่ยนหน้าได้)
-					</Grid.Row>
-					<Grid.Row centered>
-						Page {this.state.pageNumber} of {this.state.numPages}
-					</Grid.Row>	  
+                    <Grid.Row centered>
+                      (สามารถใช้ปุ่มลูกศร ซ้าย ขวา บน Keyboard
+                      เพื่อเปลี่ยนหน้าได้)
+                    </Grid.Row>
+                    <Grid.Row centered>
+                      Page {this.state.pageNumber} of {this.state.numPages}
+                    </Grid.Row>
                   </Grid>
                   {this.props.user.pdf !== "" ? (
                       <Grid>

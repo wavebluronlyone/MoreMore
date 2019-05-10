@@ -30,7 +30,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN_WITH_EMAIL:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         message: action.text,
@@ -39,26 +39,26 @@ export default function(state = initialState, action) {
         email: action.email
       };
     case FIND_PROFILE_WITH_EMAIL:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         username: action.myUser,
         image: action.image
       };
     case GET_COMMENT:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         commentArray: action.comment
       };
     case RESET_COMMENT:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         commentArray: []
       };
     case FIND_PDF_WITH_EMAIL:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         data: action.product
@@ -74,31 +74,31 @@ export default function(state = initialState, action) {
         pageNumber: action.pageNumber
       };
     case GET_SHEET_GROUP:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         addCart: action.product
       };
     case RESET_MESSAGE:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         message: ""
       };
     case RESET_USER:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         data: []
       };
     case RESET_SHEET_PDF:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return {
         ...state,
         pdf: action.pdf
       };
     case LOGOUT:
-      console.log("dispatching", action);
+      // console.log("dispatching", action);
       return initialState;
     default:
       return state;
