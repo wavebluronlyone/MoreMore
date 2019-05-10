@@ -21,7 +21,8 @@ const initialState = {
   create: true,
   name: "",
   isEdit: false,
-  data: []
+  data: [],
+  sheetCount:0
 };
 
 export default function(state = initialState, action) {
@@ -75,13 +76,14 @@ export default function(state = initialState, action) {
       // console.log("dispatching", action);
       return {
         ...state,
+		sheetCount: action.sheetCount,
         data: [
           ...state.data,
           {
             name: action.name,
             profile: action.profile,
             price: action.price,
-            payment: action.payment
+            payment: action.payment,
           }
         ]
       };
