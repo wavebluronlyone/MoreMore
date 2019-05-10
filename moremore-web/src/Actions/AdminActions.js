@@ -144,9 +144,13 @@ export function createSubImage(arrImage, sheetName) {
       function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload Image is " + progress + "% done");
-        if (progress === 100) {
-          task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            multipleImageData[index] = downloadURL;
+      },
+      function(error) {
+        console.log(error);
+      },
+	  function() {
+		task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            multipleImageData.push(downloadURL);
             index++;
             if (index === arrImage.length) {
               multipleImageRef
@@ -162,11 +166,7 @@ export function createSubImage(arrImage, sheetName) {
                 });
             }
           });
-        }
-      },
-      function(error) {
-        console.log(error);
-      }
+	  }
     );
   }
 }
@@ -253,7 +253,8 @@ export function getAllOrderFromProfile(month, year) {
                   name: sheet.id,
                   profile: sheet.data().profile,
                   price: sheet.data().price,
-                  payment: count
+                  payment: count,
+				  sheetCount:sheetData.docs.length
                 });
               }
             }
@@ -263,7 +264,8 @@ export function getAllOrderFromProfile(month, year) {
                 name: sheet.id,
                 profile: sheet.data().profile,
                 price: sheet.data().price,
-                payment: count
+                payment: count,
+				sheetCount:sheetData.docs.length
               });
             }
           });
