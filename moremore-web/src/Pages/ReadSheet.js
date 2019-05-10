@@ -34,7 +34,14 @@ const mapDispatchtoProps = dispatch => ({
 class ReadSheet extends Component {
   constructor(props) {
     super(props);
-    this.state = { numPages: null, pageNumber: 1, fullWidth: 500, mobileWidth: 250,loaded:0,loadraw:0};
+    this.state = {
+      numPages: null,
+      pageNumber: 1,
+      fullWidth: 500,
+      mobileWidth: 250,
+      loaded: 0,
+      loadraw: 0
+    };
   }
 
   _handleKeyDown = event => {
@@ -108,24 +115,26 @@ class ReadSheet extends Component {
   };
 
   download = () => {
-	this.setState({loadraw:0});
-	axios({
-	  url: "https://cors-anywhere.herokuapp.com/" + this.props.user.pdf,
-	  method: 'GET',
-	  responseType: 'blob', // important
-	  onDownloadProgress: (event)=> {
-		  this.setState({loadraw:Math.floor(100*event.loaded/event.total)});
-	  },
-	}).then((bb) => {
-	  var data = new Blob([bb], {type: 'application/pdf'});
-	  var pdfURL = window.URL.createObjectURL(data);
-	  var tempLink = document.createElement('a');
-	  tempLink.href = pdfURL;
-	  tempLink.setAttribute('download', this.props.match.params.id+".pdf");
-	  document.body.appendChild(tempLink);
-	  tempLink.click();
-	});
-  }
+    this.setState({ loadraw: 0 });
+    axios({
+      url: "https://poomrokc.services:4243/" + this.props.user.pdf,
+      method: "GET",
+      responseType: "blob", // important
+      onDownloadProgress: event => {
+        this.setState({
+          loadraw: Math.floor((100 * event.loaded) / event.total)
+        });
+      }
+    }).then(response => {
+      var data = new Blob([response.data], { type: "application/pdf" });
+      var pdfURL = window.URL.createObjectURL(data);
+      var tempLink = document.createElement("a");
+      tempLink.href = pdfURL;
+      tempLink.setAttribute("download", this.props.match.params.id + ".pdf");
+      document.body.appendChild(tempLink);
+      tempLink.click();
+    });
+  };
 
   render() {
     return (
@@ -153,24 +162,34 @@ class ReadSheet extends Component {
                     </Breadcrumb>
                   </Container>
                   <br />
-				  <Grid>
-				    <Grid.Row centered>
-						<Button color='orange' onClick={this.download}>Download as PDF</Button>
-					</Grid.Row>
-					{this.state.loadraw!==0&&this.state.loadraw!==100?(
-						<Grid.Row centered>
-							Downloading {this.state.loadraw}%
-						</Grid.Row>):null
-					}
-					<Grid.Row centered>
-                          <div>
-							<Button icon disabled={this.state.mobileWidth<=50} onClick={this.zoomOutMobile}>
-							  <Icon name='zoom-out' />
-							</Button>
-							<Button icon disabled={this.state.mobileWidth>=400} onClick={this.zoomInMobile}>
-							  <Icon name='zoom-in' />
-							</Button>
-						  </div>
+                  <Grid>
+                    <Grid.Row centered>
+                      <Button color="orange" onClick={this.download}>
+                        Download as PDF
+                      </Button>
+                    </Grid.Row>
+                    {this.state.loadraw !== 0 && this.state.loadraw !== 100 ? (
+                      <Grid.Row centered>
+                        Downloading {this.state.loadraw}%
+                      </Grid.Row>
+                    ) : null}
+                    <Grid.Row centered>
+                      <div>
+                        <Button
+                          icon
+                          disabled={this.state.mobileWidth <= 50}
+                          onClick={this.zoomOutMobile}
+                        >
+                          <Icon name="zoom-out" />
+                        </Button>
+                        <Button
+                          icon
+                          disabled={this.state.mobileWidth >= 400}
+                          onClick={this.zoomInMobile}
+                        >
+                          <Icon name="zoom-in" />
+                        </Button>
+                      </div>
                     </Grid.Row>
                     <Grid.Row centered>
                       <div>
@@ -201,23 +220,41 @@ class ReadSheet extends Component {
                     </Grid.Row>
                   </Grid>
                   {this.props.user.pdf !== "" ? (
-                      <Grid stackable>
-                        <Grid.Row centered>
-						  <div style={{border:"1px solid black",width:this.state.mobileWidth+2,marginBottom:"10px",marginTop:"10px"}}>
-						  <Document
-							file={
-							  "https://cors-anywhere.herokuapp.com/" +
-							  this.props.user.pdf
-							}
-							onLoadProgress={(event) => this.setState({loaded:Math.floor(100*event.loaded/event.total)})}
-						    onLoadSuccess={this.onDocumentLoadSuccess}
-						  >
-                            <Page pageNumber={this.state.pageNumber} width={this.state.mobileWidth} />
-						  </Document>
-						  {this.state.loaded!==100?(this.state.loaded+"%"):null}
-						  </div>
-                        </Grid.Row>
-                      </Grid>
+                    <Grid stackable>
+                      <Grid.Row centered>
+                        <div
+                          style={{
+                            border: "1px solid black",
+                            width: this.state.mobileWidth + 2,
+                            marginBottom: "10px",
+                            marginTop: "10px"
+                          }}
+                        >
+                          <Document
+                            file={
+                              "https://poomrokc.services:4243/" +
+                              this.props.user.pdf
+                            }
+                            onLoadProgress={event =>
+                              this.setState({
+                                loaded: Math.floor(
+                                  (100 * event.loaded) / event.total
+                                )
+                              })
+                            }
+                            onLoadSuccess={this.onDocumentLoadSuccess}
+                          >
+                            <Page
+                              pageNumber={this.state.pageNumber}
+                              width={this.state.mobileWidth}
+                            />
+                          </Document>
+                          {this.state.loaded !== 100
+                            ? this.state.loaded + "%"
+                            : null}
+                        </div>
+                      </Grid.Row>
+                    </Grid>
                   ) : null}
                 </div>
               </Segment>
@@ -243,24 +280,34 @@ class ReadSheet extends Component {
                       </Breadcrumb.Section>
                     </Breadcrumb>
                   </Container>
-				  <Grid>
-				    <Grid.Row centered>
-						<Button color='orange' onClick={this.download}>Download as PDF</Button>
-					</Grid.Row>
-					{this.state.loadraw!==0&&this.state.loadraw!==100?(
-						<Grid.Row centered>
-							Downloading {this.state.loadraw}%
-						</Grid.Row>):null
-					}
-					<Grid.Row centered>
-                          <div>
-							<Button icon disabled={this.state.fullWidth<=100} onClick={this.zoomOutFull}>
-							  <Icon name='zoom-out' />
-							</Button>
-							<Button icon disabled={this.state.fullWidth>=800} onClick={this.zoomInFull}>
-							  <Icon name='zoom-in' />
-							</Button>
-						  </div>
+                  <Grid>
+                    <Grid.Row centered>
+                      <Button color="orange" onClick={this.download}>
+                        Download as PDF
+                      </Button>
+                    </Grid.Row>
+                    {this.state.loadraw !== 0 && this.state.loadraw !== 100 ? (
+                      <Grid.Row centered>
+                        Downloading {this.state.loadraw}%
+                      </Grid.Row>
+                    ) : null}
+                    <Grid.Row centered>
+                      <div>
+                        <Button
+                          icon
+                          disabled={this.state.fullWidth <= 100}
+                          onClick={this.zoomOutFull}
+                        >
+                          <Icon name="zoom-out" />
+                        </Button>
+                        <Button
+                          icon
+                          disabled={this.state.fullWidth >= 800}
+                          onClick={this.zoomInFull}
+                        >
+                          <Icon name="zoom-in" />
+                        </Button>
+                      </div>
                     </Grid.Row>
                     <Grid.Row centered>
                       <div>
@@ -291,23 +338,39 @@ class ReadSheet extends Component {
                     </Grid.Row>
                   </Grid>
                   {this.props.user.pdf !== "" ? (
-                      <Grid>
-                        <Grid.Row centered>
-						  <div style={{border:"1px solid black",width:this.state.fullWidth+2}}>
-							<Document
-							  file={
-								"https://cors-anywhere.herokuapp.com/" +
-								this.props.user.pdf
-							  }
-							  onLoadProgress={(event) => this.setState({loaded:Math.floor(100*event.loaded/event.total)})}
-							  onLoadSuccess={this.onDocumentLoadSuccess}
-							>
-                             <Page pageNumber={this.state.pageNumber} width={this.state.fullWidth} />
-						   </Document>
-						   {this.state.loaded!==100?(this.state.loaded+"%"):null}
-						  </div>
-                        </Grid.Row>
-                      </Grid>
+                    <Grid>
+                      <Grid.Row centered>
+                        <div
+                          style={{
+                            border: "1px solid black",
+                            width: this.state.fullWidth + 2
+                          }}
+                        >
+                          <Document
+                            file={
+                              "https://poomrokc.services:4243/" +
+                              this.props.user.pdf
+                            }
+                            onLoadProgress={event =>
+                              this.setState({
+                                loaded: Math.floor(
+                                  (100 * event.loaded) / event.total
+                                )
+                              })
+                            }
+                            onLoadSuccess={this.onDocumentLoadSuccess}
+                          >
+                            <Page
+                              pageNumber={this.state.pageNumber}
+                              width={this.state.fullWidth}
+                            />
+                          </Document>
+                          {this.state.loaded !== 100
+                            ? this.state.loaded + "%"
+                            : null}
+                        </div>
+                      </Grid.Row>
+                    </Grid>
                   ) : null}
                 </div>
               </Segment>
