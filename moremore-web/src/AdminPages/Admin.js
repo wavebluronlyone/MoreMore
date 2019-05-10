@@ -247,6 +247,7 @@ class Admin extends Component {
                         }}
                       />
                       <br />
+					  Loaded: {this.props.admin.data.length}/{this.props.admin.sheetCount}<br />
                       <CSVLink
                         data={this.props.admin.data}
                         headers={headers}
