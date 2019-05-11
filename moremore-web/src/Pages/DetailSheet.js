@@ -212,23 +212,36 @@ class DetailSheet extends Component {
                           sheetDetail={this.props.stock.longDetail}
                         />
                         <br />
-                        <Button
-                          style={{
-                            backgroundColor: "black",
-                            color: "white",
-                            fontFamily: "Prompt"
-                          }}
-                          onClick={() => {
-                            this.props.addSheetToCart(
-                              this.props.match.params.id,
-                              this.props.stock.price,
-                              this.props.stock.img,
-                              this.props.stock.addCart
-                            );
-                          }}
-                        >
-                          เพิ่มสินค้าลงในตะกร้า
-                        </Button>
+                        {this.props.user.isLoggedIn?(
+                          <Button
+                            style={{
+                              backgroundColor: "black",
+                              color: "white",
+                              fontFamily: "Prompt"
+                            }}
+                            onClick={() => {
+                              this.props.addSheetToCart(
+                                this.props.match.params.id,
+                                this.props.stock.price,
+                                this.props.stock.img,
+                                this.props.stock.addCart
+                              );
+                            }}
+                          >
+                            เพิ่มสินค้าลงในตะกร้า
+                          </Button>):(
+                          <Button
+                            style={{
+                              backgroundColor: "black",
+                              color: "white",
+                              fontFamily: "Prompt"
+                            }}
+                            as={Link}
+					        to="/Login"
+                          >
+                            Log In เพื่อเพิ่มสินค้าสู่ตะกร้า
+                          </Button>)
+					    }
                         <br />
                         <br />
                       </Grid.Column>

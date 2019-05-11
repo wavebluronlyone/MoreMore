@@ -65,7 +65,7 @@ const CardView = props => (
                     </Button>):(
                     <Button
                       as={Link}
-					  to="Login"
+					  to="/Login"
                       style={{
                         backgroundColor: "black",
                         color: "white",
@@ -73,7 +73,7 @@ const CardView = props => (
                         fontSize: "1em"
                       }}
                     >
-                      กรุณา Log In ก่อนเพิ่มสินค้าสู่ตะกร้า
+                      Log In เพื่อเพิ่มสินค้าสู่ตะกร้า
 				    </Button>)}
 					
                 </Item.Description>
@@ -133,7 +133,7 @@ const CardView = props => (
                     </Button>):(
                     <Button
                       as={Link}
-					  to="Login"
+					  to="/Login"
                       style={{
                         backgroundColor: "black",
                         color: "white",
@@ -141,7 +141,7 @@ const CardView = props => (
                         fontSize: "0.9em"
                       }}
                     >
-                      กรุณา Log In ก่อนเพิ่มสินค้าสู่ตะกร้า
+                      Log In เพื่อเพิ่มสินค้าสู่ตะกร้า
 				    </Button>)}
                 </Card>
               </Grid.Column>
