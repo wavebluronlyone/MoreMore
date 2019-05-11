@@ -99,7 +99,7 @@ export default function(state = initialState, action) {
       };
     case LOGOUT:
       // console.log("dispatching", action);
-      return initialState;
+      return Object.assign({}, initialState, {isloggedIn: Boolean(localStorage.getItem("isloggedIn"))});
     default:
       return state;
   }

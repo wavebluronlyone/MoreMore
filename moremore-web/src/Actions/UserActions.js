@@ -460,18 +460,19 @@ export function resetMessage() {
 
 export function signOut() {
   return dispatch => {
-    auth.signOut();
-    localStorage.removeItem("isloggedIn");
-    dispatch({
-      type: LOGOUT
-    });
-    dispatch({
-      type: SIGN_IN_WITH_EMAIL,
-      isLoggedIn: false
-    });
-    dispatch({
-      type: RESET_MESSAGE,
-      text: ""
-    });
+    auth.signOut().then(function() {
+      localStorage.removeItem("isloggedIn");
+      dispatch({
+        type: LOGOUT
+      });
+      dispatch({
+        type: SIGN_IN_WITH_EMAIL,
+        isLoggedIn: false
+      });
+      dispatch({
+        type: RESET_MESSAGE,
+        text: ""
+      });
+    })
   };
 }
