@@ -200,6 +200,18 @@ class Cart extends Component {
                     >
                       <h2 style={{ fontFamily: "Prompt" }}>
                         ชำระเงินผ่าน{" "}
+                        <Image
+                          style={{ cursor: "pointer" }}
+                          centered
+                          width="150em"
+                          height="50em"
+                          src={linepay}
+                          onClick={() => {
+                            this.props.createLinePayment(
+                              this.props.stock.totalPrices
+                            );
+                          }}
+                        />
                         <Modal
                           closeIcon
                           style={{ overflow: "auto" }}
@@ -270,7 +282,10 @@ class Cart extends Component {
                                 <b>
                                   2.วันที่และเวลาที่โอน (อ้างอิงจากสลิป
                                   เวลาให้ปัดลงหากมีหน่วยวินาทีในสลิป เช่น
-                                  16.49.50 ให้กรอก 16.49)
+                                  16.49.50 ให้กรอก 16.49 หากยังไม่ได้
+                                  ให้ลองนาทีที่ติดกัน 1 เช่น 16.50 กับ 16.48
+                                  หากไม่ได้ภายใน 5 นาที รบกวนติดต่อทาง Inbox
+                                  Page Facebook เลยครับ)
                                 </b>
                               </p>
                               <DateTime

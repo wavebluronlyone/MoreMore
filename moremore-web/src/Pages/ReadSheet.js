@@ -173,6 +173,13 @@ class ReadSheet extends Component {
                         Downloading {this.state.loadraw}%
                       </Grid.Row>
                     ) : null}
+                    <h5 style={{ textAlign: "center", width: "100%" }}>
+                      <u>
+                        ในโทรศัพท์ให้ใช้ Safari หรือ Chrome Mobile ในการ
+                        Download , Browser ของ Facebook และ Line จะไม่สามารถ
+                        Download pdf ได้
+                      </u>
+                    </h5>
                     <Grid.Row centered>
                       <div>
                         <Button
@@ -291,6 +298,13 @@ class ReadSheet extends Component {
                         Downloading {this.state.loadraw}%
                       </Grid.Row>
                     ) : null}
+                    <h5 style={{ textAlign: "center", width: "100%" }}>
+                      <u>
+                        ในโทรศัพท์ให้ใช้ Safari หรือ Chrome Mobile ในการ
+                        Download , Browser ของ Facebook และ Line จะไม่สามารถ
+                        Download pdf ได้
+                      </u>
+                    </h5>
                     <Grid.Row centered>
                       <div>
                         <Button
