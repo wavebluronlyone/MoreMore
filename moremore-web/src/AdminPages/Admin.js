@@ -119,16 +119,15 @@ class Admin extends Component {
     this.setState({ month: inputDate[1], year: inputDate[3] });
     this.props.getAllOrderFromProfile(inputDate[1], inputDate[3]);
   }
-  
+
   handleTabChange = (e, data) => {
-	if(data.activeIndex===2)
-	{
-	  const date = new Date();
-	  const currentDate = date.toDateString().split(" ");
+    if (data.activeIndex === 2) {
+      const date = new Date();
+      const currentDate = date.toDateString().split(" ");
       this.setState({ month: currentDate[1], year: currentDate[3] });
       this.props.getAllOrderFromProfile(currentDate[1], currentDate[3]);
-	}
-  }
+    }
+  };
 
   render() {
     return (
@@ -163,7 +162,7 @@ class Admin extends Component {
               </Message>
             ) : null}
             <Tab
-			  onTabChange={this.handleTabChange}
+              onTabChange={this.handleTabChange}
               panes={[
                 {
                   menuItem: "เพิ่มชีท",
@@ -247,17 +246,22 @@ class Admin extends Component {
                         }}
                       />
                       <br />
-					  Loaded: {this.props.admin.data.length}/{this.props.admin.sheetCount}<br />
-                      <CSVLink
-                        data={this.props.admin.data}
-                        headers={headers}
-                        filename={
-                          this.state.month + "-" + this.state.year + ".csv"
-                        }
-                      >
-                        ดาวน์โหลดประวัติการสั่งซื้อของ {this.state.month}{" "}
-                        {this.state.year}
-                      </CSVLink>
+                      Loaded: {this.props.admin.data.length}/
+                      {this.props.admin.sheetCount}
+                      <br />
+                      {this.props.admin.data.length ===
+                      this.props.admin.sheetCount ? (
+                        <CSVLink
+                          data={this.props.admin.data}
+                          headers={headers}
+                          filename={
+                            this.state.month + "-" + this.state.year + ".csv"
+                          }
+                        >
+                          ดาวน์โหลดประวัติการสั่งซื้อของ {this.state.month}{" "}
+                          {this.state.year}
+                        </CSVLink>
+                      ) : null}
                     </Tab.Pane>
                   )
                 }

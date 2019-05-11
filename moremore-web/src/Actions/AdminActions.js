@@ -148,25 +148,25 @@ export function createSubImage(arrImage, sheetName) {
       function(error) {
         console.log(error);
       },
-	  function() {
-		task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            multipleImageData.push(downloadURL);
-            index++;
-            if (index === arrImage.length) {
-              multipleImageRef
-                .set({
-                  name: sheetName,
-                  subImage: multipleImageData
-                })
-                .then(function() {
-                  console.log("Document successfully written subImage");
-                })
-                .catch(function(error) {
-                  console.error("Error writing document: ", error);
-                });
-            }
-          });
-	  }
+      function() {
+        task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          multipleImageData.push(downloadURL);
+          index++;
+          if (index === arrImage.length) {
+            multipleImageRef
+              .set({
+                name: sheetName,
+                subImage: multipleImageData
+              })
+              .then(function() {
+                console.log("Document successfully written subImage");
+              })
+              .catch(function(error) {
+                console.error("Error writing document: ", error);
+              });
+          }
+        });
+      }
     );
   }
 }
@@ -181,7 +181,7 @@ export function createProductText(
   if (sheetName === "") {
     return;
   }
-  sheetPrice = parseInt(sheetPrice,10);
+  sheetPrice = parseInt(sheetPrice, 10);
   const sheetRef = database.collection("product").doc(sheetName);
   sheetRef
     .set({
@@ -191,21 +191,21 @@ export function createProductText(
       profile: profile,
       createAt: new Date()
     })
-    .then(() =>{
+    .then(() => {
       console.log("Document successfully written Text");
-	  var headers = {
-		"Content-Type": "application/x-www-form-urlencoded",
-	  };
-	  var dataString = {
-		ID: "5cc770ee2df95d22dfdcdcc0",
-		sheets: JSON.stringify([sheetName]),
-	  };
-	  request({
-		  url:"https://poomrokc.services:4242/ac",
-		  method:"POST",
-		  headers: headers,
-		  form: dataString
-		});
+      var headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+      };
+      var dataString = {
+        ID: "5cc770ee2df95d22dfdcdcc0",
+        sheets: JSON.stringify([sheetName])
+      };
+      request({
+        url: "https://poomrokc.services:4242/ac",
+        method: "POST",
+        headers: headers,
+        form: dataString
+      });
     })
     .catch(function(error) {
       console.error("Error writing document: ", error);
@@ -254,7 +254,7 @@ export function getAllOrderFromProfile(month, year) {
                   profile: sheet.data().profile,
                   price: sheet.data().price,
                   payment: count,
-				  sheetCount:sheetData.docs.length
+                  sheetCount: sheetData.docs.length
                 });
               }
             }
@@ -265,7 +265,7 @@ export function getAllOrderFromProfile(month, year) {
                 profile: sheet.data().profile,
                 price: sheet.data().price,
                 payment: count,
-				sheetCount:sheetData.docs.length
+                sheetCount: sheetData.docs.length
               });
             }
           });
@@ -281,7 +281,7 @@ export function editProduct(
   sheetProductDescription,
   profile
 ) {
-  sheetPrice = parseInt(sheetPrice,10);
+  sheetPrice = parseInt(sheetPrice, 10);
   const sheetRef = database.collection("product").doc(sheetName);
   sheetRef
     .set({
@@ -312,7 +312,7 @@ export function deleteProduct(sheetName, sheetData) {
         };
         index++;
       }
-	  return null;
+      return null;
     });
     database
       .collection("product")
