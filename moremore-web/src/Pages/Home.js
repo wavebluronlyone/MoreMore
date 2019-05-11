@@ -155,6 +155,7 @@ class Home extends Component {
                 <p>Lives Saved:{" " + this.props.stock.totalUser}</p>
               ) : null}
             </p>
+			<h4 align="center"><u>การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line</u></h4>
           </Container>
           <br />
           <Container>
@@ -306,6 +307,9 @@ class Home extends Component {
                 Lives Saved:{" " + this.props.stock.totalUser}
               </h1>
             ) : null}
+			<br />
+			<h4 align="center"><u>การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line</u></h4>
+			<br />
           </Container>
           <br />
           <Container>

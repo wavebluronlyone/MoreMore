@@ -6,7 +6,8 @@ import { Image, Card, Grid, Button, Responsive, Item } from "semantic-ui-react";
 
 const mapStatetoProps = state => {
   return {
-    stock: state.stock
+    stock: state.stock,
+	user: state.user
   };
 };
 
@@ -43,24 +44,38 @@ const CardView = props => (
                   <span>{sheet.hiLight}</span>
                   <br />
                   <br />
-                  <Button
-                    onClick={() => {
-                      props.addSheetToCart(
-                        sheet.name,
-                        sheet.price,
-                        sheet.img,
-                        props.stock.addCart
-                      );
-                    }}
-                    style={{
-                      backgroundColor: "black",
-                      color: "white",
-                      fontFamily: "Prompt",
-                      fontSize: "1em"
-                    }}
-                  >
-                    เพิ่มสินค้าลงในตะกร้า
-                  </Button>
+				  {props.user.isLoggedIn?(
+                    <Button
+                      onClick={() => {
+                        props.addSheetToCart(
+                          sheet.name,
+                          sheet.price,
+                          sheet.img,
+                          props.stock.addCart
+                        );
+                      }}
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        fontFamily: "Prompt",
+                        fontSize: "1em"
+                      }}
+                    >
+                      เพิ่มสินค้าลงในตะกร้า
+                    </Button>):(
+                    <Button
+                      as={Link}
+					  to="Login"
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        fontFamily: "Prompt",
+                        fontSize: "1em"
+                      }}
+                    >
+                      กรุณา Log In ก่อนเพิ่มสินค้าสู่ตะกร้า
+				    </Button>)}
+					
                 </Item.Description>
               </Item.Content>
             </Item>
@@ -97,24 +112,37 @@ const CardView = props => (
                       {sheet.hiLight}
                     </Card.Description>
                   </Card.Content>
-                  <Button
-                    onClick={() => {
-                      props.addSheetToCart(
-                        sheet.name,
-                        sheet.price,
-                        sheet.img,
-                        props.stock.addCart
-                      );
-                    }}
-                    style={{
-                      backgroundColor: "black",
-                      color: "white",
-                      fontFamily: "Prompt",
-                      fontSize: "0.9em"
-                    }}
-                  >
-                    เพิ่มสินค้าลงในตะกร้า
-                  </Button>
+                  {props.user.isLoggedIn?(
+                    <Button
+                      onClick={() => {
+                        props.addSheetToCart(
+                          sheet.name,
+                          sheet.price,
+                          sheet.img,
+                          props.stock.addCart
+                        );
+                      }}
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        fontFamily: "Prompt",
+                        fontSize: "0.9em"
+                      }}
+                    >
+                      เพิ่มสินค้าลงในตะกร้า
+                    </Button>):(
+                    <Button
+                      as={Link}
+					  to="Login"
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        fontFamily: "Prompt",
+                        fontSize: "0.9em"
+                      }}
+                    >
+                      กรุณา Log In ก่อนเพิ่มสินค้าสู่ตะกร้า
+				    </Button>)}
                 </Card>
               </Grid.Column>
             );
