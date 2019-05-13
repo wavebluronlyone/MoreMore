@@ -10,9 +10,10 @@ const FieldInput = ({ type, placeholder, input, ...props }) => {
   if (input.value === "") {
     props.meta.dispatch(findSheetDataWithPagination(1, 5));
   } else {
-    props.meta.dispatch(
+    clearTimeout(this.search)
+    this.search =setTimeout( () => props.meta.dispatch(
       findSheetDataWithPaginationFromSearch(1, 5, input.value)
-    );
+    ),1200)
     props.meta.dispatch({ type: "input_change", input: input.value });
   }
 

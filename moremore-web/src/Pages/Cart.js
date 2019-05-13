@@ -200,18 +200,6 @@ class Cart extends Component {
                     >
                       <h2 style={{ fontFamily: "Prompt" }}>
                         ชำระเงินผ่าน{" "}
-                        <Image
-                          style={{ cursor: "pointer" }}
-                          centered
-                          width="150em"
-                          height="50em"
-                          src={linepay}
-                          onClick={() => {
-                            this.props.createLinePayment(
-                              this.props.stock.totalPrices
-                            );
-                          }}
-                        />
                         <Modal
                           closeIcon
                           style={{ overflow: "auto" }}

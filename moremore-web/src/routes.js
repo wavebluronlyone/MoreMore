@@ -13,6 +13,8 @@ import {
   Cart,
   BuyCancel,
   ReadSheet,
+  BestSeller,
+  NewArrival,
   ForgotPassword
 } from "./Pages";
 import Admin from "./AdminPages/Admin";
@@ -25,6 +27,8 @@ const Routes = () => (
     <Route path="/About" render={props => <About />} />
     <Route path="/Login" render={props => <Login {...props} />} />
     <Route path="/Sheeter" render={props => <Sheeter {...props} />} />
+    <Route path="/BestSeller" render={props => <BestSeller {...props} />} />
+    <Route path="/NewArrival" render={props => <NewArrival {...props} />} />
     <Route
       path="/ForgotPassword"
       render={props => <ForgotPassword {...props} />}

@@ -10,4 +10,6 @@ export { default as DetailSheet } from "./DetailSheet";
 export { default as BuyComplete } from "./BuyComplete";
 export { default as BuyCancel } from "./BuyCancel";
 export { default as ReadSheet } from "./ReadSheet";
+export { default as BestSeller } from "./BestSeller";
+export { default as NewArrival } from "./NewArrival";
 export { default as Cart } from "./Cart";

@@ -17,12 +17,12 @@ import {
 } from "./type";
 var request = require("request");
 
-export function getBestSeller() {
+export function getBestSeller(limitPage) {
   return dispatch => {
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
     const bestSellerSheetData = [];
-    const count = 5;
+    const count = limitPage;
     axios.post("https://poomrokc.services:4242/best", {}).then(response => {
       if (response.data.success) {
         for (let i = 0; i < response.data.info.length; i++) {
@@ -55,12 +55,12 @@ export function getBestSeller() {
   };
 }
 
-export function getNewArrival() {
+export function getNewArrival(limitPage) {
   return dispatch => {
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
     const newArrivalData = [];
-    let count = 5;
+    let count = limitPage;
     sheetRef
       .orderBy("createAt", "desc")
       .limit(count)
@@ -159,6 +159,7 @@ export function findSheetDataWithPaginationFromSearch(
   input
 ) {
   return dispatch => {
+    console.log(input);
     input = input.toUpperCase();
     const sheetRef = database.collection("product");
     const imageRef = database.collection("image");
@@ -170,12 +171,12 @@ export function findSheetDataWithPaginationFromSearch(
       .post("https://poomrokc.services:4242/sheetlist", {})
       .then(response => {
         if (response.data.success) {
-          var sheetprev = response.data.info;
-          var sheets = [];
-          for (var i = 0; i < sheetprev.length; i++)
+          const sheetprev = response.data.info;
+          const sheets = [];
+          for (let i = 0; i < sheetprev.length; i++)
             if (sheetprev[i].toUpperCase().indexOf(input) >= 0)
               sheets.push(sheetprev[i]);
-          var count = Math.max(
+          let count = Math.max(
             Math.min(sheets.length - startPage, endPage - startPage),
             0
           );
@@ -192,7 +193,7 @@ export function findSheetDataWithPaginationFromSearch(
             });
             return;
           }
-          for (var i = startPage; i < endPage && i < sheets.length; i++) {
+          for (let i = startPage; i < endPage && i < sheets.length; i++) {
             dispatch({
               type: GET_TOTAL_SHEET,
               isTyping: 1,
@@ -206,10 +207,12 @@ export function findSheetDataWithPaginationFromSearch(
                   .doc(sheet.id)
                   .get()
                   .then(image => {
-                    var dat = sheet.data();
+                    const dat = sheet.data();
                     if (dat === undefined) {
                       count--;
                       if (sheetData.length === count) {
+                        console.log("---------------->");
+                        console.log(sheetData);
                         dispatch({
                           type: GET_ALL_SHEET,
                           product: sheetData
@@ -224,6 +227,8 @@ export function findSheetDataWithPaginationFromSearch(
                       img: image.data().image
                     });
                     if (sheetData.length === count) {
+                      console.log("<----------------");
+                      console.log(sheetData);
                       dispatch({
                         type: GET_ALL_SHEET,
                         product: sheetData,

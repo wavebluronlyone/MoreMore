@@ -7,7 +7,7 @@ import { Image, Card, Grid, Button, Responsive, Item } from "semantic-ui-react";
 const mapStatetoProps = state => {
   return {
     stock: state.stock,
-	user: state.user
+    user: state.user
   };
 };
 
@@ -44,7 +44,7 @@ const CardView = props => (
                   <span>{sheet.hiLight}</span>
                   <br />
                   <br />
-				  {props.user.isLoggedIn?(
+                  {props.user.isLoggedIn ? (
                     <Button
                       onClick={() => {
                         props.addSheetToCart(
@@ -62,10 +62,11 @@ const CardView = props => (
                       }}
                     >
                       เพิ่มสินค้าลงในตะกร้า
-                    </Button>):(
+                    </Button>
+                  ) : (
                     <Button
                       as={Link}
-					  to="/Login"
+                      to="/Login"
                       style={{
                         backgroundColor: "black",
                         color: "white",
@@ -74,8 +75,8 @@ const CardView = props => (
                       }}
                     >
                       Log In เพื่อเพิ่มสินค้าสู่ตะกร้า
-				    </Button>)}
-					
+                    </Button>
+                  )}
                 </Item.Description>
               </Item.Content>
             </Item>
@@ -86,7 +87,7 @@ const CardView = props => (
 
     <Responsive minWidth={801}>
       <Grid stackable>
-        <Grid.Row centered={props.center} columns={6}>
+        <Grid.Row centered={props.center} columns={props.limit}>
           {props.sheetList.map(sheet => {
             return (
               <Grid.Column key={sheet.name}>
@@ -112,7 +113,7 @@ const CardView = props => (
                       {sheet.hiLight}
                     </Card.Description>
                   </Card.Content>
-                  {props.user.isLoggedIn?(
+                  {props.user.isLoggedIn ? (
                     <Button
                       onClick={() => {
                         props.addSheetToCart(
@@ -130,10 +131,11 @@ const CardView = props => (
                       }}
                     >
                       เพิ่มสินค้าลงในตะกร้า
-                    </Button>):(
+                    </Button>
+                  ) : (
                     <Button
                       as={Link}
-					  to="/Login"
+                      to="/Login"
                       style={{
                         backgroundColor: "black",
                         color: "white",
@@ -142,8 +144,10 @@ const CardView = props => (
                       }}
                     >
                       Log In เพื่อเพิ่มสินค้าสู่ตะกร้า
-				    </Button>)}
+                    </Button>
+                  )}
                 </Card>
+                {props.limit === 5 ? <br /> : null}
               </Grid.Column>
             );
           })}

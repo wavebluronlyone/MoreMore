@@ -29,11 +29,11 @@ const mapStatetoProps = state => {
 };
 
 const mapDispatchtoProps = dispatch => ({
-  getBestSeller: () => {
-    dispatch(getBestSeller());
+  getBestSeller: limitPage => {
+    dispatch(getBestSeller(limitPage));
   },
-  getNewArrival: () => {
-    dispatch(getNewArrival());
+  getNewArrival: limitPage => {
+    dispatch(getNewArrival(limitPage));
   },
   getTotalUserPayment: () => {
     dispatch(getTotalUserPayment());
@@ -42,8 +42,8 @@ const mapDispatchtoProps = dispatch => ({
 
 class Home extends Component {
   componentDidMount() {
-    this.props.getNewArrival();
-    this.props.getBestSeller();
+    this.props.getNewArrival(5);
+    this.props.getBestSeller(5);
     this.props.getTotalUserPayment();
   }
   render() {
@@ -118,7 +118,7 @@ class Home extends Component {
                       fontFamily: "Prompt",
                       fontSize: "0.9em",
                       backgroundColor: "#fbb900",
-                      color: "#000000",
+                      color: "#000000"
                     }}
                   >
                     สมัครเป็นนักทำชีทสรุป คลิก!
@@ -131,7 +131,7 @@ class Home extends Component {
                       fontFamily: "Prompt",
                       fontSize: "0.9em",
                       backgroundColor: "#fbb900",
-                      color: "#000000",
+                      color: "#000000"
                     }}
                   >
                     เข้าสู่หน้าร้านค้า
@@ -155,11 +155,25 @@ class Home extends Component {
                 <p>Lives Saved:{" " + this.props.stock.totalUser}</p>
               ) : null}
             </p>
-			<h4 align="center"><u>การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line</u></h4>
+            <h4 align="center">
+              <u>
+                การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile
+                ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line
+              </u>
+            </h4>
           </Container>
           <br />
           <Container>
-		    <Image src={Howto} style={{marginTop:"10px",width:"100%",maxWidth:"400px",marginLeft:"auto",marginRight:"auto"}}/>
+            <Image
+              src={Howto}
+              style={{
+                marginTop: "10px",
+                width: "100%",
+                maxWidth: "400px",
+                marginLeft: "auto",
+                marginRight: "auto"
+              }}
+            />
             {this.props.stock.newArrival.length > 0 ? (
               <div>
                 <br />
@@ -173,10 +187,23 @@ class Home extends Component {
                 >
                   New Arrival
                 </p>
-                <CardView
-                  sheetList={this.props.stock.newArrival}
-                  center={true}
-                />
+                <p
+                  align="right"
+                  style={{
+                    fontSize: 20,
+                    marginRight: "10%",
+                    fontFamily: "Prompt"
+                  }}
+                >
+                  <Link to={"/NewArrival"}> ดูเพิ่มเติม</Link>
+                </p>
+                {this.props.stock.newArrival.length === 5 ? (
+                  <CardView
+                    sheetList={this.props.stock.newArrival}
+                    center={true}
+                    limit={6}
+                  />
+                ) : null}
               </div>
             ) : null}
 
@@ -193,10 +220,23 @@ class Home extends Component {
                 >
                   Best Seller
                 </p>
-                <CardView
-                  sheetList={this.props.stock.bestSeller}
-                  center={true}
-                />
+                <p
+                  align="right"
+                  style={{
+                    fontSize: 20,
+                    marginRight: "10%",
+                    fontFamily: "Prompt"
+                  }}
+                >
+                  <Link to={"/BestSeller"}> ดูเพิ่มเติม</Link>
+                </p>
+                {this.props.stock.bestSeller.length === 5 ? (
+                  <CardView
+                    sheetList={this.props.stock.bestSeller}
+                    center={true}
+                    limit={6}
+                  />
+                ) : null}
               </div>
             ) : null}
           </Container>
@@ -307,23 +347,49 @@ class Home extends Component {
                 Lives Saved:{" " + this.props.stock.totalUser}
               </h1>
             ) : null}
-			<br />
-			<h4 align="center"><u>การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line</u></h4>
-			<br />
+            <br />
+            <h4 align="center">
+              <u>
+                การใช้งานในโทรศัพท์ให้เปิดผ่าน Safari,Chrome Mobile
+                ไม่แนะนำให้ใช้ Browser ของ Facebook หรือ Line
+              </u>
+            </h4>
+            <br />
           </Container>
           <br />
           <Container>
-            <Image src={Howto} style={{marginTop:"10px",width:"400px",marginLeft:"auto",marginRight:"auto"}}/>
+            <Image
+              src={Howto}
+              style={{
+                marginTop: "10px",
+                width: "400px",
+                marginLeft: "auto",
+                marginRight: "auto"
+              }}
+            />
             {this.props.stock.newArrival.length > 0 ? (
               <div>
                 <br />
                 <h1 align="center" style={{ fontFamily: "Prompt" }}>
                   New Arrival
                 </h1>
-                <CardView
-                  sheetList={this.props.stock.newArrival}
-                  center={true}
-                />
+                <h1
+                  align="right"
+                  style={{
+                    fontSize: 20,
+                    marginRight: "10%",
+                    fontFamily: "Prompt"
+                  }}
+                >
+                  <Link to={"/NewArrival"}> ดูเพิ่มเติม</Link>
+                </h1>
+                {this.props.stock.newArrival.length === 5 ? (
+                  <CardView
+                    sheetList={this.props.stock.newArrival}
+                    center={true}
+                    limit={6}
+                  />
+                ) : null}
               </div>
             ) : null}
 
@@ -333,10 +399,23 @@ class Home extends Component {
                 <h1 align="center" style={{ fontFamily: "Prompt" }}>
                   Best Seller
                 </h1>
-                <CardView
-                  sheetList={this.props.stock.bestSeller}
-                  center={true}
-                />
+                <h1
+                  align="right"
+                  style={{
+                    fontSize: 20,
+                    marginRight: "10%",
+                    fontFamily: "Prompt"
+                  }}
+                >
+                  <Link to={"/BestSeller"}> ดูเพิ่มเติม</Link>
+                </h1>
+                {this.props.stock.bestSeller.length === 5 ? (
+                  <CardView
+                    sheetList={this.props.stock.bestSeller}
+                    center={true}
+                    limit={6}
+                  />
+                ) : null}
               </div>
             ) : null}
           </Container>

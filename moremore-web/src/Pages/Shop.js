@@ -103,7 +103,7 @@ class Shop extends Component {
           <SearchForm />
           <br />
           <br />
-          <CardView sheetList={this.props.stock.data} center={true} />
+          <CardView sheetList={this.props.stock.data} center={true} limit={6} />
 
           {this.props.stock.isTyping === 0 ? (
             <div align="center">
