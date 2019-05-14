@@ -21,6 +21,7 @@ import {
   Input
 } from "semantic-ui-react";
 import DateTime from "react-datetime";
+import * as moment from "moment";
 import linepay from "../Image/linepay_logo.png";
 import promptpay from "../Image/prompt.jpg";
 import qr from "../Image/qr.png";
@@ -65,7 +66,7 @@ class Cart extends Component {
     super(props);
     this.state = {
       showModal: false,
-      date: "",
+      date:moment(),
       num: ""
     };
   }
@@ -96,16 +97,8 @@ class Cart extends Component {
   };
 
   handleDateChange = date => {
-    var d = date._d;
-    var dat = d.getDate().toString();
-    var mon = month[d.getMonth()][1];
-    var year = (d.getFullYear() + 543).toString();
-    var hr = d.getHours().toString();
-    var mn = d.getMinutes().toString();
-    if (hr.length < 2) hr = "0" + hr;
-    if (mn.length < 2) mn = "0" + mn;
     this.setState({
-      date: dat + " " + mon + " " + year + " - " + hr + "." + mn
+      date
     });
   };
 
@@ -114,10 +107,19 @@ class Cart extends Component {
   };
 
   createPromptPay = () => {
+    let d = this.state.date._d;
+    let dat = d.getDate().toString();
+    let mon = month[d.getMonth()][1];
+    let year = (d.getFullYear() + 543).toString();
+    let hr = d.getHours().toString();
+    let mn = d.getMinutes().toString();
+    if (hr.length < 2) hr = "0" + hr;
+    if (mn.length < 2) mn = "0" + mn;
+    let realDate= dat + " " + mon + " " + year + " - " + hr + "." + mn;
     this.props.createPromptPay(
       this.state.num,
       this.props.stock.totalPrices.toString() + ".00",
-      this.state.date
+      realDate,
     );
   };
 
@@ -280,6 +282,7 @@ class Cart extends Component {
                                 style={{ border: "1px solid black" }}
                                 input={false}
                                 onChange={this.handleDateChange}
+                                defaultValue = {this.state.date}
                               />
                               {this.props.stock.url === "loading" ||
                               this.props.stock.transactionId !== "" ? (
